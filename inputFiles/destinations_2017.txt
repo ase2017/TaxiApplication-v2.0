@@ -1,0 +1,82 @@
+===========================================================================
+			Valid Entries in destinations_2017.txt file. 
+
+1,Palace of Holyroodhouse,2.9,N
+2,Heriot Watt University,10.3,Y
+3,National Museum of Scotland,6.3,N
+4,Edinburgh Airport,3.6,Y
+5,Edinburgh Airport,3.6,Y
+6,Heriot Watt University,10.3,Y
+7,National Museum of Scotland,3.4,N
+8,Edinburgh Airport,3.6,Y
+9,Edinburgh Playhouse,6.9,N
+10,Edinburgh Playhouse,6.9,N
+11,Heriot Watt University,6.6,Y
+12,Portobello Beach,5.3,Y
+13,National Museum of Scotland,1.5,N
+14,BT Murrayfield Stadium,2.9,N
+15,BT Murrayfield Stadium,2.9,N
+16,Napier University,2.0,N
+17,Portobello Beach,5.3,Y
+18,Edinburgh Airport,3.6,Y
+19,National Museum of Scotland,1.5,N
+20,National Museum of Scotland,6.3,N
+21,Scottish National Gallery,3.2,N
+22,Edinburgh Playhouse,6.9,N
+23,Edinburgh Playhouse,6.9,N
+24,Ocean Terminal,9.9,Y
+25,Royal Edinburgh Hospital,0.4,N
+26,National Museum of Scotland,6.3,N
+27,Royal Edinburgh Hospital,2.5,N
+28,Heriot Watt University,6.6,Y
+29,Palace of Holyroodhouse,2.9,N
+30,Palace of Holyroodhouse,0.9,N
+31,Heriot Watt University,10.3,Y
+32,Napier University,2.0,N
+33,George Street,2.5,N
+			
+
+
+===========================================================================
+		Invalid destination ID in destinations_2017.txt file. 
+
+0,George Street,2.5,N
+-10,Napier University,2.0,N
+ABC,Heriot Watt University,10.3,Y
+//Next line will throw a dublicate id exception.
+1,Palace of Holyroodhouse,2.9,N
+,George Street,2.5,N
+    ,George Street,2.5,N
+
+===========================================================================
+		Invalid destination name in destinations_2017.txt file. 
+
+50,,6.6,Y
+51,XX,0.4,N
+52,ThisISAdestinationNameWithMoreThan30Characters,0.4,N
+53,  ,6.6,Y
+
+===========================================================================
+		Invalid distance in destinations_2017.txt file. 
+
+61,Heriot Watt University,-1,Y
+62,Napier University,0.0,N
+63,George Street,1000000003,N
+64,Jack Bens,,Y
+65,Jack Bens,  ,Y
+66,Jack Bens,DISTANCE,Y
+
+===========================================================================
+		Invalid urban in destinations_2017.txt file. 
+
+71,Heriot Watt University,7.2,
+72,Napier University,5.0,X
+73,George Street,10,23
+74,George Street,10,  
+75,George Street,10,
+			
+			
+===========================================================================
+						An Extreme Case 
+,,,			
+,,,,,,,,,,,,,,,,,

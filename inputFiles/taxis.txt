@@ -1,0 +1,48 @@
+===========================================================================
+					Valid Entries in taxi's file. 
+
+BR204SV,Eric Smith,Mercedes
+CO367DG,Giovanni Campbell,Mercedes
+AA743HE,Antonio Ivanov,Toyota
+AC123UV,Alice Smith,Nissan
+AC321RE,Nicholas Ivanov,Toyota
+FR098IQ,Jack Hunter,Mercedes
+GR853WE,Leo Greco,Mercedes
+OP743RH,Violet Fischer,Audi
+OP902JR,Justin Robinson,Nissan
+LX120RG,Steven Hoffmann,Bentley
+LZ879HF,Ivy Stewart,Nissan
+BB247GE,Louis Hoffmann,Toyota
+BZ842VV,Diana Thompson,Mercedes
+ZZ478HS,Marco Hansen,Mercedes
+AZ345JR,Walter Scott,Audi
+
+===========================================================================
+				Invalid brand names in taxi's file. 
+
+XX743HE,Antonio Ivanov,
+XX713HE,Antonio Ivanov,  
+XX345JR,Walter Scott,AbrandNameNotinOurEnumList
+
+===========================================================================
+			Invalid driver's names in taxi's file. 
+
+XX123UV,,Nissan
+XX478HS,Marco,Mercedes
+XX842VV,D,Mercedes
+XX247GE,AnameThatContains moreThan30Characters12323435,Toyota
+	
+===========================================================================
+			Invalid Registration Number names in taxi's file. 
+
+,Nicholas Ivanov,Nissan
+   ,Nicholas Ivanov,Nissan
+XXXXXXX,Peter Parker,Bentley
+X!@$#@$$RegistrationNum,Peter Parker,Bentley
+//Next line throws a dublicate registration number exception.
+AZ345JR,Walter Scott,Audi
+
+===========================================================================
+						An Extreme Case 
+,,,
+,,,,,,,,,,,,,,,,,,,,

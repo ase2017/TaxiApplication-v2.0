@@ -1,0 +1,24 @@
+===========================================================================
+			Valid Entries in destinations_2016.txt file. 
+
+Main Station
+Heriot Watt University
+Napier University
+BT Murrayfield Stadium
+National Museum of Scotland
+Scottish National Gallery
+Palace of Holyroodhouse
+Edinburgh Playhouse
+Ocean Terminal
+Royal Edinburgh Hospital
+Edinburgh Airport
+Portobello Beach
+Fettes College
+Duddingston Golf Club
+
+===========================================================================
+			Invalid Entries in destinations_2016.txt file. 
+
+Napier University,Ocean Terminal 
+Napier University,Ocean Terminal,Duddingston Golf Club
+,
