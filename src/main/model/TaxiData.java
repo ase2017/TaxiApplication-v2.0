@@ -1,6 +1,8 @@
 package main.model;
 
-
+/**
+ * @author George C. and Jules
+ */
 public class TaxiData {
 
     TaxiGenerator taxiGenerator = new TaxiGenerator();
@@ -19,30 +21,36 @@ public class TaxiData {
 
         fillGroupsQueue(numberOfGroups);
     }
+/*
+    public void generateAndAddTaxi() {
 
-    public void addTaxiToQueue() {
-
-        // TODO : balance the queues (add to the smallest queue)
         Taxi tx;
         boolean taxiIsValid = false;
         while(!taxiIsValid) {
             tx = TaxiGenerator.generateTaxi();
 
             // does not exist in list
-            if (!taxiList.containsTaxi(tx.getTaxiRegistrationNumber())) {
+           /* if (!taxiList.containsTaxi(tx.getTaxiRegistrationNumber())) {
                 // add it to list and queue
+                taxiIsValid = true;
             } else {
 
-                // exists in list but not in queues
+                // exists in list but not in queue
                 if(!taxiQueue.containsTaxi(tx.getTaxiRegistrationNumber())) {
-                    // TODO : adapt with queues
                     // reject if reg number exists
+                    if() {
+
+                    }
                     // else : add it to queue
+                    else {
+                        taxiIsValid = true;
+                    }
+
                 }
 
-               // exists in list and in queues
+               // exists in list and in queue
                 else{
-                    // reject
+                    reject
                 }
 
             }
@@ -52,10 +60,10 @@ public class TaxiData {
         }
 
     }
-
+*/
     public void addGroup() {
 
-        taxiQueue.add(GroupOfPassengersGenerator.generateGroupOfPassengers());
+        //taxiQueue.add(GroupOfPassengersGenerator.generateGroupOfPassengers());
     }
 
     /**
@@ -66,14 +74,14 @@ public class TaxiData {
 
         if (numberOfTaxis > 0) {
 
-            taxiList.add(TaxiGenerator.generateTaxi(numberOfTaxis));
+            //taxiList.add(TaxiGenerator.generateTaxi(numberOfTaxis));
 
         }
     }
 
     public void fillGroupsQueue(int numberOfGroups) {
         if (numberOfGroups > 0) {
-            passengerQueue.add(groupOfPassengersGenerator.generateGroupOfPassengers(numberOfGroups));
+            //passengerQueue.add(groupOfPassengersGenerator.generateGroupOfPassengers(numberOfGroups));
         }
     }
 }

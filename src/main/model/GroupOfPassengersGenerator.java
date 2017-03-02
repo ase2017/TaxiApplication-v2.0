@@ -1,10 +1,9 @@
 package main.model;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Generates one more more groups of passengers
+ * Class that generates one more more groups of passengers
  * @author George C. and Jules
  */
 public class GroupOfPassengersGenerator {
@@ -13,17 +12,21 @@ public class GroupOfPassengersGenerator {
     private static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 30;
 
     /**
-     *
-     * @return
+     * Generates one group of passengers
+     * The number of passengers is a random number between 0 and MAX_NUMBER_OF_PEOPLE_IN_GROUP
+     * The destination name is randomly picked inside DestinationList
+     * @return a group of passenger
      */
     public static GroupOfPassengers generateGroupOfPassengers() {
         return new GroupOfPassengers(rd.nextInt(MAX_NUMBER_OF_PEOPLE_IN_GROUP+1),DestinationList.getRandomDestinationName());
     }
 
     /**
-     *
-     * @param n
-     * @return
+     * Generates n groups of passengers
+     * The number of passengers is a random number between 0 and MAX_NUMBER_OF_PEOPLE_IN_GROUP
+     * The destination name is randomly picked inside DestinationList
+     * @param n : the number of group of passengers
+     * @return an arraylist of groups of passengers of size n if n positive, else it's empty
      */
     public ArrayList<GroupOfPassengers> generateGroupOfPassengers(int n) {
 
@@ -34,7 +37,6 @@ public class GroupOfPassengersGenerator {
                 groups.add(generateGroupOfPassengers());
             }
         }
-
 
         return groups;
     }

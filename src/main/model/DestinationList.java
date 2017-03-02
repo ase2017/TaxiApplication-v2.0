@@ -1,5 +1,4 @@
 package main.model;
-
 import java.util.Random;
 
 /**
@@ -28,6 +27,7 @@ public enum DestinationList {
 
 
     private final String destinationName;
+
     private static final Random rand = new Random();
 
     private DestinationList(String s) {
@@ -42,6 +42,10 @@ public enum DestinationList {
         return DestinationList.values()[rand.nextInt(DestinationList.values().length)].toString();
     }
 
+    /**
+     * Returns the current Enum's string
+     * @return a String of the current enum
+     */
     public String toString() {
         return this.destinationName;
     }

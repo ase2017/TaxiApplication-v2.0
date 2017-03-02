@@ -1,6 +1,8 @@
 package main.model;
 
-
+/**
+ * @author George C. and Jules
+ */
 public class Taxi {
 
     private String taxiRegistrationNumber;

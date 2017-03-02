@@ -1,5 +1,9 @@
 package main.model;
 
+/**
+ * Classes that represents the groups of passengers waiting for the Taxi
+ * @author George C. and Jules
+ */
 public class GroupOfPassengers {
 
     private int numberOfPassengers;
