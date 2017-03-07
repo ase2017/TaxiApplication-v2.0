@@ -7,19 +7,20 @@ import java.util.Observable;
  */
 public class TaxiData extends Observable implements  Runnable{
 
-    TaxiGenerator taxiGenerator = new TaxiGenerator();
-    GroupOfPassengersGenerator groupOfPassengersGenerator = new GroupOfPassengersGenerator();
+    private TaxiGenerator taxiGenerator = new TaxiGenerator();
+    private GroupOfPassengersGenerator groupOfPassengersGenerator = new GroupOfPassengersGenerator();
 
-    Window[] windows;
-    TaxiList taxiList;
-    TaxiQueue taxiQueue;
-    PassengerQueue passengerQueue;
+    private TaxiList taxiList;
+    private TaxiQueue taxiQueue;
+    private PassengerQueue passengerQueue;
 
 
     public TaxiData(int numberOfTaxis, int numberOfGroups) {
 
-        taxiList = new TaxiList();
 
+
+        // taxis
+        taxiList = new TaxiList();
         fillTaxiQueue(numberOfTaxis);
 
         fillGroupsQueue(numberOfGroups);
@@ -64,6 +65,10 @@ public class TaxiData extends Observable implements  Runnable{
 
     }
 */
+
+
+
+
     public void addGroup() {
 
         //taxiQueue.add(GroupOfPassengersGenerator.generateGroupOfPassengers());
@@ -92,5 +97,45 @@ public class TaxiData extends Observable implements  Runnable{
 
     public void run() {
 
+    }
+
+    public TaxiGenerator getTaxiGenerator() {
+        return taxiGenerator;
+    }
+
+    public void setTaxiGenerator(TaxiGenerator taxiGenerator) {
+        this.taxiGenerator = taxiGenerator;
+    }
+
+    public GroupOfPassengersGenerator getGroupOfPassengersGenerator() {
+        return groupOfPassengersGenerator;
+    }
+
+    public void setGroupOfPassengersGenerator(GroupOfPassengersGenerator groupOfPassengersGenerator) {
+        this.groupOfPassengersGenerator = groupOfPassengersGenerator;
+    }
+
+    public TaxiList getTaxiList() {
+        return taxiList;
+    }
+
+    public void setTaxiList(TaxiList taxiList) {
+        this.taxiList = taxiList;
+    }
+
+    public TaxiQueue getTaxiQueue() {
+        return taxiQueue;
+    }
+
+    public void setTaxiQueue(TaxiQueue taxiQueue) {
+        this.taxiQueue = taxiQueue;
+    }
+
+    public PassengerQueue getPassengerQueue() {
+        return passengerQueue;
+    }
+
+    public void setPassengerQueue(PassengerQueue passengerQueue) {
+        this.passengerQueue = passengerQueue;
     }
 }
