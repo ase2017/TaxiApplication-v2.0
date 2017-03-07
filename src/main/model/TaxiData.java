@@ -1,13 +1,16 @@
 package main.model;
 
+import java.util.Observable;
+
 /**
  * @author George C. and Jules
  */
-public class TaxiData {
+public class TaxiData extends Observable implements  Runnable{
 
     TaxiGenerator taxiGenerator = new TaxiGenerator();
     GroupOfPassengersGenerator groupOfPassengersGenerator = new GroupOfPassengersGenerator();
 
+    Window[] windows;
     TaxiList taxiList;
     TaxiQueue taxiQueue;
     PassengerQueue passengerQueue;
@@ -75,6 +78,7 @@ public class TaxiData {
         if (numberOfTaxis > 0) {
 
             //taxiList.add(TaxiGenerator.generateTaxi(numberOfTaxis));
+            // TODO : add to queue
 
         }
     }
@@ -82,6 +86,11 @@ public class TaxiData {
     public void fillGroupsQueue(int numberOfGroups) {
         if (numberOfGroups > 0) {
             //passengerQueue.add(groupOfPassengersGenerator.generateGroupOfPassengers(numberOfGroups));
+
         }
+    }
+
+    public void run() {
+
     }
 }
