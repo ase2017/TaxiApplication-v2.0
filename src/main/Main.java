@@ -1,6 +1,7 @@
 package main;
 
 import main.controller.TaxiAppController;
+import main.model.MainModel;
 import main.model.TaxiData;
 
 public class Main {
@@ -10,7 +11,8 @@ public class Main {
         int numberOfTaxis = 10;
         int numberOfGroups = 15;
         int numberOfWindows = 10;
-        TaxiData taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
-        TaxiAppController taxiAppController = new TaxiAppController(taxiData);
+        MainModel mainModel = new MainModel(numberOfTaxis,numberOfGroups,numberOfWindows);
+        mainModel.run();
+        //TaxiAppController taxiAppController = new TaxiAppController(mainModel);
     }
 }
