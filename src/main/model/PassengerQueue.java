@@ -1,5 +1,7 @@
 package main.model;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Observable;
 
 /**
@@ -8,7 +10,29 @@ import java.util.Observable;
 public class PassengerQueue extends Observable {
 
 
-    public synchronized void popGroup(){
-        notifyObservers();
+    LinkedList<GroupOfPassengers> groupOfPassengersQueue = new LinkedList<>();
+
+
+    public LinkedList<GroupOfPassengers> getGroupOfPassengersQueue() {
+        return groupOfPassengersQueue;
     }
+
+    public void setGroupOfPassengersQueue(LinkedList<GroupOfPassengers> groupOfPassengersQueue) {
+        this.groupOfPassengersQueue = groupOfPassengersQueue;
+    }
+
+    public synchronized GroupOfPassengers popGroup(){
+
+        if(groupOfPassengersQueue.size() > 0) {
+            GroupOfPassengers groupOfPassengers = groupOfPassengersQueue.get(0);
+            groupOfPassengersQueue.removeFirst();
+            //notifyObservers();
+            return groupOfPassengers;
+        }
+
+        return null;
+
+    }
+
+
 }

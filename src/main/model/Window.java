@@ -2,6 +2,7 @@ package main.model;
 
 
 import java.util.Observable;
+import java.util.concurrent.TimeUnit;
 
 public class Window extends Observable implements Runnable{
 
@@ -14,26 +15,50 @@ public class Window extends Observable implements Runnable{
     public void run() {
 
 
-        if(status.equals("AVAILABLE")) {
-            pickGroup();
-            allocateTaxi();
-        }
 
+    }
+
+   public void work(){
+       System.out.println("WORKING");
+        taxiData.getTaxiQueue().popTaxi();
+        pickGroup();
+        allocateTaxi();
     }
 
     public void pickGroup() {
         //TODO : setGroupOfPassengers(popGroup()); //SYNC
         setStatus(Status.BUSY.getString());
-        //1-2 seconds “sleep” (of waiting)
+        try{
+            TimeUnit.SECONDS.sleep(1);
+            //1-2 seconds “sleep” (of waiting)
+        } catch (InterruptedException e){
+
+        }
+
+        groupOfPassengers = taxiData.getPassengerQueue().popGroup();
+
 
     }
 
     public void allocateTaxi(){
         //TODO : setTaxi(popTaxi());
-        //2-3 seconds “sleep” (of waiting)
+        try{
+            TimeUnit.SECONDS.sleep(3);
+            //2-3 seconds “sleep” (of waiting)
+        } catch (InterruptedException e){
+
+        }
+
         setTaxi(null);
         setGroupOfPassengers(null);
-        // timer
+
+        try{
+            TimeUnit.SECONDS.sleep(1);
+            //2-3 seconds “sleep” (of waiting)
+        } catch (InterruptedException e){
+
+        }
+
         setStatus(Status.AVAILABLE.getString());
     }
 
@@ -65,10 +90,10 @@ public class Window extends Observable implements Runnable{
         taxiData = null;
     }
 
-    public Window(GroupOfPassengers groupOfPassengers, Taxi taxi, String status, TaxiData taxiData) {
-        this.groupOfPassengers = groupOfPassengers;
-        this.taxi = taxi;
-        this.status = status;
+    public Window(TaxiData taxiData) {
+        groupOfPassengers = null;
+        taxi = null;
+        this.status = Status.AVAILABLE.getString();
         this.taxiData = taxiData;
 
     }

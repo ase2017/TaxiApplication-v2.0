@@ -21,8 +21,9 @@ public class TaxiData extends Observable implements  Runnable{
 
         // taxis
         taxiList = new TaxiList();
+        taxiQueue = new TaxiQueue();
+        passengerQueue = new PassengerQueue();
         fillTaxiQueue(numberOfTaxis);
-
         fillGroupsQueue(numberOfGroups);
     }
 /*
@@ -82,16 +83,22 @@ public class TaxiData extends Observable implements  Runnable{
 
         if (numberOfTaxis > 0) {
 
-            //taxiList.add(TaxiGenerator.generateTaxi(numberOfTaxis));
-            // TODO : add to queue
+
+
+            for(int i = 0; i < numberOfTaxis; i++) {
+                taxiQueue.getTaxisQueue().add(TaxiGenerator.generateTaxi());
+                //taxiList.add(TaxiGenerator.generateTaxi(numberOfTaxis));
+                // TODO : add to list
+            }
 
         }
     }
 
     public void fillGroupsQueue(int numberOfGroups) {
         if (numberOfGroups > 0) {
-            //passengerQueue.add(groupOfPassengersGenerator.generateGroupOfPassengers(numberOfGroups));
-
+            for(int i = 0; i < numberOfGroups; i++) {
+                passengerQueue.getGroupOfPassengersQueue().add(GroupOfPassengersGenerator.generateGroupOfPassengers());
+            }
         }
     }
 
