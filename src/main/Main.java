@@ -10,7 +10,7 @@ public class Main {
         System.out.println("Hello World!");
         int numberOfTaxis = 10;
         int numberOfGroups = 15;
-        int numberOfWindows = 10;
+        int numberOfWindows = 3;
         MainModel mainModel = new MainModel(numberOfTaxis,numberOfGroups,numberOfWindows);
         mainModel.run();
         //TaxiAppController taxiAppController = new TaxiAppController(mainModel);

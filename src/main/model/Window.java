@@ -2,7 +2,7 @@ package main.model;
 
 
 import java.util.Observable;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
 public class Window extends Observable implements Runnable{
 
@@ -10,52 +10,84 @@ public class Window extends Observable implements Runnable{
     private Taxi taxi;
     private String status;
     private TaxiData taxiData;
+    private int windowNumber;
+
+    Random random = new Random();
+
+    public int getIntBetween(int min, int max) {
+        return random.nextInt((max - min) + 1) + min;
+    }
 
     @Override
     public void run() {
 
+        while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
+                && taxiData.getTaxiQueue().getTaxisQueue().size() > 0) {
+
+            System.out.println("Window " + windowNumber + " serving a new group");
+            System.out.println("Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
+            System.out.println("Number of taxis : " + taxiData.getTaxiQueue().getTaxisQueue().size());
+
+            pickGroup();
+
+            pickTaxi();
 
 
+            groupAndTaxiLeaves();
+
+
+            System.out.println("Window " + windowNumber + " finished serving a group");
+            System.out.println("Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
+            System.out.println("Number of taxis : " + taxiData.getTaxiQueue().getTaxisQueue().size());
+        }
     }
 
-   public void work(){
-       System.out.println("WORKING");
-        taxiData.getTaxiQueue().popTaxi();
-        pickGroup();
-        allocateTaxi();
-    }
+
 
     public void pickGroup() {
         //TODO : setGroupOfPassengers(popGroup()); //SYNC
+
+
         setStatus(Status.BUSY.getString());
+
+        GroupOfPassengers temporaryGroupOfPassengers = taxiData.getPassengerQueue().popGroup();
+
+        // simulates the time for the groups of passengers to arrive
         try{
-            TimeUnit.SECONDS.sleep(1);
-            //1-2 seconds “sleep” (of waiting)
-        } catch (InterruptedException e){
+            Thread.sleep(getIntBetween(1000,3000));
+        } catch (InterruptedException e) {
 
         }
 
-        groupOfPassengers = taxiData.getPassengerQueue().popGroup();
+        groupOfPassengers = temporaryGroupOfPassengers;
 
 
     }
 
-    public void allocateTaxi(){
-        //TODO : setTaxi(popTaxi());
+    public void pickTaxi(){
+
+        // simulates the time for the taxi to arrive at the window
+        Taxi temporaryTaxi = taxiData.getTaxiQueue().popTaxi();
+
         try{
-            TimeUnit.SECONDS.sleep(3);
-            //2-3 seconds “sleep” (of waiting)
-        } catch (InterruptedException e){
+            Thread.sleep(getIntBetween(1000,3000));
+        } catch (InterruptedException e) {
 
         }
+        taxi = temporaryTaxi;
+
+    }
+
+    public void groupAndTaxiLeaves(){
+
 
         setTaxi(null);
         setGroupOfPassengers(null);
 
+        // simulates the time between each  group allocation
         try{
-            TimeUnit.SECONDS.sleep(1);
-            //2-3 seconds “sleep” (of waiting)
-        } catch (InterruptedException e){
+            Thread.sleep(getIntBetween(1000,3000));
+        } catch (InterruptedException e) {
 
         }
 
@@ -83,18 +115,12 @@ public class Window extends Observable implements Runnable{
 
     }
 
-    public Window() {
-        groupOfPassengers = null;
-        taxi = null;
-        this.status = Status.AVAILABLE.getString();
-        taxiData = null;
-    }
-
-    public Window(TaxiData taxiData) {
+    public Window(TaxiData taxiData, int i) {
         groupOfPassengers = null;
         taxi = null;
         this.status = Status.AVAILABLE.getString();
         this.taxiData = taxiData;
+        windowNumber = i;
 
     }
 

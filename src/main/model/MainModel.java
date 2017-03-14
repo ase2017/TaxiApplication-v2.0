@@ -1,5 +1,7 @@
 package main.model;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainModel {
 
     private TaxiData taxiData;
@@ -13,7 +15,7 @@ public class MainModel {
         threads = new Thread[numberOfWindows];
 
         for(int i  = 0; i < numberOfWindows; i++) {
-            windows[i] = new Window(taxiData);
+            windows[i] = new Window(taxiData,i);
             threads[i] = new Thread(windows[i]);
             threads[i].setName("Window " + i);
         }
@@ -22,11 +24,17 @@ public class MainModel {
     public void run(){
 
         for(int i  = 0; i < windows.length; i++) {
-            System.out.println("State of thread " + i + " " + threads[i].getState());
+            //System.out.println("State of thread " + i + " " + threads[i].getState());
             threads[i].start();
-            System.out.println("State of thread " + i + " " + threads[i].getState());
-        }
+            try{
+                TimeUnit.SECONDS.sleep(2);
+                //1-2 seconds “sleep” (of waiting)
+            } catch (InterruptedException e){
 
+            }
+            //System.out.println("State of thread " + i + " " + threads[i].getState());
+        }
+/*
         int i = 0;
         while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
                 && taxiData.getTaxiQueue().getTaxisQueue().size() > 0) {
@@ -39,12 +47,13 @@ public class MainModel {
             if(windows[i].getStatus().equals("AVAILABLE")) {
                 System.out.println(threads[i].getName() + " is running");
                 System.out.println("TEST2 : State of thread " + i + " " + threads[i].getState());
-                windows[i].work();
+                windows[i].();
                 System.out.println("TEST2 : State of thread " + i + " " + threads[i].getState());
             }
-            i = 0;
+            //i = 0;
 
         }
+    */
     }
 
 }
