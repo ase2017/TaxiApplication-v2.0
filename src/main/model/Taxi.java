@@ -3,7 +3,7 @@ package main.model;
 /**
  * @author George C. and Jules
  */
-public class Taxi {
+public class Taxi extends QueueItem{
 
     private String taxiRegistrationNumber;
     private int maximumNumberOfPassengers;

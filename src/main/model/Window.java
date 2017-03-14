@@ -1,6 +1,8 @@
 package main.model;
 
 
+import main.Main;
+
 import java.util.Observable;
 import java.util.Random;
 
@@ -11,6 +13,11 @@ public class Window extends Observable implements Runnable{
     private String status;
     private TaxiData taxiData;
     private int windowNumber;
+    private int remainingNumberOfPassengers;
+    private int numberOfPassengersServed = 0;
+    private int numberOfGroupsServed = 0;
+    private long timeWorked = 0;
+
 
     Random random = new Random();
 
@@ -21,50 +28,76 @@ public class Window extends Observable implements Runnable{
     @Override
     public void run() {
 
-        while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
-                && taxiData.getTaxiQueue().getTaxisQueue().size() > 0) {
+        // TODO : go to break after 2 minutes for example
 
-            System.out.println("Window " + windowNumber + " serving a new group");
-            System.out.println("Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
-            System.out.println("Number of taxis : " + taxiData.getTaxiQueue().getTaxisQueue().size());
+
+        while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
+                && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0 ) {
+
+           System.out.println("\nA Window " + windowNumber + " serving a new group");
+          // System.out.println("B Window " + windowNumber + "Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
+            //System.out.println("C Window " + windowNumber + "Number of taxis : " + taxiData.getTaxiQueue().getTaxisQueue().size());
+
 
             pickGroup();
 
-            pickTaxi();
+
+            while (groupOfPassengers!= null && taxiData.getTaxiQueue().getTaxisQueue().size() > 0){
+               // System.out.println("\n1 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
+                pickTaxi();
+               // System.out.println("\n2 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
+
+               // System.out.println("INSIDE NESTED WHILE : Window " + windowNumber + " taxi size" + taxi.getMaximumNumberOfPassengers());
+                partOfGroupLeaves();
+               // System.out.println("3 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers" + remainingNumberOfPassengers);
+            }
+
+            if (remainingNumberOfPassengers == 0)
+                allGroupLeft();
 
 
-            groupAndTaxiLeaves();
+
+            //System.out.println("\n? AFTER NESTED WHILE : Window " + windowNumber + " finished serving a group");
+            //System.out.println("! AFTER NESTED WHILE : Window " + windowNumber + " Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
+            //System.out.println("@ AFTER NESTED WHILE : Window " + windowNumber +" Number of taxis : " + taxiData.getTaxiQueue().getTaxisQueue().size());
 
 
-            System.out.println("Window " + windowNumber + " finished serving a group");
-            System.out.println("Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
-            System.out.println("Number of taxis : " + taxiData.getTaxiQueue().getTaxisQueue().size());
         }
+
+
     }
 
 
 
+
+
     public void pickGroup() {
-        //TODO : setGroupOfPassengers(popGroup()); //SYNC
 
+        setStatus(WindowStatuses.BUSY.toString());
 
-        setStatus(Status.BUSY.getString());
 
         GroupOfPassengers temporaryGroupOfPassengers = taxiData.getPassengerQueue().popGroup();
 
-        // simulates the time for the groups of passengers to arrive
-        try{
-            Thread.sleep(getIntBetween(1000,3000));
-        } catch (InterruptedException e) {
+        if (temporaryGroupOfPassengers != null){
+            remainingNumberOfPassengers = temporaryGroupOfPassengers.getNumberOfPassengers();
+
+            // simulates the time for the groups of passengers to arrive
+            try{
+                Thread.sleep(getIntBetween(1000,3000));
+            } catch (InterruptedException e) {
+
+            }
+
 
         }
 
-        groupOfPassengers = temporaryGroupOfPassengers;
+        setGroupOfPassengers(temporaryGroupOfPassengers);
 
 
     }
 
     public void pickTaxi(){
+
 
         // simulates the time for the taxi to arrive at the window
         Taxi temporaryTaxi = taxiData.getTaxiQueue().popTaxi();
@@ -74,15 +107,23 @@ public class Window extends Observable implements Runnable{
         } catch (InterruptedException e) {
 
         }
-        taxi = temporaryTaxi;
+
+        setTaxi(temporaryTaxi);
 
     }
 
-    public void groupAndTaxiLeaves(){
+    public void partOfGroupLeaves(){
 
+
+        if(taxi != null) {
+            if ( remainingNumberOfPassengers - taxi.getMaximumNumberOfPassengers() < 0) {
+                setRemainingNumberOfPassengers(0);
+            } else {
+                setRemainingNumberOfPassengers(remainingNumberOfPassengers - taxi.getMaximumNumberOfPassengers());
+            }
+        }
 
         setTaxi(null);
-        setGroupOfPassengers(null);
 
         // simulates the time between each  group allocation
         try{
@@ -91,26 +132,19 @@ public class Window extends Observable implements Runnable{
 
         }
 
-        setStatus(Status.AVAILABLE.getString());
+
     }
 
 
-    private enum Status {
-        BREAK("BREAK"), AVAILABLE("AVAILABLE"), BUSY("BUSY");
-        private String status;
+    public void allGroupLeft(){
 
-        Status(String s) {
-            status = s;
-        }
-        public String getString() {
-            return status;
-        }
-        public boolean containsStatus(String string) {
-           for(Status status : Status.values()){
-               if(status.equals(string))
-                   return true;
-           }
-            return false;
+        setGroupOfPassengers(null);
+        setStatus(WindowStatuses.AVAILABLE.toString());
+
+        try{
+            Thread.sleep(getIntBetween(1000,5000));
+        } catch (InterruptedException e) {
+
         }
 
     }
@@ -118,7 +152,7 @@ public class Window extends Observable implements Runnable{
     public Window(TaxiData taxiData, int i) {
         groupOfPassengers = null;
         taxi = null;
-        this.status = Status.AVAILABLE.getString();
+        this.status = WindowStatuses.AVAILABLE.toString();
         this.taxiData = taxiData;
         windowNumber = i;
 
@@ -157,5 +191,22 @@ public class Window extends Observable implements Runnable{
     public void setStatus(String status) {
         this.status = status;
         notifyObservers();
+    }
+
+    public int getRemainingNumberOfPassengers() {
+        return remainingNumberOfPassengers;
+    }
+
+    public void setRemainingNumberOfPassengers(int remainingNumberOfPassengers) {
+        this.remainingNumberOfPassengers = remainingNumberOfPassengers;
+        notifyObservers();
+    }
+
+    public int getWindowNumber() {
+        return windowNumber;
+    }
+
+    public void setWindowNumber(int windowNumber) {
+        this.windowNumber = windowNumber;
     }
 }

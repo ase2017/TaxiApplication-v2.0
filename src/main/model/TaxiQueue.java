@@ -28,4 +28,24 @@ public class TaxiQueue extends Observable{
 
         return null;
     }
+
+
+    /**
+     * Returns true if a taxi with the same registration number exists
+     * @param taxi
+     * @return
+     */
+    public boolean containsTaxi(Taxi taxi) {
+
+        if(taxi != null) {
+            for (Taxi tx : taxisQueue){
+
+                if(taxi.getTaxiRegistrationNumber().equals(tx.getTaxiRegistrationNumber())) {
+                    return  true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

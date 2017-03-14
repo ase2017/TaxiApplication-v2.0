@@ -21,6 +21,14 @@ public class PassengerQueue extends Observable {
         this.groupOfPassengersQueue = groupOfPassengersQueue;
     }
 
+
+    public void add(GroupOfPassengers groupOfPassengers){
+        if(groupOfPassengers != null){
+            groupOfPassengers.setArrivalTime(System.currentTimeMillis());
+            groupOfPassengersQueue.add(groupOfPassengers);
+        }
+    }
+
     public synchronized GroupOfPassengers popGroup(){
 
         if(groupOfPassengersQueue.size() > 0) {

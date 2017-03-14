@@ -8,8 +8,9 @@ import java.util.Random;
  */
 public class GroupOfPassengersGenerator {
 
-    private static Random rd = new Random();
-    private static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 30;
+    private static Random random = new Random();
+    private final static int MIN_NUMBER_OF_PEOPLE_IN_GROUP = 1;
+    private final static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 5;
 
     /**
      * Generates one group of passengers
@@ -18,7 +19,8 @@ public class GroupOfPassengersGenerator {
      * @return a group of passenger
      */
     public static GroupOfPassengers generateGroupOfPassengers() {
-        return new GroupOfPassengers(rd.nextInt(MAX_NUMBER_OF_PEOPLE_IN_GROUP+1),DestinationList.getRandomDestinationName());
+        return new GroupOfPassengers(getIntBetween(MIN_NUMBER_OF_PEOPLE_IN_GROUP,MAX_NUMBER_OF_PEOPLE_IN_GROUP),
+                                    DestinationList.getRandomDestinationName());
     }
 
     /**
@@ -40,4 +42,9 @@ public class GroupOfPassengersGenerator {
 
         return groups;
     }
+
+    public static int getIntBetween(int min, int max) {
+        return random.nextInt((max - min) + 1) + min;
+    }
+
 }

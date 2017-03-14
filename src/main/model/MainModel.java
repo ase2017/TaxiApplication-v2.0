@@ -1,5 +1,6 @@
 package main.model;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class MainModel {
@@ -7,6 +8,8 @@ public class MainModel {
     private TaxiData taxiData;
     private Window[] windows;
     private Thread[] threads;
+
+    Random random = new Random();
 
     public MainModel(int numberOfTaxis, int numberOfGroups, int numberOfWindows) {
         this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
@@ -24,7 +27,6 @@ public class MainModel {
     public void run(){
 
         for(int i  = 0; i < windows.length; i++) {
-            //System.out.println("State of thread " + i + " " + threads[i].getState());
             threads[i].start();
             try{
                 TimeUnit.SECONDS.sleep(2);
@@ -32,28 +34,57 @@ public class MainModel {
             } catch (InterruptedException e){
 
             }
-            //System.out.println("State of thread " + i + " " + threads[i].getState());
-        }
-/*
-        int i = 0;
-        while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
-                && taxiData.getTaxiQueue().getTaxisQueue().size() > 0) {
-            System.out.println("Starting! Lists are not empty");
-
-
-            while(i < windows.length && !windows[i].getStatus().equals("AVAILABLE")) {
-                i++;
-            }
-            if(windows[i].getStatus().equals("AVAILABLE")) {
-                System.out.println(threads[i].getName() + " is running");
-                System.out.println("TEST2 : State of thread " + i + " " + threads[i].getState());
-                windows[i].();
-                System.out.println("TEST2 : State of thread " + i + " " + threads[i].getState());
-            }
-            //i = 0;
 
         }
-    */
+
+        /*for(int i  = 0; i < 5; i++) {
+            System.out.println(taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
+            taxiData.addGroup();
+            System.out.println(taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
+            System.out.println("ADDED A GROUP");
+            try{
+                TimeUnit.SECONDS.sleep(5);
+                //1-2 seconds “sleep” (of waiting)
+            } catch (InterruptedException e){
+
+            }
+
+        }*/
+
+        // TODO : NOT REMOVE
+        /*while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
+                && taxiData.getTaxiQueue().getTaxisQueue().size() > 0 ) {
+            randomlyPutWindowsToBreak();
+
+            try{
+                TimeUnit.SECONDS.sleep(1);
+                //1-2 seconds “sleep” (of waiting)
+            } catch (InterruptedException e){
+
+            }
+        }*/
+        System.currentTimeMillis();
+    }
+
+
+
+    /**
+     *
+     * Randomly puts a window to "BREAK" status
+     */
+    public void randomlyPutWindowsToBreak(){
+        for(int i = 0; i < threads.length; i++){
+            if(windows[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())){
+                try{
+
+                    threads[i].sleep(5000);
+                    windows[i].setStatus(WindowStatuses.BREAK.toString());
+                    System.out.println("@@@@@@@@@@@PUT window " + i + " to break");
+                } catch (InterruptedException e){
+
+                }
+            }
+        }
     }
 
 }
