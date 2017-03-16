@@ -1,22 +1,26 @@
 package main.model;
 
-
-import main.Main;
-
 import java.util.Observable;
 import java.util.Random;
 
+/**
+ * Class that represents a window where the passengers will be called
+ */
 public class Window extends Observable implements Runnable{
 
     private GroupOfPassengers groupOfPassengers;
     private Taxi taxi;
     private String status;
     private TaxiData taxiData;
+
     private int windowNumber;
     private int remainingNumberOfPassengers;
-    private int numberOfPassengersServed = 0;
-    private int numberOfGroupsServed = 0;
-    private long timeWorked = 0;
+    private int totalNumberOfPassengersServed = 0;
+    private int totalNumberOfGroupsServed = 0;
+    private int totalNumberOfAllocatedTaxis = 0;
+    private long workingStartTime = 0;
+    private long workingEndTime = 0;
+
 
 
     Random random = new Random();
@@ -34,7 +38,7 @@ public class Window extends Observable implements Runnable{
         while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
                 && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0 ) {
 
-           System.out.println("\nA Window " + windowNumber + " serving a new group");
+           System.out.println("\nWindow " + windowNumber + " serving a new group");
           // System.out.println("B Window " + windowNumber + "Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
             //System.out.println("C Window " + windowNumber + "Number of taxis : " + taxiData.getTaxiQueue().getTaxisQueue().size());
 
@@ -43,14 +47,16 @@ public class Window extends Observable implements Runnable{
 
 
             while (groupOfPassengers!= null && taxiData.getTaxiQueue().getTaxisQueue().size() > 0){
-               // System.out.println("\n1 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
+                // System.out.println("\n1 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
                 pickTaxi();
-               // System.out.println("\n2 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
+                // System.out.println("\n2 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
 
-               // System.out.println("INSIDE NESTED WHILE : Window " + windowNumber + " taxi size" + taxi.getMaximumNumberOfPassengers());
+                // System.out.println("INSIDE NESTED WHILE : Window " + windowNumber + " taxi size" + taxi.getMaximumNumberOfPassengers());
                 partOfGroupLeaves();
-               // System.out.println("3 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers" + remainingNumberOfPassengers);
+                // System.out.println("3 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers" + remainingNumberOfPassengers);
             }
+
+
 
             if (remainingNumberOfPassengers == 0)
                 allGroupLeft();
@@ -64,13 +70,19 @@ public class Window extends Observable implements Runnable{
 
         }
 
+        System.out.println("Total number of groups served by window " + windowNumber + " : " + totalNumberOfGroupsServed);
+        System.out.println("Total number of passengers served by window " + windowNumber + " : " + totalNumberOfPassengersServed);
+        System.out.println("Total number of taxis allocated by window " + windowNumber + " : " + totalNumberOfAllocatedTaxis + "\n");
+
 
     }
 
 
 
 
-
+    /**
+     * function to pick a group : gets a group, simulates the group coming, and sets the group
+     */
     public void pickGroup() {
 
         setStatus(WindowStatuses.BUSY.toString());
@@ -79,6 +91,7 @@ public class Window extends Observable implements Runnable{
         GroupOfPassengers temporaryGroupOfPassengers = taxiData.getPassengerQueue().popGroup();
 
         if (temporaryGroupOfPassengers != null){
+
             remainingNumberOfPassengers = temporaryGroupOfPassengers.getNumberOfPassengers();
 
             // simulates the time for the groups of passengers to arrive
@@ -96,6 +109,9 @@ public class Window extends Observable implements Runnable{
 
     }
 
+    /**
+     * function to pick a Taxi : gets a Taxi, simulates the taxi coming, and sets the Taxi
+     */
     public void pickTaxi(){
 
 
@@ -112,17 +128,25 @@ public class Window extends Observable implements Runnable{
 
     }
 
+    /**
+     * function to call to simulate that some passengers of a group left
+     */
     public void partOfGroupLeaves(){
 
 
         if(taxi != null) {
-            if ( remainingNumberOfPassengers - taxi.getMaximumNumberOfPassengers() < 0) {
+            int servedNumberOfPassengersThisTime = remainingNumberOfPassengers - taxi.getMaximumNumberOfPassengers();
+
+            if (  servedNumberOfPassengersThisTime < 0) {
+                setTotalNumberOfPassengersServed(totalNumberOfPassengersServed + taxi.getMaximumNumberOfPassengers());
                 setRemainingNumberOfPassengers(0);
             } else {
+                setTotalNumberOfPassengersServed(totalNumberOfPassengersServed + servedNumberOfPassengersThisTime);
                 setRemainingNumberOfPassengers(remainingNumberOfPassengers - taxi.getMaximumNumberOfPassengers());
             }
         }
 
+        setTotalNumberOfAllocatedTaxis(totalNumberOfAllocatedTaxis + 1);
         setTaxi(null);
 
         // simulates the time between each  group allocation
@@ -136,7 +160,12 @@ public class Window extends Observable implements Runnable{
     }
 
 
+    /**
+     * function to call to simulate that all passengers of a group left
+     */
     public void allGroupLeft(){
+
+        groupOfPassengers.setFinalDepartureTime(System.currentTimeMillis());
 
         setGroupOfPassengers(null);
         setStatus(WindowStatuses.AVAILABLE.toString());
@@ -147,6 +176,8 @@ public class Window extends Observable implements Runnable{
 
         }
 
+        setTotalNumberOfGroupsServed(totalNumberOfGroupsServed + 1);
+
     }
 
     public Window(TaxiData taxiData, int i) {
@@ -155,8 +186,11 @@ public class Window extends Observable implements Runnable{
         this.status = WindowStatuses.AVAILABLE.toString();
         this.taxiData = taxiData;
         windowNumber = i;
+        workingStartTime = System.currentTimeMillis();
 
     }
+
+    /* *************** GET SET ************************* */
 
     public TaxiData getTaxiData() {
         return taxiData;
@@ -208,5 +242,48 @@ public class Window extends Observable implements Runnable{
 
     public void setWindowNumber(int windowNumber) {
         this.windowNumber = windowNumber;
+    }
+
+    public int getTotalNumberOfPassengersServed() {
+        return totalNumberOfPassengersServed;
+    }
+
+    public void setTotalNumberOfPassengersServed(int totalNumberOfPassengersServed) {
+        this.totalNumberOfPassengersServed = totalNumberOfPassengersServed;
+        notifyObservers();
+    }
+
+    public int getTotalNumberOfGroupsServed() {
+        return totalNumberOfGroupsServed;
+    }
+
+    public void setTotalNumberOfGroupsServed(int totalNumberOfGroupsServed) {
+        this.totalNumberOfGroupsServed = totalNumberOfGroupsServed;
+        notifyObservers();
+    }
+
+    public int getTotalNumberOfAllocatedTaxis() {
+        return totalNumberOfAllocatedTaxis;
+    }
+
+    public void setTotalNumberOfAllocatedTaxis(int totalNumberOfAllocatedTaxis) {
+        this.totalNumberOfAllocatedTaxis = totalNumberOfAllocatedTaxis;
+        notifyObservers();
+    }
+
+    public long getWorkingStartTime() {
+        return workingStartTime;
+    }
+
+    public void setWorkingStartTime(long workingStartTime) {
+        this.workingStartTime = workingStartTime;
+    }
+
+    public long getWorkingEndTime() {
+        return workingEndTime;
+    }
+
+    public void setWorkingEndTime(long workingEndTime) {
+        this.workingEndTime = workingEndTime;
     }
 }

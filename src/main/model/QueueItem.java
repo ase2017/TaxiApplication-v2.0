@@ -1,6 +1,9 @@
 package main.model;
 
-
+/**
+ * Abstract class that possess common information about classes than can be in queues (Taxi, GroupsOfPassengers)
+ * @author Jules and George C.
+ */
 public abstract class QueueItem {
 
     long arrivalTime;

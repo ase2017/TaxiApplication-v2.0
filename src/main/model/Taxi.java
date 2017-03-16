@@ -1,6 +1,7 @@
 package main.model;
 
 /**
+ * Class that represents a taxi
  * @author George C. and Jules
  */
 public class Taxi extends QueueItem{
