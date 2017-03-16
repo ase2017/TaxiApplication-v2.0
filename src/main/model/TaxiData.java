@@ -3,12 +3,10 @@ package main.model;
 import java.util.Observable;
 
 /**
+ * Class that contains everything concerning Taxis
  * @author George C. and Jules
  */
-public class TaxiData extends Observable implements  Runnable{
-
-    private TaxiGenerator taxiGenerator = new TaxiGenerator();
-    private GroupOfPassengersGenerator groupOfPassengersGenerator = new GroupOfPassengersGenerator();
+public class TaxiData extends Observable{
 
     private TaxiList taxiList;
     private TaxiQueue taxiQueue;
@@ -17,9 +15,6 @@ public class TaxiData extends Observable implements  Runnable{
 
     public TaxiData(int numberOfTaxis, int numberOfGroups) {
 
-
-
-        // taxis
         taxiList = new TaxiList();
         taxiQueue = new TaxiQueue();
         passengerQueue = new PassengerQueue();
@@ -27,50 +22,76 @@ public class TaxiData extends Observable implements  Runnable{
         fillGroupsQueue(numberOfGroups);
     }
 
+    /* ******************************************************************** */
+    /* ************************ GUI METHODS ******************************* */
+    /* ******************************************************************** */
     /**
-     * Generates one taxi
+     * Generates a random Taxi and adds it to the queue
      */
     public void generateAndAddTaxi() {
 
-        Taxi tx;
+        Taxi taxi;
         boolean taxiIsValid = false;
 
         while(!taxiIsValid) {
-            tx = TaxiGenerator.generateTaxi();
-
-            // does not exist in list
-            if (!taxiList.containsTaxi(tx)) {
-                // add it to list and queue
-                taxiIsValid = true;
-                taxiQueue.getTaxisQueue().add(tx);
-                taxiList.add(tx);
-
-
-            // exists in list
-            } else {
-
-                //  does not exist in queue
-                if(!taxiQueue.containsTaxi(tx)) {
-                    taxiQueue.getTaxisQueue().add(tx);
-                    taxiIsValid = true;
-                }
-            }
-
+            taxi = TaxiGenerator.generateTaxi();
+            taxiIsValid = addTaxi(taxi);
         }
 
     }
 
 
-
-
-    public void addGroup() {
+    /**
+     * Generates a random group of passengers and adds it to the queue
+     */
+    public void generateAndAddGroup() {
 
         passengerQueue.add(GroupOfPassengersGenerator.generateGroupOfPassengers());
     }
 
+    /* ******************************************************************** */
+    /* ******************************************************************** */
+    /* ******************************************************************** */
+
+
     /**
-     *
-     * @param numberOfTaxis
+     * Adds one taxi
+     * @param taxi the Taxi to be added
+     * @return true if the taxi was successfully added, else returns false
+     */
+    public boolean addTaxi(Taxi taxi){
+
+        if(taxi != null) {
+            // does not exist in list (i.e. a taxi with the same registration number has not already been created)
+            if (!taxiList.containsTaxi(taxi)) {
+                // add it to list and queue
+                taxiQueue.add(taxi);
+                taxiList.add(taxi);
+
+                return  true;
+
+
+            // exists in list (i.e. a taxi with the same registration number has already been created)
+            } else {
+
+                //  does not exist in queue
+                if(!taxiQueue.containsTaxi(taxi)) {
+                    taxiQueue.add(taxi);
+                    return true;
+                }
+            }
+        }
+        return  false;
+
+    }
+
+
+
+
+
+    /**
+     * Adds n taxis in the queue
+     * @param numberOfTaxis the number of taxis to be added
      */
     public void fillTaxiQueue(int numberOfTaxis) {
 
@@ -83,34 +104,21 @@ public class TaxiData extends Observable implements  Runnable{
         }
     }
 
+    /**
+     * Adds n groups of passengers if n > 0
+     * @param numberOfGroups the number of passengers to be added
+     */
     public void fillGroupsQueue(int numberOfGroups) {
 
         if (numberOfGroups > 0) {
+
             for(int i = 0; i < numberOfGroups; i++) {
-                passengerQueue.getGroupOfPassengersQueue().add(GroupOfPassengersGenerator.generateGroupOfPassengers());
+                passengerQueue.add(GroupOfPassengersGenerator.generateGroupOfPassengers());
             }
         }
     }
 
-    public void run() {
 
-    }
-
-    public TaxiGenerator getTaxiGenerator() {
-        return taxiGenerator;
-    }
-
-    public void setTaxiGenerator(TaxiGenerator taxiGenerator) {
-        this.taxiGenerator = taxiGenerator;
-    }
-
-    public GroupOfPassengersGenerator getGroupOfPassengersGenerator() {
-        return groupOfPassengersGenerator;
-    }
-
-    public void setGroupOfPassengersGenerator(GroupOfPassengersGenerator groupOfPassengersGenerator) {
-        this.groupOfPassengersGenerator = groupOfPassengersGenerator;
-    }
 
     public TaxiList getTaxiList() {
         return taxiList;

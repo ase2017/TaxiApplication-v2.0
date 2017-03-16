@@ -3,11 +3,16 @@ package main.model;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Model class that contains all other model info
+ * @author Jules and George C.
+ */
 public class MainModel {
 
     private TaxiData taxiData;
     private Window[] windows;
-    private Thread[] threads;
+    private Thread[] windowsThreads;
+    private Stats stats;
 
     Random random = new Random();
 
@@ -15,19 +20,29 @@ public class MainModel {
         this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
 
         windows = new Window[numberOfWindows];
-        threads = new Thread[numberOfWindows];
+        windowsThreads = new Thread[numberOfWindows];
 
         for(int i  = 0; i < numberOfWindows; i++) {
             windows[i] = new Window(taxiData,i);
-            threads[i] = new Thread(windows[i]);
-            threads[i].setName("Window " + i);
+            windowsThreads[i] = new Thread(windows[i]);
+            windowsThreads[i].setName("Window " + i);
         }
+
+        Stats stats = new Stats(taxiData,windows);
+
+
+
     }
 
+    /* ************* GUI methods ********************* */
+
+    /**
+     * For START BUTTON
+     */
     public void run(){
 
         for(int i  = 0; i < windows.length; i++) {
-            threads[i].start();
+            windowsThreads[i].start();
             try{
                 TimeUnit.SECONDS.sleep(2);
                 //1-2 seconds “sleep” (of waiting)
@@ -37,6 +52,9 @@ public class MainModel {
 
         }
 
+
+
+        /* ********** STILL have to sort out how to make it work for a tick box ************* */
         /*for(int i  = 0; i < 5; i++) {
             System.out.println(taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
             taxiData.addGroup();
@@ -63,8 +81,23 @@ public class MainModel {
 
             }
         }*/
-        System.currentTimeMillis();
     }
+
+    /* ******** suspend, stop, resume and wait methods are deprecated. need to find an alternative. ******* */
+    public void stopAll(){
+        for (Thread thread : windowsThreads){
+        }
+    }
+
+    public void pauseAll(){
+
+    }
+
+    public void resumeAll(){
+
+    }
+
+    /* *************************************************** */
 
 
 
@@ -73,11 +106,11 @@ public class MainModel {
      * Randomly puts a window to "BREAK" status
      */
     public void randomlyPutWindowsToBreak(){
-        for(int i = 0; i < threads.length; i++){
+        for(int i = 0; i < windowsThreads.length; i++){
             if(windows[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())){
                 try{
 
-                    threads[i].sleep(5000);
+                    windowsThreads[i].sleep(5000);
                     windows[i].setStatus(WindowStatuses.BREAK.toString());
                     System.out.println("@@@@@@@@@@@PUT window " + i + " to break");
                 } catch (InterruptedException e){
@@ -87,4 +120,43 @@ public class MainModel {
         }
     }
 
+    public Window[] getWindows() {
+        return windows;
+    }
+
+    public void setWindows(Window[] windows) {
+        this.windows = windows;
+    }
+
+    public TaxiData getTaxiData() {
+        return taxiData;
+    }
+
+    public void setTaxiData(TaxiData taxiData) {
+        this.taxiData = taxiData;
+    }
+
+    public Thread[] getWindowsThreads() {
+        return windowsThreads;
+    }
+
+    public void setWindowsThreads(Thread[] windowsThreads) {
+        this.windowsThreads = windowsThreads;
+    }
+
+    public Stats getStats() {
+        return stats;
+    }
+
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
+    public Random getRandom() {
+        return random;
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
+    }
 }

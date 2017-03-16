@@ -10,7 +10,7 @@ public class GroupOfPassengersGenerator {
 
     private static Random random = new Random();
     private final static int MIN_NUMBER_OF_PEOPLE_IN_GROUP = 1;
-    private final static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 5;
+    private final static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 10;
 
     /**
      * Generates one group of passengers
@@ -25,7 +25,7 @@ public class GroupOfPassengersGenerator {
 
     /**
      * Generates n groups of passengers
-     * The number of passengers is a random number between 0 and MAX_NUMBER_OF_PEOPLE_IN_GROUP
+     * The number of passengers is a random number between MIN_NUMBER_OF_PEOPLE_IN_GROUP and MAX_NUMBER_OF_PEOPLE_IN_GROUP
      * The destination name is randomly picked inside DestinationList
      * @param n : the number of group of passengers
      * @return an arraylist of groups of passengers of size n if n positive, else it's empty

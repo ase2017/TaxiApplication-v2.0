@@ -2,6 +2,7 @@ package main.model;
 
 
 /**
+ * Enum that contains the possible window statuses
  * @author George and Jules
  */
 public enum WindowStatuses {
@@ -17,14 +18,10 @@ public enum WindowStatuses {
         status = s;
     }
 
-    /**
-     *
-     */
+
     public boolean equalsName(String windowStatus) {
         return status.equals(windowStatus);
     }
-
-
 
     /**
      * Returns the associated String of the current enum
