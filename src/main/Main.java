@@ -11,6 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //  jules : testing git on new comp
+
         // TODO : tick box for
         // - generating automatically taxis
         // - generating automatically groups
