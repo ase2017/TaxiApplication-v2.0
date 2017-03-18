@@ -10,8 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class TaxiGenerator {
 
-    private static int MINIMUM_NUMBER_OF_PASSENGERS = 3;
-    private static int MAXIMUM_NUMBER_OF_PASSENGERS = 7;
+    public final static int MINIMUM_NUMBER_OF_PASSENGERS = 3;
+    public final static int MAXIMUM_NUMBER_OF_PASSENGERS = 7;
 
     /**
      * Generates a Taxi
@@ -34,7 +34,15 @@ public class TaxiGenerator {
      * @return an arraylist of taxis of size n if n positive, else it's empty
      */
     public static ArrayList<Taxi> generateTaxi(int n) {
+
         ArrayList<Taxi> taxis = new ArrayList<>();
+
+        if (n > 0) {
+            for (int i = 0; i < n; i++){
+                taxis.add(generateTaxi());
+            }
+        }
+
         return taxis;
     }
 

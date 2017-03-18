@@ -9,8 +9,8 @@ import java.util.Random;
 public class GroupOfPassengersGenerator {
 
     private static Random random = new Random();
-    private final static int MIN_NUMBER_OF_PEOPLE_IN_GROUP = 1;
-    private final static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 10;
+    public final static int MIN_NUMBER_OF_PEOPLE_IN_GROUP = 1;
+    public final static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 10;
 
     /**
      * Generates one group of passengers
@@ -30,7 +30,7 @@ public class GroupOfPassengersGenerator {
      * @param n : the number of group of passengers
      * @return an arraylist of groups of passengers of size n if n positive, else it's empty
      */
-    public ArrayList<GroupOfPassengers> generateGroupOfPassengers(int n) {
+    public static ArrayList<GroupOfPassengers> generateGroupOfPassengers(int n) {
 
         ArrayList<GroupOfPassengers> groups = new ArrayList<>();
 
