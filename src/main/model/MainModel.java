@@ -13,6 +13,8 @@ public class MainModel {
     private Thread[] windowsThreads;
     private Stats stats;
 
+    private boolean stopped = false;
+
     public MainModel(int numberOfTaxis, int numberOfGroups, int numberOfWindows) {
         this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
 
@@ -32,6 +34,17 @@ public class MainModel {
     }
 
     /* ************* GUI methods ********************* */
+
+    /**
+     * For STOP BUTTON
+     */
+    public void stop(){
+        stopped = true;
+        for(int i  = 0; i < windows.length; i++) {
+            windows[i].setStopped(true);
+        }
+    }
+
 
     /**
      * For START BUTTON
