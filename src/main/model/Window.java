@@ -14,6 +14,8 @@ public class Window extends Observable implements Runnable{
     private String status;
     private TaxiData taxiData;
 
+    private boolean stopped = false;
+
     private int windowNumber;
     private int remainingNumberOfPassengers;
     private int totalNumberOfPassengersServed = 0;
@@ -32,7 +34,8 @@ public class Window extends Observable implements Runnable{
 
 
         while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
-                && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0 ) {
+                && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0
+                && !stopped) {
 
            System.out.println("\nWindow " + windowNumber + " serving a new group");
           // System.out.println("B Window " + windowNumber + "Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
@@ -329,5 +332,13 @@ public class Window extends Observable implements Runnable{
     public void setBiggestGroupSizeServed(int biggestGroupSizeServed) {
         this.biggestGroupSizeServed = biggestGroupSizeServed;
         notifyObservers();
+    }
+
+    public boolean isStopped() {
+        return stopped;
+    }
+
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
     }
 }
