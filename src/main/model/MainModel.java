@@ -1,6 +1,5 @@
 package main.model;
 
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,8 +12,6 @@ public class MainModel {
     private Window[] windows;
     private Thread[] windowsThreads;
     private Stats stats;
-
-    Random random = new Random();
 
     public MainModel(int numberOfTaxis, int numberOfGroups, int numberOfWindows) {
         this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
@@ -152,11 +149,4 @@ public class MainModel {
         this.stats = stats;
     }
 
-    public Random getRandom() {
-        return random;
-    }
-
-    public void setRandom(Random random) {
-        this.random = random;
-    }
 }

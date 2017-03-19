@@ -1,7 +1,8 @@
 package main.model;
 
+import main.utils.Utils;
+
 import java.util.Observable;
-import java.util.Random;
 
 /**
  * Class that represents a window where the passengers will be called
@@ -25,11 +26,6 @@ public class Window extends Observable implements Runnable{
 
 
 
-    Random random = new Random();
-
-    public int getIntBetween(int min, int max) {
-        return random.nextInt((max - min) + 1) + min;
-    }
 
     @Override
     public void run() {
@@ -107,7 +103,7 @@ public class Window extends Observable implements Runnable{
 
             // simulates the time for the groups of passengers to arrive
             try{
-                Thread.sleep(getIntBetween(1000,3000));
+                Thread.sleep(Utils.getIntBetween(1000,3000));
             } catch (InterruptedException e) {
 
             }
@@ -130,7 +126,7 @@ public class Window extends Observable implements Runnable{
         Taxi temporaryTaxi = taxiData.getTaxiQueue().popTaxi();
 
         try{
-            Thread.sleep(getIntBetween(1000,3000));
+            Thread.sleep(Utils.getIntBetween(1000,3000));
         } catch (InterruptedException e) {
 
         }
@@ -162,7 +158,7 @@ public class Window extends Observable implements Runnable{
 
         // simulates the time between each  group allocation
         try{
-            Thread.sleep(getIntBetween(1000,3000));
+            Thread.sleep(Utils.getIntBetween(1000,3000));
         } catch (InterruptedException e) {
 
         }
@@ -198,7 +194,7 @@ public class Window extends Observable implements Runnable{
         setStatus(WindowStatuses.AVAILABLE.toString());
 
         try{
-            Thread.sleep(getIntBetween(1000,5000));
+            Thread.sleep(Utils.getIntBetween(1000,5000));
         } catch (InterruptedException e) {
 
         }
@@ -216,6 +212,7 @@ public class Window extends Observable implements Runnable{
         setWorkingStartTime(System.currentTimeMillis());
 
     }
+
 
     /* *************** GET SET ************************* */
 

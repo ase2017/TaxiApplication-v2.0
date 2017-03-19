@@ -4,10 +4,10 @@ package main.model;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.chart.*;
 import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
+import javafx.stage.Stage;
 
 
 

@@ -1,9 +1,11 @@
 package test.model;
+
 import main.model.Taxi;
 import main.model.TaxiGenerator;
-import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Jules

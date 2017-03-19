@@ -3,6 +3,7 @@ package test.model;
 import main.model.Taxi;
 import main.model.TaxiQueue;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
