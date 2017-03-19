@@ -28,8 +28,6 @@ public class MainModel {
             windowsThreads[i].setName("Window " + i);
         }
 
-        Stats stats = new Stats(taxiData,windows);
-
 
 
     }

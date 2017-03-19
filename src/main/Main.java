@@ -1,9 +1,6 @@
 package main;
 
-import main.controller.TaxiAppController;
 import main.model.MainModel;
-import main.model.Stats;
-import main.model.TaxiData;
 
 public class Main {
 

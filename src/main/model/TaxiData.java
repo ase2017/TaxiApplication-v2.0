@@ -12,6 +12,11 @@ public class TaxiData extends Observable{
     private TaxiQueue taxiQueue;
     private PassengerQueue passengerQueue;
 
+    public  TaxiData(  ) {
+
+
+    }
+
 
     public TaxiData(int numberOfTaxis, int numberOfGroups) {
 

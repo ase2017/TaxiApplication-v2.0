@@ -65,7 +65,7 @@ public class Stats {
 
             for(int i=0; i<windows.length; i++) {
                 if(windows[i] != null){
-                    groupsPerWindow +=getNumberOfGroupsThisWindow(i);
+                    groupsPerWindow += getNumberOfGroupsThisWindow(i);
                 }
             }
 
