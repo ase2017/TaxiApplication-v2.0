@@ -83,6 +83,8 @@ public class Window extends Observable implements Runnable{
         System.out.println("Remaining number of taxis from window " + windowNumber + " : " + taxiData.getTaxiQueue().getTaxisQueue().size() + "\n");
 
 
+        setWorkingEndTime(System.currentTimeMillis());
+
 
     }
 
@@ -101,7 +103,7 @@ public class Window extends Observable implements Runnable{
 
         if (temporaryGroupOfPassengers != null){
 
-            remainingNumberOfPassengers = temporaryGroupOfPassengers.getNumberOfPassengers();
+            setRemainingNumberOfPassengers(temporaryGroupOfPassengers.getNumberOfPassengers());
 
             // simulates the time for the groups of passengers to arrive
             try{
@@ -165,7 +167,6 @@ public class Window extends Observable implements Runnable{
 
         }
 
-
     }
 
 
@@ -178,15 +179,17 @@ public class Window extends Observable implements Runnable{
 
         // updating biggest group size served
         if (groupOfPassengers.getNumberOfPassengers() > biggestGroupSizeServed){
-            biggestGroupSizeServed = groupOfPassengers.getNumberOfPassengers();
+
+            setBiggestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
         }
 
         // updating smallest group size served
         if(smallestGroupSizeServed == 0){
-            smallestGroupSizeServed = groupOfPassengers.getNumberOfPassengers();
+            setSmallestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
+
         } else {
             if (groupOfPassengers.getNumberOfPassengers() < smallestGroupSizeServed){
-                smallestGroupSizeServed = groupOfPassengers.getNumberOfPassengers();
+                setSmallestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
             }
         }
 
@@ -210,7 +213,7 @@ public class Window extends Observable implements Runnable{
         this.status = WindowStatuses.AVAILABLE.toString();
         this.taxiData = taxiData;
         windowNumber = i;
-        workingStartTime = System.currentTimeMillis();
+        setWorkingStartTime(System.currentTimeMillis());
 
     }
 
@@ -301,6 +304,7 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingStartTime(long workingStartTime) {
         this.workingStartTime = workingStartTime;
+        notifyObservers();
     }
 
     public long getWorkingEndTime() {
@@ -309,6 +313,7 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingEndTime(long workingEndTime) {
         this.workingEndTime = workingEndTime;
+        notifyObservers();
     }
 
     public int getSmallestGroupSizeServed() {
@@ -317,6 +322,7 @@ public class Window extends Observable implements Runnable{
 
     public void setSmallestGroupSizeServed(int smallestGroupSizeServed) {
         this.smallestGroupSizeServed = smallestGroupSizeServed;
+        notifyObservers();
     }
 
     public int getBiggestGroupSizeServed() {
@@ -325,5 +331,6 @@ public class Window extends Observable implements Runnable{
 
     public void setBiggestGroupSizeServed(int biggestGroupSizeServed) {
         this.biggestGroupSizeServed = biggestGroupSizeServed;
+        notifyObservers();
     }
 }
