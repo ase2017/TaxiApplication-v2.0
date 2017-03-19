@@ -4,6 +4,7 @@ import main.controller.TaxiAppController;
 import main.model.MainModel;
 import main.model.Stats;
 import main.model.TaxiData;
+import main.view.InitializationWindowView;
 
 public class Main {
 
@@ -29,10 +30,15 @@ public class Main {
 
         System.out.println("Hello World!");
 
-        int numberOfTaxis = 12;
-        int numberOfGroups = 6;
+        InitializationWindowView view = new InitializationWindowView();
+        int numberOfTaxis = 10;
+        int numberOfGroups = 10;
         int numberOfWindows = 3;
+        //int numberOfTaxis = view.getNumberOfTaxis();
+        //int numberOfGroups = view.getMaxNumberOfGroups();
+        //int numberOfWindows = view.getNumberOfWindows();
         MainModel mainModel = new MainModel(numberOfTaxis,numberOfGroups,numberOfWindows);
+        //view.initializeView();
         mainModel.run();
 
 

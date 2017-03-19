@@ -47,14 +47,14 @@ public class InitializationWindowView implements ActionListener {
     public static double simulationSpeed = 0;
 
 
-    private InitializationWindowView(){
+    public InitializationWindowView(){
 
         initializationFrame = new JFrame();
         initializeComponents();
 
     }
 
-    private void initializeView(){
+    public void initializeView(){
 
         initializeFrame();
         taxiIconInit();
@@ -198,4 +198,23 @@ public class InitializationWindowView implements ActionListener {
 
     }
 
+    public static int getNumberOfTaxis() {
+        return numberOfTaxis;
+    }
+
+    public static int getNumberOfPassengers() {
+        return numberOfPassengers;
+    }
+
+    public static int getNumberOfWindows() {
+        return numberOfWindows;
+    }
+
+    public static int getMaxNumberOfGroups() {
+        return maxNumberOfGroups;
+    }
+
+    public static double getSimulationSpeed() {
+        return simulationSpeed;
+    }
 }
