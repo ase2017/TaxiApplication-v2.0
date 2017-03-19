@@ -29,7 +29,7 @@ public class Main {
 
         System.out.println("Hello World!");
 
-        int numberOfTaxis = 10;
+        int numberOfTaxis = 12;
         int numberOfGroups = 6;
         int numberOfWindows = 3;
         MainModel mainModel = new MainModel(numberOfTaxis,numberOfGroups,numberOfWindows);

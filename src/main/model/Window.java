@@ -18,6 +18,8 @@ public class Window extends Observable implements Runnable{
     private int totalNumberOfPassengersServed = 0;
     private int totalNumberOfGroupsServed = 0;
     private int totalNumberOfAllocatedTaxis = 0;
+    private int smallestGroupSizeServed = 0;
+    private int biggestGroupSizeServed = 0;
     private long workingStartTime = 0;
     private long workingEndTime = 0;
 
@@ -32,8 +34,6 @@ public class Window extends Observable implements Runnable{
     @Override
     public void run() {
 
-        // TODO : go to break after 2 minutes for example
-
 
         while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
                 && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0 ) {
@@ -45,21 +45,24 @@ public class Window extends Observable implements Runnable{
 
             pickGroup();
 
+            if(groupOfPassengers != null) {
+                while (taxiData.getTaxiQueue().getTaxisQueue().size() > 0 && remainingNumberOfPassengers != 0){
+                    // System.out.println("\n1 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
+                    pickTaxi();
+                    // System.out.println("\n2 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
 
-            while (groupOfPassengers!= null && taxiData.getTaxiQueue().getTaxisQueue().size() > 0){
-                // System.out.println("\n1 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
-                pickTaxi();
-                // System.out.println("\n2 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers " + remainingNumberOfPassengers);
+                    // System.out.println("INSIDE NESTED WHILE : Window " + windowNumber + " taxi size" + taxi.getMaximumNumberOfPassengers());
+                    partOfGroupLeaves();
+                    // System.out.println("3 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers" + remainingNumberOfPassengers);
+                }
 
-                // System.out.println("INSIDE NESTED WHILE : Window " + windowNumber + " taxi size" + taxi.getMaximumNumberOfPassengers());
-                partOfGroupLeaves();
-                // System.out.println("3 INSIDE NESTED WHILE : Window " + windowNumber + " remaining number of passengers" + remainingNumberOfPassengers);
+
+
+                if (remainingNumberOfPassengers == 0)
+                    allGroupLeft();
             }
 
 
-
-            if (remainingNumberOfPassengers == 0)
-                allGroupLeft();
 
 
 
@@ -72,7 +75,13 @@ public class Window extends Observable implements Runnable{
 
         System.out.println("Total number of groups served by window " + windowNumber + " : " + totalNumberOfGroupsServed);
         System.out.println("Total number of passengers served by window " + windowNumber + " : " + totalNumberOfPassengersServed);
-        System.out.println("Total number of taxis allocated by window " + windowNumber + " : " + totalNumberOfAllocatedTaxis + "\n");
+        System.out.println("Total remaining number of passengers in window " + windowNumber + " : " + remainingNumberOfPassengers);
+        System.out.println("Total number of taxis allocated by window " + windowNumber + " : " + totalNumberOfAllocatedTaxis);
+        System.out.println("Smallest group size served by window " + windowNumber + " : " + smallestGroupSizeServed);
+        System.out.println("Biggest group size served by window " + windowNumber + " : " + biggestGroupSizeServed);
+        System.out.println("Remaining number of groups from window " + windowNumber + " : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
+        System.out.println("Remaining number of taxis from window " + windowNumber + " : " + taxiData.getTaxiQueue().getTaxisQueue().size() + "\n");
+
 
 
     }
@@ -166,6 +175,21 @@ public class Window extends Observable implements Runnable{
     public void allGroupLeft(){
 
         groupOfPassengers.setFinalDepartureTime(System.currentTimeMillis());
+
+        // updating biggest group size served
+        if (groupOfPassengers.getNumberOfPassengers() > biggestGroupSizeServed){
+            biggestGroupSizeServed = groupOfPassengers.getNumberOfPassengers();
+        }
+
+        // updating smallest group size served
+        if(smallestGroupSizeServed == 0){
+            smallestGroupSizeServed = groupOfPassengers.getNumberOfPassengers();
+        } else {
+            if (groupOfPassengers.getNumberOfPassengers() < smallestGroupSizeServed){
+                smallestGroupSizeServed = groupOfPassengers.getNumberOfPassengers();
+            }
+        }
+
 
         setGroupOfPassengers(null);
         setStatus(WindowStatuses.AVAILABLE.toString());
@@ -285,5 +309,21 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingEndTime(long workingEndTime) {
         this.workingEndTime = workingEndTime;
+    }
+
+    public int getSmallestGroupSizeServed() {
+        return smallestGroupSizeServed;
+    }
+
+    public void setSmallestGroupSizeServed(int smallestGroupSizeServed) {
+        this.smallestGroupSizeServed = smallestGroupSizeServed;
+    }
+
+    public int getBiggestGroupSizeServed() {
+        return biggestGroupSizeServed;
+    }
+
+    public void setBiggestGroupSizeServed(int biggestGroupSizeServed) {
+        this.biggestGroupSizeServed = biggestGroupSizeServed;
     }
 }

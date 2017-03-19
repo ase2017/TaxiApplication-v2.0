@@ -17,7 +17,7 @@ public class TaxiList extends Observable {
      */
     public void add(Taxi taxi){
 
-        if (taxis != null && taxi != null && !containsTaxi(taxi)) {
+        if (taxi != null) {
 
             if(taxis == null){
                 taxis = new ArrayList<>();
