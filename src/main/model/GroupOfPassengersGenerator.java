@@ -1,4 +1,6 @@
 package main.model;
+import main.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,7 +21,7 @@ public class GroupOfPassengersGenerator {
      * @return a group of passenger
      */
     public static GroupOfPassengers generateGroupOfPassengers() {
-        return new GroupOfPassengers(getIntBetween(MIN_NUMBER_OF_PEOPLE_IN_GROUP,MAX_NUMBER_OF_PEOPLE_IN_GROUP),
+        return new GroupOfPassengers(Utils.getIntBetween(MIN_NUMBER_OF_PEOPLE_IN_GROUP,MAX_NUMBER_OF_PEOPLE_IN_GROUP),
                                     DestinationList.getRandomDestinationName());
     }
 
@@ -43,8 +45,6 @@ public class GroupOfPassengersGenerator {
         return groups;
     }
 
-    public static int getIntBetween(int min, int max) {
-        return random.nextInt((max - min) + 1) + min;
-    }
+
 
 }
