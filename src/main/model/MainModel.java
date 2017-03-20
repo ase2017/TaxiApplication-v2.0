@@ -36,9 +36,9 @@ public class MainModel {
     /* ************* GUI methods ********************* */
 
     /**
-     * For STOP BUTTON
+     * For STOP button (general button)
      */
-    public void stop(){
+    public void stopAllWindows(){
         stopped = true;
         for(int i  = 0; i < windows.length; i++) {
             windows[i].setStopped(true);
@@ -47,7 +47,7 @@ public class MainModel {
 
 
     /**
-     * For START BUTTON
+     * For START button (general button)
      */
     public void run(){
 
@@ -93,18 +93,22 @@ public class MainModel {
         }*/
     }
 
-    /* ******** suspend, stop, resume and wait methods are deprecated. need to find an alternative. ******* */
-    public void stopAll(){
-        for (Thread thread : windowsThreads){
+    /**
+     * For PAUSE button (general button)
+     */
+    public void pauseAllWindows(){
+        for (Window window : windows){
+            window.setOnBreak(true);
         }
     }
 
-    public void pauseAll(){
-
-    }
-
-    public void resumeAll(){
-
+    /**
+     * For RESUME button (general button)
+     */
+    public void resumeAllWindows(){
+        for (Window window : windows){
+            window.setOnBreak(false);
+        }
     }
 
     /* *************************************************** */
