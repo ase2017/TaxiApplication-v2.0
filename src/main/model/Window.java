@@ -15,6 +15,7 @@ public class Window extends Observable implements Runnable{
     private TaxiData taxiData;
 
     private boolean stopped = false;
+    private boolean onBreak = false;
 
     private int windowNumber;
     private int remainingNumberOfPassengers;
@@ -34,8 +35,9 @@ public class Window extends Observable implements Runnable{
 
 
         while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
-                && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0
-                && !stopped) {
+                && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0) {
+
+
 
            System.out.println("\nWindow " + windowNumber + " serving a new group");
           // System.out.println("B Window " + windowNumber + "Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
@@ -63,7 +65,13 @@ public class Window extends Observable implements Runnable{
 
 
 
+            if(stopped){
+                break;
+            }
 
+            while(onBreak){
+                // while on break, don't do anything
+            }
 
             //System.out.println("\n? AFTER NESTED WHILE : Window " + windowNumber + " finished serving a group");
             //System.out.println("! AFTER NESTED WHILE : Window " + windowNumber + " Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
@@ -340,5 +348,13 @@ public class Window extends Observable implements Runnable{
 
     public void setStopped(boolean stopped) {
         this.stopped = stopped;
+    }
+
+    public boolean isOnBreak() {
+        return onBreak;
+    }
+
+    public void setOnBreak(boolean onBreak) {
+        this.onBreak = onBreak;
     }
 }
