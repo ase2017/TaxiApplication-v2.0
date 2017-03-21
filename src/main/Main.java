@@ -1,7 +1,9 @@
 package main;
 
+import main.controller.SimulationController;
 import main.model.MainModel;
 import main.view.InitializationWindowView;
+import main.view.SimulationView;
 
 public class Main {
 
@@ -27,18 +29,23 @@ public class Main {
 
         System.out.println("Hello World!");
 
-        InitializationWindowView view = new InitializationWindowView();
+        MainModel mainModel = new MainModel();
+        InitializationWindowView view = new InitializationWindowView(mainModel);
+        SimulationView sv = new SimulationView(mainModel);
+
+        SimulationController sc = new SimulationController(mainModel, sv);
+
         int numberOfTaxis = 10;
         int numberOfGroups = 10;
         int numberOfWindows = 3;
         //int numberOfTaxis = view.getNumberOfTaxis();
-        //int numberOfGroups = view.getMaxNumberOfGroups();
+        //int numberOfGroups = view.getMaxPassengersPerGroup();
         //int numberOfWindows = view.getNumberOfWindows();
-        MainModel mainModel = new MainModel(numberOfTaxis,numberOfGroups,numberOfWindows);
+
         //view.initializeView();
-        mainModel.run();
+        //mainModel.run();
 
 
-        //TaxiAppController taxiAppController = new TaxiAppController(mainModel);
+
     }
 }

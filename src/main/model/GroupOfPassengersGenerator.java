@@ -12,7 +12,7 @@ public class GroupOfPassengersGenerator {
 
     private static Random random = new Random();
     public final static int MIN_NUMBER_OF_PEOPLE_IN_GROUP = 1;
-    public final static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 10;
+    public static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 10;
 
     /**
      * Generates one group of passengers
