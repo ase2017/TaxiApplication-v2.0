@@ -1,6 +1,6 @@
 package main.view;
 import javafx.beans.Observable;
-import main.model.MainModel;
+import main.model.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -38,6 +38,8 @@ public class SimulationView implements ActionListener,Observer{
     public SimulationView(MainModel md){
 
         this.md = md;
+
+
 
 
     }
@@ -136,15 +138,21 @@ public class SimulationView implements ActionListener,Observer{
         taxiButton.addActionListener(this);
         taxiButton.setForeground(buttonForegroundColor);
         taxiButton.setBackground(buttonBackgroundColor);
+        taxiButton.setEnabled(false);
+
         taxiCheck = new JCheckBox("Automatically add taxis");
         taxiCheck.setBackground(backgroundColor);
+        taxiCheck.setEnabled(false);
 
         groupButton = new JButton("Add Group");
         groupButton.addActionListener(this);
         groupButton.setForeground(buttonForegroundColor);
         groupButton.setBackground(buttonBackgroundColor);
+        groupButton.setEnabled(false);
+
         groupCheck = new JCheckBox("Automatically add groups");
         groupCheck.setBackground(backgroundColor);
+        groupCheck.setEnabled(false);
 
         rightPanel.add(taxiArea);
         taxiPanel.add(taxiCheck);
@@ -172,9 +180,11 @@ public class SimulationView implements ActionListener,Observer{
 
         breakButton.setBackground(buttonBackgroundColor);
         breakButton.setForeground(buttonForegroundColor);
+        breakButton.setEnabled(false);
 
         graphButton.setBackground(buttonBackgroundColor);
         graphButton.setForeground(buttonForegroundColor);
+        graphButton.setEnabled(false);
 
         int size = windowList.size() + 1;
 
@@ -240,6 +250,17 @@ public class SimulationView implements ActionListener,Observer{
         stopButton.setHorizontalAlignment(JLabel.CENTER);
         exportButton.setHorizontalAlignment(JLabel.CENTER);
 
+
+        /* DISABLING BUTTONS AT FIRST */
+
+        resumeButton.setEnabled(false);
+        stopButton.setEnabled(false);
+        exportButton.setEnabled(false);
+
+
+
+        /* ************************ */
+
         menuPanel.add(startButton);
         menuPanel.add(resumeButton);
         menuPanel.add(stopButton);
@@ -253,14 +274,43 @@ public class SimulationView implements ActionListener,Observer{
 
     }
 
+    public void enableButtonsOnStart(){
+        stopButton.setEnabled(true);
+        resumeButton.setEnabled(true);
+        taxiButton.setEnabled(true);
+        groupButton.setEnabled(true);
+        groupCheck.setEnabled(true);
+        taxiCheck.setEnabled(true);
+
+        /*for(int i = 0; i < windowPanels.size(); i++){
+            // currently not access to window buttons to re enable them
+        }*/
+
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
 
         JComponent jc = (JComponent) e.getSource();
 
         if(e.getSource() == startButton){
+            startButton.setEnabled(false);
+            md.addObserver(this);
+            for (int i = 0; i < md.getWindows().length; i++){
+                md.getWindows()[i].addObserver(this);
+            }
+            md.getTaxiData().getPassengerQueue().addObserver(this);
+            md.getTaxiData().getTaxiQueue().addObserver(this);
             md.run();
+            enableButtonsOnStart();
+
+
         } else if(e.getSource() == stopButton){
+            stopButton.setEnabled(false);
+            resumeButton.setEnabled(false);
+            taxiButton.setEnabled(false);
+            groupButton.setEnabled(false);
+            groupCheck.setEnabled(false);
+            taxiCheck.setEnabled(false);
             md.stopAllWindows();
             System.out.println("Stopped");
         } else if(e.getSource() == taxiButton){
@@ -326,7 +376,51 @@ public class SimulationView implements ActionListener,Observer{
 
     @Override
     public void update(java.util.Observable o, Object arg) {
+        updateWindows();
+        updateTaxiQueue();
+        updateGroupsQueue();
+        //System.err.println(md.getWindows()[0].getGroupOfPassengers().getDestinationName());
+        //updateContent(0, md.getWindows()[0].getGroupOfPassengers().getDestinationName());
+    }
 
+    private void updateWindows() {
+        for(int i =0; i<windowList.size(); i++){
+            String newContent = "WINDOW " + i + "\n" + "Destination: "
+                    + (md.getWindows()[i].getGroupOfPassengers() == null ? "" : md.getWindows()[i].getGroupOfPassengers().getDestinationName())
+                    + "\nTotal number of passengers : " + (md.getWindows()[i].getGroupOfPassengers() == null ? "" : md.getWindows()[i].getGroupOfPassengers().getNumberOfPassengers())
+                    + "\nRemaining number of passengers : " + md.getWindows()[i].getRemainingNumberOfPassengers()
+                    + "\nTaxi : " + (md.getWindows()[i].getTaxi() == null ? "" : md.getWindows()[i].getTaxi().getTaxiRegistrationNumber());
+            updateContent(i, newContent);
+
+        }
+        System.out.println("UPDATE!!!");
+    }
+
+    private void updateTaxiQueue(){
+        String res = "";
+
+        if (md.getTaxiData().getTaxiQueue().getTaxisQueue().size() > 0) {
+            for (int i = 0; i < md.getTaxiData().getTaxiQueue().getTaxisQueue().size();i++){
+                res += md.getTaxiData().getTaxiQueue().getTaxisQueue().get(i).getTaxiRegistrationNumber() + "\n";
+            }
+        } else {
+            res = "empty";
+        }
+
+        taxiArea.setText(res);
+    }
+
+    private void updateGroupsQueue(){
+        String res = "";
+        if (md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().size() > 0) {
+            for (int i = 0; i < md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().size();i++) {
+                res += md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().get(i).getNumberOfPassengers() + " people for "
+                        + md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().get(i).getDestinationName() + "\n";
+            }
+        } else {
+            res = "empty";
+        }
+        groupArea.setText(res);
     }
 
     public MainModel getMd() {

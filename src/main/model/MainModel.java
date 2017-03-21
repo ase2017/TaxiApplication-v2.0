@@ -1,15 +1,14 @@
 package main.model;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Model class that contains all other model info
  * @author Jules and George C.
  */
-public class MainModel implements Observable{
+public class MainModel extends Observable{
 
     private TaxiData taxiData;
     private Window[] windows;
@@ -24,9 +23,14 @@ public class MainModel implements Observable{
 
     public MainModel(int numberOfTaxis, int numberOfGroups, int numberOfWindows) {
         this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
-
         windows = new Window[numberOfWindows];
         windowsThreads = new Thread[numberOfWindows];
+
+        for(int i  = 0; i < windows.length; i++) {
+            windows[i] = new Window(taxiData,i);
+            windowsThreads[i] = new Thread(windows[i]);
+            windowsThreads[i].setName("Window " + i);
+        }
 
     }
 
@@ -48,18 +52,12 @@ public class MainModel implements Observable{
      */
     public void run(){
 
-        for(int i  = 0; i < windows.length; i++) {
-            windows[i] = new Window(taxiData,i);
-            windowsThreads[i] = new Thread(windows[i]);
-            windowsThreads[i].setName("Window " + i);
-        }
-
         Stats stats = new Stats(taxiData,windows);
 
         for(int i  = 0; i < windows.length; i++) {
             windowsThreads[i].start();
             try{
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(1);
                 //1-2 seconds “sleep” (of waiting)
             } catch (InterruptedException e){
 
@@ -171,13 +169,5 @@ public class MainModel implements Observable{
         this.stats = stats;
     }
 
-    @Override
-    public void addListener(InvalidationListener listener) {
-        
-    }
 
-    @Override
-    public void removeListener(InvalidationListener listener) {
-
-    }
 }

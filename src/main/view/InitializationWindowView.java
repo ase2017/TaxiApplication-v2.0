@@ -19,9 +19,9 @@ public class InitializationWindowView implements ActionListener{
     private final String EXIT_ICON_PATH = "resources/exitButton.png";
     private final String EXIT_ICON_HOVER_PATH = "resources/exitButtonHover.png";
 
-    private static final int DEFAULT_NUM_OF_TAXIS = 1;
+    private static final int DEFAULT_NUM_OF_TAXIS = 10;
     private static final int DEFAULT_NUM_OF_WINDOWS = 2;
-    private static final int DEFAULT_NUM_OF_GROUPS = 1;
+    private static final int DEFAULT_NUM_OF_GROUPS = 10;
     private static final int DEFAULT_NUM_OF_PASSENGERS = 5;
     private static final double DEFAULT_SIMULATION_SPEED = 1.0;
 
