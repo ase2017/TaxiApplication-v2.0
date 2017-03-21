@@ -11,6 +11,8 @@ public class Stats {
     public Stats(TaxiData taxiData, Window[] windows) {
         this.taxiData = taxiData;
         this.windows = windows;
+
+
     }
 
     /**
@@ -156,6 +158,11 @@ public class Stats {
     }
 
 
-
+     //public static void main(String[] args) {
+         //Sample s = new Sample();
+         //s.launch();
+        // Stage stage = new Stage();
+        // s.start(stage);
+     //}
 
 }

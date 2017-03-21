@@ -10,25 +10,19 @@ import javafx.stage.Stage;
 
 
 
-
+/**
+ * Created by Jules and George on 3/21/2017.
+ */
 public class ViewTotalWindowsChart extends Application {
 
 
 
-        private Stats stats;
-
-
-        public ViewTotalWindowsChart( Stats stats ) {
-
-            this.stats = stats;
-
-        }
-
+        static private Stats stats;
 
 
         @Override public void start(Stage stage) {
 
-            System.out.print("test");
+
             stage.setTitle("Window Total Statistics in Chart.");
 
             final CategoryAxis xAxis = new CategoryAxis();
@@ -45,13 +39,13 @@ public class ViewTotalWindowsChart extends Application {
             XYChart.Series series1 = new XYChart.Series();
             series1.setName("Number Of Passengers");
 
-            for( int i=0; i<stats.windows.length; i++) {
+            for( int i=0; i<stats.windows.length; i++ ) {
 
-                series1.getData().add(new XYChart.Data( "Window " + i , stats.getNumberOfPassengerThisWindow(i)));
+                series1.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfPassengerThisWindow(i)) );
 
             }
 
-            series1.getData().add(new XYChart.Data( "Avg Num Of Passengers", stats.getAverageNumberOfPassengersPerWindow() ));
+            series1.getData().add( new XYChart.Data( "Avg Num Of Passengers", stats.getAverageNumberOfPassengersPerWindow() ) );
 
 
 
@@ -61,15 +55,18 @@ public class ViewTotalWindowsChart extends Application {
             for( int i=0; i<stats.windows.length; i++ ) {
 
                 series2.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfTaxisThisWindow(i)) );
+
             }
 
             series2.getData().add( new XYChart.Data( "Avg Num Of Taxis", stats.getAverageTaxisPerWindow() ) );
+
+
 
             XYChart.Series series3 = new XYChart.Series();
             series3.setName("Number Of Groups");
             for( int i=0; i<stats.windows.length; i++ ) {
 
-                series3.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfGroupsThisWindow(i)) );
+                series3.getData().add( new XYChart.Data("Window" + i, 30 ));
             }
 
             series3.getData().add( new XYChart.Data( "Avg Num Of Groups", stats.getAverageGroupsPerWindow() ) );
@@ -86,6 +83,16 @@ public class ViewTotalWindowsChart extends Application {
             stage.setScene(scene);
             stage.show();
         }
+
+
+    public void exportSummaryStatisticsChart(){
+
+        launch();
+    }
+
+    public void setStats(Stats stats){
+        this.stats = stats;
+    }
 
 
 

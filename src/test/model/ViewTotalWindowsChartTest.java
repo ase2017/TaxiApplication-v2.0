@@ -3,7 +3,6 @@ package test.model;
 
 
 import main.model.Stats;
-import main.model.ViewTotalWindowsChart;
 import main.model.Window;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,8 +54,10 @@ public class ViewTotalWindowsChartTest  {
     @Test
     public void ViewTotalWindowsChart(){
 
-        ViewTotalWindowsChart vt = new ViewTotalWindowsChart(stats);
-        javafx.application.Application.launch();
+        //ViewTotalWindowsChart vt = new ViewTotalWindowsChart();
+        //javafx.application.Application.launch();
     }
 
+    public void runMe() {
+    }
 }
