@@ -1,5 +1,5 @@
 package main.view;
-import javafx.beans.Observable;
+import main.log.LoggerSingleton;
 import main.model.*;
 
 import javax.swing.*;
@@ -233,6 +233,7 @@ public class SimulationView implements ActionListener,Observer{
         stopButton.addActionListener(this);
 
         exportButton = new JButton("Export");
+        exportButton.addActionListener(this);
 
         stopButton.setBackground(buttonBackgroundColor);
         stopButton.setForeground(buttonForegroundColor);
@@ -255,7 +256,7 @@ public class SimulationView implements ActionListener,Observer{
 
         resumeButton.setEnabled(false);
         stopButton.setEnabled(false);
-        exportButton.setEnabled(false);
+        //exportButton.setEnabled(false);
 
 
 
@@ -293,6 +294,7 @@ public class SimulationView implements ActionListener,Observer{
         JComponent jc = (JComponent) e.getSource();
 
         if(e.getSource() == startButton){
+            LoggerSingleton.getInstance().add("Starting");
             startButton.setEnabled(false);
             md.addObserver(this);
             for (int i = 0; i < md.getWindows().length; i++){
@@ -312,15 +314,15 @@ public class SimulationView implements ActionListener,Observer{
             groupCheck.setEnabled(false);
             taxiCheck.setEnabled(false);
             md.stopAllWindows();
-            System.out.println("Stopped");
+
+
         } else if(e.getSource() == taxiButton){
             md.getTaxiData().generateAndAddTaxi();
         } else if(e.getSource() == groupButton){
             md.getTaxiData().generateAndAddGroup();
-        } else if (jc.getName().contains("breakButton0")){
-            pauseWindow(0);
+        } else if (e.getSource() == exportButton) {
+            LoggerSingleton.getInstance().exportData();
         }
-
     }
 
     private void swapButton() {

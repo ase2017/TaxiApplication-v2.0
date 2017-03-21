@@ -1,5 +1,7 @@
 package main.model;
 
+import main.log.LoggerSingleton;
+
 import java.util.LinkedList;
 import java.util.Observable;
 
@@ -51,6 +53,11 @@ public class PassengerQueue extends Observable {
         if( groupOfPassengersQueue != null && groupOfPassengersQueue.size() > 0) {
             GroupOfPassengers groupOfPassengers = groupOfPassengersQueue.get(0);
             groupOfPassengersQueue.removeFirst();
+
+            if (groupOfPassengersQueue.size() == 0){
+                LoggerSingleton.getInstance().add("No more groups");
+            }
+
             groupOfPassengers.setQueueDepartureTime(System.currentTimeMillis()); // queue departure time
             setChanged();
             notifyObservers();

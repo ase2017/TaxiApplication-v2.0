@@ -1,5 +1,7 @@
 package main.model;
 
+import main.log.LoggerSingleton;
+
 import java.util.LinkedList;
 import java.util.Observable;
 
@@ -57,10 +59,17 @@ public class TaxiQueue extends Observable{
      */
     public synchronized  Taxi popTaxi() {
 
+
+
         if(taxisQueue != null && taxisQueue.size() > 0) {
 
             Taxi taxi = taxisQueue.get(0);
             taxisQueue.removeFirst();
+
+            if (taxisQueue.size() == 0){
+                LoggerSingleton.getInstance().add("No more taxis");
+            }
+
             taxi.setQueueDepartureTime(System.currentTimeMillis()); // queue departure time
             notifyObservers();
             return taxi;

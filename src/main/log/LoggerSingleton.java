@@ -23,14 +23,18 @@ public class LoggerSingleton {
     public void addRecord(int windowID, String destinationName, int passengerNumber,
                           int remainingPassengers, String taxiRegistrationNumber){
 
-        loggerData += String.format("%s%s%-5s%-13s%-40s%-12s%-6s%-11s%-7s%-6s%-10s", "W", windowID, ":", "Destination:", destinationName,
+        loggerData += String.format("%s%s%-5s%-13s%-40s%-12s%-6s%-11s%-7s%-6s%-10s\n", "W", windowID, ":", "Destination:", destinationName,
                 "Passengers:", passengerNumber, "Remaining:", remainingPassengers, "Taxi:", taxiRegistrationNumber);
 
     }
 
-    public void appendData(){
+    public void exportData(){
         DataFileWriter d = new DataFileWriter();
         d.exportLogs(loggerData);
+    }
+
+    public void add(String string){
+        loggerData += string + "\n";
     }
 
 }

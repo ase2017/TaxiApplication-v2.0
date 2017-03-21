@@ -1,5 +1,6 @@
 package main.model;
 
+import main.log.LoggerSingleton;
 import main.utils.Utils;
 
 import java.util.Observable;
@@ -79,6 +80,8 @@ public class Window extends Observable implements Runnable{
 
 
         }
+
+        LoggerSingleton.getInstance().add("Closing window " + windowNumber);
 
         System.out.println("Total number of groups served by window " + windowNumber + " : " + totalNumberOfGroupsServed);
         System.out.println("Total number of passengers served by window " + windowNumber + " : " + totalNumberOfPassengersServed);
