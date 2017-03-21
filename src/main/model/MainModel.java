@@ -32,7 +32,9 @@ public class MainModel extends Observable{
             windowsThreads[i].setName("Window " + i);
         }
 
+
     }
+
 
     /* ************* GUI methods ********************* */
 

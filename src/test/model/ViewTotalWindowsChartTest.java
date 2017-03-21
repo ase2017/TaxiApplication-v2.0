@@ -1,15 +1,20 @@
 package test.model;
 
-import main.model.*;
+
+
+import main.model.Stats;
+import main.model.Window;
 import org.junit.Before;
 import org.junit.Test;
 
+//import static javafx.application.Application.launch;
 
-public class StatsTest {
+public class ViewTotalWindowsChartTest  {
 
 
-    private Window [] windows;
+    private Window[] windows;
     private Stats stats;
+
 
 
 
@@ -46,74 +51,13 @@ public class StatsTest {
     }
 
 
-
-
-
     @Test
-    public void averageNumOfPassengerPerWindow() {
+    public void ViewTotalWindowsChart(){
 
-
+        //ViewTotalWindowsChart vt = new ViewTotalWindowsChart();
+        //javafx.application.Application.launch();
     }
 
-    @Test
-    public void averageNumOfTaxisPerWindow() {
-
+    public void runMe() {
     }
-
-    @Test
-    public void averageGroupsPerWindow(){
-
-    }
-
-    @Test
-    public void averageWorkingTimePerWindow(){
-
-    }
-
-
-
-
-
-
-
-
-
-    @Test
-    public void numberOfPassengersThisWindow(){
-
-    }
-
-    @Test
-    public void numberOfGroupsThisWindow(){
-
-    }
-
-    @Test
-    public void numberOfTaxisThisWindow(){
-
-    }
-
-    @Test
-    public void workingTimeThisWindow(){
-
-
-    }
-
-
-
-
-
-
-
-    @Test
-    public void print() {
-
-        stats.printIndividualWindowStats();
-
-    }
-
-
-
-
-
 }
