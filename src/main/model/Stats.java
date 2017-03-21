@@ -157,8 +157,23 @@ public class Stats {
 
     }
 
+    public TaxiData getTaxiData() {
+        return taxiData;
+    }
 
-     //public static void main(String[] args) {
+    public void setTaxiData(TaxiData taxiData) {
+        this.taxiData = taxiData;
+    }
+
+    public Window[] getWindows() {
+        return windows;
+    }
+
+    public void setWindows(Window[] windows) {
+        this.windows = windows;
+    }
+
+    //public static void main(String[] args) {
          //Sample s = new Sample();
          //s.launch();
         // Stage stage = new Stage();

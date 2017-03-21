@@ -1,6 +1,10 @@
 package main.view;
+
+import javafx.application.Platform;
 import main.log.LoggerSingleton;
-import main.model.*;
+import main.model.MainModel;
+import main.model.Stats;
+import main.model.ViewTotalWindowsChart;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -321,6 +325,13 @@ public class SimulationView implements ActionListener,Observer{
         } else if(e.getSource() == groupButton){
             md.getTaxiData().generateAndAddGroup();
         } else if (e.getSource() == exportButton) {
+            exportButton.setEnabled(false);
+            ViewTotalWindowsChart viewTotal = new ViewTotalWindowsChart();
+            Platform.setImplicitExit(false);
+            md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
+
+            viewTotal.setStats(md.getStats());
+           viewTotal.exportSummaryStatisticsChart();
             LoggerSingleton.getInstance().exportData();
         }
     }
