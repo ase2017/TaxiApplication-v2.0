@@ -66,7 +66,7 @@ public class ViewTotalWindowsChart extends Application {
             series3.setName("Number Of Groups");
             for( int i=0; i<stats.windows.length; i++ ) {
 
-                series3.getData().add( new XYChart.Data("Window" + i, 30 ));
+                series3.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfGroupsThisWindow(i) ));
             }
 
             series3.getData().add( new XYChart.Data( "Avg Num Of Groups", stats.getAverageGroupsPerWindow() ) );
@@ -74,11 +74,11 @@ public class ViewTotalWindowsChart extends Application {
 
 
 
-            Scene scene  = new Scene(bc,800,600);
+            Scene scene  = new Scene(bc,1600,900);
 
             bc.getData().addAll(series1, series2, series3);
-            bc.setBarGap(3);
-            bc.setCategoryGap(20);
+            bc.setBarGap(40);
+            bc.setCategoryGap(30);
 
             stage.setScene(scene);
             stage.show();
