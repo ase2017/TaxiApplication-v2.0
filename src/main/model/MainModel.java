@@ -1,48 +1,65 @@
 package main.model;
 
-import java.util.Random;
+
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Model class that contains all other model info
  * @author Jules and George C.
  */
-public class MainModel {
+public class MainModel extends Observable{
 
     private TaxiData taxiData;
     private Window[] windows;
     private Thread[] windowsThreads;
     private Stats stats;
 
-    Random random = new Random();
+    private boolean stopped = false;
+
+    public MainModel(){
+
+    }
 
     public MainModel(int numberOfTaxis, int numberOfGroups, int numberOfWindows) {
         this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
-
         windows = new Window[numberOfWindows];
         windowsThreads = new Thread[numberOfWindows];
 
-        for(int i  = 0; i < numberOfWindows; i++) {
+        for(int i  = 0; i < windows.length; i++) {
             windows[i] = new Window(taxiData,i);
             windowsThreads[i] = new Thread(windows[i]);
             windowsThreads[i].setName("Window " + i);
         }
 
 
-
     }
+
 
     /* ************* GUI methods ********************* */
 
     /**
-     * For START BUTTON
+     * For STOP button (general button)
+     */
+    public void stopAllWindows(){
+        stopped = true;
+        for(int i  = 0; i < windows.length; i++) {
+            windows[i].setStopped(true);
+        }
+    }
+
+
+    /**
+     * For START button (general button)
      */
     public void run(){
+
+        Stats stats = new Stats(taxiData,windows);
 
         for(int i  = 0; i < windows.length; i++) {
             windowsThreads[i].start();
             try{
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(1);
                 //1-2 seconds “sleep” (of waiting)
             } catch (InterruptedException e){
 
@@ -81,18 +98,22 @@ public class MainModel {
         }*/
     }
 
-    /* ******** suspend, stop, resume and wait methods are deprecated. need to find an alternative. ******* */
-    public void stopAll(){
-        for (Thread thread : windowsThreads){
+    /**
+     * For PAUSE button (general button)
+     */
+    public void pauseAllWindows(){
+        for (Window window : windows){
+            window.setOnBreak(true);
         }
     }
 
-    public void pauseAll(){
-
-    }
-
-    public void resumeAll(){
-
+    /**
+     * For RESUME button (general button)
+     */
+    public void resumeAllWindows(){
+        for (Window window : windows){
+            window.setOnBreak(false);
+        }
     }
 
     /* *************************************************** */
@@ -150,11 +171,5 @@ public class MainModel {
         this.stats = stats;
     }
 
-    public Random getRandom() {
-        return random;
-    }
 
-    public void setRandom(Random random) {
-        this.random = random;
-    }
 }

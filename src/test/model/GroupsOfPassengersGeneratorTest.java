@@ -3,7 +3,9 @@ package test.model;
 import main.model.GroupOfPassengers;
 import main.model.GroupOfPassengersGenerator;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Jules
@@ -42,14 +44,6 @@ public class GroupsOfPassengersGeneratorTest {
 
     }
 
-    @Test
-    public void getIntBetween(){
-        for (int i = 0; i < 20; i++){
 
-            assertTrue(GroupOfPassengersGenerator.getIntBetween(1,5) >= 1
-                    &&  GroupOfPassengersGenerator.getIntBetween(1,5) <= 5);
-
-        }
-    }
 
 }

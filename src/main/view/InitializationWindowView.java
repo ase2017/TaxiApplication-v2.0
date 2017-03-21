@@ -1,12 +1,17 @@
 package main.view;
 
+import main.model.GroupOfPassengers;
+import main.model.GroupOfPassengersGenerator;
+import main.model.MainModel;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.Observer;
 
 
-public class InitializationWindowView implements ActionListener {
+public class InitializationWindowView implements ActionListener{
 
     private final String ICON_PATH = "resources/taxiIcon.png";
     private final String START_ICON_PATH = "resources/startButton.png";
@@ -14,9 +19,9 @@ public class InitializationWindowView implements ActionListener {
     private final String EXIT_ICON_PATH = "resources/exitButton.png";
     private final String EXIT_ICON_HOVER_PATH = "resources/exitButtonHover.png";
 
-    private static final int DEFAULT_NUM_OF_TAXIS = 1;
+    private static final int DEFAULT_NUM_OF_TAXIS = 10;
     private static final int DEFAULT_NUM_OF_WINDOWS = 2;
-    private static final int DEFAULT_NUM_OF_GROUPS = 1;
+    private static final int DEFAULT_NUM_OF_GROUPS = 10;
     private static final int DEFAULT_NUM_OF_PASSENGERS = 5;
     private static final double DEFAULT_SIMULATION_SPEED = 1.0;
 
@@ -41,20 +46,23 @@ public class InitializationWindowView implements ActionListener {
 
 
     public static int numberOfTaxis = 0;
-    public static int numberOfPassengers = 0;
+    public static int numberOfGroups = 0;
     public static int numberOfWindows = 0;
-    public static int maxNumberOfGroups = 0;
+    public static int maxPassengersPerGroup = 0;
     public static double simulationSpeed = 0;
 
+    private MainModel mm;
 
-    private InitializationWindowView(){
+    public InitializationWindowView(MainModel mm){
 
+        this.mm = mm;
         initializationFrame = new JFrame();
         initializeComponents();
+        initializeView();
 
     }
 
-    private void initializeView(){
+    public void initializeView(){
 
         initializeFrame();
         taxiIconInit();
@@ -76,7 +84,7 @@ public class InitializationWindowView implements ActionListener {
         initializationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initializationFrame.setSize(800,500);
         initializationFrame.setLocationRelativeTo(null);
-        initializationFrame.setContentPane(new InitializationWindowView().initializationPanel);
+        initializationFrame.setContentPane(initializationPanel);
         initializationFrame.setResizable(false);
         initializationFrame.setVisible(true);
 
@@ -164,10 +172,13 @@ public class InitializationWindowView implements ActionListener {
     private void getValues(){
 
         numberOfTaxis = (Integer)numTaxisSpinner.getValue();
-        maxNumberOfGroups = (Integer)numGroupsSpinner.getValue();
+        maxPassengersPerGroup = (Integer)numGroupsSpinner.getValue();
         numberOfWindows = (Integer)numWindowsSpinner.getValue();
-        numberOfPassengers = (Integer)groupsSpinner.getValue();
+        numberOfGroups = (Integer)groupsSpinner.getValue();
         simulationSpeed = (Double)speedSpinner.getValue();
+
+        mm = new MainModel(numberOfTaxis, numberOfGroups, numberOfWindows);
+        GroupOfPassengersGenerator.MAX_NUMBER_OF_PEOPLE_IN_GROUP = maxPassengersPerGroup;
 
     }
 
@@ -191,11 +202,36 @@ public class InitializationWindowView implements ActionListener {
 
         Object temp = e.getSource();
 
-        if(temp == startButton)
+        if(temp == startButton) {
             getValues();
+            SimulationView sm = new SimulationView(mm);
+            sm.initializeComponents();
+            sm.createWindows();
+            initializationFrame.setVisible(false);
+        }
          else if(temp == exitButton)
             System.exit(0);
 
+    }
+
+    public static int getNumberOfTaxis() {
+        return numberOfTaxis;
+    }
+
+    public static int getNumberOfGroups() {
+        return numberOfGroups;
+    }
+
+    public static int getNumberOfWindows() {
+        return numberOfWindows;
+    }
+
+    public static int getMaxPassengersPerGroup() {
+        return maxPassengersPerGroup;
+    }
+
+    public static double getSimulationSpeed() {
+        return simulationSpeed;
     }
 
 }

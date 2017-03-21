@@ -51,6 +51,10 @@ public class TaxiData extends Observable{
      */
     public void generateAndAddGroup() {
 
+        if (passengerQueue == null){
+            passengerQueue = new PassengerQueue();
+        }
+
         passengerQueue.add(GroupOfPassengersGenerator.generateGroupOfPassengers());
     }
 
@@ -67,6 +71,16 @@ public class TaxiData extends Observable{
     public boolean addTaxi(Taxi taxi){
 
         if(taxi != null) {
+
+            if(taxiQueue == null){
+                taxiQueue = new TaxiQueue();
+            }
+
+            if(taxiList == null){
+                taxiList = new TaxiList();
+            }
+
+
             // does not exist in list (i.e. a taxi with the same registration number has not already been created)
             if (!taxiList.containsTaxi(taxi)) {
                 // add it to list and queue
@@ -106,6 +120,16 @@ public class TaxiData extends Observable{
                 generateAndAddTaxi();
             }
 
+        } else {
+
+            if (taxiList == null){
+                taxiList = new TaxiList();
+            }
+
+            if (taxiQueue == null){
+                taxiQueue = new TaxiQueue();
+            }
+
         }
     }
 
@@ -115,10 +139,18 @@ public class TaxiData extends Observable{
      */
     public void fillGroupsQueue(int numberOfGroups) {
 
+
+
         if (numberOfGroups > 0) {
 
             for(int i = 0; i < numberOfGroups; i++) {
-                passengerQueue.add(GroupOfPassengersGenerator.generateGroupOfPassengers());
+                generateAndAddGroup();
+            }
+
+        } else {
+
+            if(passengerQueue == null){
+                passengerQueue = new PassengerQueue();
             }
         }
     }

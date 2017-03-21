@@ -7,7 +7,7 @@ import java.util.Observable;
  * Holds all the taxis already created
  * @author George C. and Jules
  */
-public class TaxiList extends Observable {
+public class TaxiList{
 
     ArrayList<Taxi> taxis = new ArrayList<>();
 
@@ -22,13 +22,13 @@ public class TaxiList extends Observable {
             if(taxis == null){
                 taxis = new ArrayList<>();
                 taxis.add(taxi);
-                notifyObservers();
+
 
             } else {
 
                 if (!containsTaxi(taxi)){
                     taxis.add(taxi);
-                    notifyObservers();
+
                 }
             }
 

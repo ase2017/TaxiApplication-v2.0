@@ -1,7 +1,9 @@
 package main.model;
 
+import main.log.LoggerSingleton;
+import main.utils.Utils;
+
 import java.util.Observable;
-import java.util.Random;
 
 /**
  * Class that represents a window where the passengers will be called
@@ -12,6 +14,9 @@ public class Window extends Observable implements Runnable{
     private Taxi taxi;
     private String status;
     private TaxiData taxiData;
+
+    private boolean stopped = false;
+    private boolean onBreak = false;
 
     private int windowNumber;
     private int remainingNumberOfPassengers;
@@ -25,18 +30,15 @@ public class Window extends Observable implements Runnable{
 
 
 
-    Random random = new Random();
-
-    public int getIntBetween(int min, int max) {
-        return random.nextInt((max - min) + 1) + min;
-    }
 
     @Override
     public void run() {
 
 
         while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
-                && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0 ) {
+                && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0) {
+
+
 
            System.out.println("\nWindow " + windowNumber + " serving a new group");
           // System.out.println("B Window " + windowNumber + "Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
@@ -64,7 +66,13 @@ public class Window extends Observable implements Runnable{
 
 
 
+            if(stopped){
+                break;
+            }
 
+            while(onBreak){
+                // while on break, don't do anything
+            }
 
             //System.out.println("\n? AFTER NESTED WHILE : Window " + windowNumber + " finished serving a group");
             //System.out.println("! AFTER NESTED WHILE : Window " + windowNumber + " Number of groups : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
@@ -72,6 +80,8 @@ public class Window extends Observable implements Runnable{
 
 
         }
+
+        LoggerSingleton.getInstance().add("Closing window " + windowNumber);
 
         System.out.println("Total number of groups served by window " + windowNumber + " : " + totalNumberOfGroupsServed);
         System.out.println("Total number of passengers served by window " + windowNumber + " : " + totalNumberOfPassengersServed);
@@ -107,7 +117,7 @@ public class Window extends Observable implements Runnable{
 
             // simulates the time for the groups of passengers to arrive
             try{
-                Thread.sleep(getIntBetween(1000,3000));
+                Thread.sleep(Utils.getIntBetween(2000,2000));
             } catch (InterruptedException e) {
 
             }
@@ -130,12 +140,18 @@ public class Window extends Observable implements Runnable{
         Taxi temporaryTaxi = taxiData.getTaxiQueue().popTaxi();
 
         try{
-            Thread.sleep(getIntBetween(1000,3000));
+            Thread.sleep(Utils.getIntBetween(2000,2000));
         } catch (InterruptedException e) {
 
         }
 
         setTaxi(temporaryTaxi);
+        
+        LoggerSingleton.getInstance().addRecord(this.getWindowNumber(),
+                this.getGroupOfPassengers().getDestinationName(),
+                this.getGroupOfPassengers().getNumberOfPassengers(),
+                this.getRemainingNumberOfPassengers(),
+                this.getTaxi().getTaxiRegistrationNumber());
 
     }
 
@@ -143,6 +159,14 @@ public class Window extends Observable implements Runnable{
      * function to call to simulate that some passengers of a group left
      */
     public void partOfGroupLeaves(){
+
+
+        // simulates the people leaving
+        try{
+            Thread.sleep(Utils.getIntBetween(4000,4000));
+        } catch (InterruptedException e) {
+
+        }
 
 
         if(taxi != null) {
@@ -162,7 +186,7 @@ public class Window extends Observable implements Runnable{
 
         // simulates the time between each  group allocation
         try{
-            Thread.sleep(getIntBetween(1000,3000));
+            Thread.sleep(Utils.getIntBetween(2000,2000));
         } catch (InterruptedException e) {
 
         }
@@ -198,7 +222,7 @@ public class Window extends Observable implements Runnable{
         setStatus(WindowStatuses.AVAILABLE.toString());
 
         try{
-            Thread.sleep(getIntBetween(1000,5000));
+            Thread.sleep(Utils.getIntBetween(2000,2000));
         } catch (InterruptedException e) {
 
         }
@@ -217,6 +241,7 @@ public class Window extends Observable implements Runnable{
 
     }
 
+
     /* *************** GET SET ************************* */
 
     public TaxiData getTaxiData() {
@@ -233,6 +258,7 @@ public class Window extends Observable implements Runnable{
 
     public void setGroupOfPassengers(GroupOfPassengers groupOfPassengers) {
         this.groupOfPassengers = groupOfPassengers;
+        setChanged();
         notifyObservers();
     }
 
@@ -242,6 +268,7 @@ public class Window extends Observable implements Runnable{
 
     public void setTaxi(Taxi taxi) {
         this.taxi = taxi;
+        setChanged();
         notifyObservers();
     }
 
@@ -251,6 +278,7 @@ public class Window extends Observable implements Runnable{
 
     public void setStatus(String status) {
         this.status = status;
+        setChanged();
         notifyObservers();
     }
 
@@ -260,6 +288,7 @@ public class Window extends Observable implements Runnable{
 
     public void setRemainingNumberOfPassengers(int remainingNumberOfPassengers) {
         this.remainingNumberOfPassengers = remainingNumberOfPassengers;
+        setChanged();
         notifyObservers();
     }
 
@@ -277,7 +306,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfPassengersServed(int totalNumberOfPassengersServed) {
         this.totalNumberOfPassengersServed = totalNumberOfPassengersServed;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public int getTotalNumberOfGroupsServed() {
@@ -286,7 +316,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfGroupsServed(int totalNumberOfGroupsServed) {
         this.totalNumberOfGroupsServed = totalNumberOfGroupsServed;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public int getTotalNumberOfAllocatedTaxis() {
@@ -295,7 +326,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfAllocatedTaxis(int totalNumberOfAllocatedTaxis) {
         this.totalNumberOfAllocatedTaxis = totalNumberOfAllocatedTaxis;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public long getWorkingStartTime() {
@@ -304,7 +336,8 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingStartTime(long workingStartTime) {
         this.workingStartTime = workingStartTime;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public long getWorkingEndTime() {
@@ -313,7 +346,8 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingEndTime(long workingEndTime) {
         this.workingEndTime = workingEndTime;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public int getSmallestGroupSizeServed() {
@@ -322,7 +356,8 @@ public class Window extends Observable implements Runnable{
 
     public void setSmallestGroupSizeServed(int smallestGroupSizeServed) {
         this.smallestGroupSizeServed = smallestGroupSizeServed;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public int getBiggestGroupSizeServed() {
@@ -331,6 +366,23 @@ public class Window extends Observable implements Runnable{
 
     public void setBiggestGroupSizeServed(int biggestGroupSizeServed) {
         this.biggestGroupSizeServed = biggestGroupSizeServed;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
+    }
+
+    public boolean isStopped() {
+        return stopped;
+    }
+
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
+    }
+
+    public boolean isOnBreak() {
+        return onBreak;
+    }
+
+    public void setOnBreak(boolean onBreak) {
+        this.onBreak = onBreak;
     }
 }
