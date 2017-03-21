@@ -143,6 +143,12 @@ public class Window extends Observable implements Runnable{
         }
 
         setTaxi(temporaryTaxi);
+        
+        LoggerSingleton.getInstance().addRecord(this.getWindowNumber(),
+                this.getGroupOfPassengers().getDestinationName(),
+                this.getGroupOfPassengers().getNumberOfPassengers(),
+                this.getRemainingNumberOfPassengers(),
+                this.getTaxi().getTaxiRegistrationNumber());
 
     }
 
