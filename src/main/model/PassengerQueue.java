@@ -36,6 +36,7 @@ public class PassengerQueue extends Observable {
 
             groupOfPassengers.setArrivalTime(System.currentTimeMillis()); // queue arrival time
             groupOfPassengersQueue.add(groupOfPassengers);
+            setChanged();
             notifyObservers();
         }
 
@@ -51,6 +52,7 @@ public class PassengerQueue extends Observable {
             GroupOfPassengers groupOfPassengers = groupOfPassengersQueue.get(0);
             groupOfPassengersQueue.removeFirst();
             groupOfPassengers.setQueueDepartureTime(System.currentTimeMillis()); // queue departure time
+            setChanged();
             notifyObservers();
             return groupOfPassengers;
         }

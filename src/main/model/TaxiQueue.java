@@ -17,6 +17,7 @@ public class TaxiQueue extends Observable{
 
     public void setTaxisQueue(LinkedList<Taxi> taxisQueue) {
         this.taxisQueue = taxisQueue;
+        setChanged();
         notifyObservers();
     }
 
@@ -33,12 +34,14 @@ public class TaxiQueue extends Observable{
             if (taxisQueue == null){
                 taxisQueue = new LinkedList<>();
                 taxisQueue.add(taxi);
+                setChanged();
                 notifyObservers();
 
             } else {
 
                 if (!containsTaxi(taxi)){
                     taxisQueue.add(taxi);
+                    setChanged();
                     notifyObservers();
                 }
             }

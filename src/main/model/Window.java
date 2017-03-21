@@ -114,7 +114,7 @@ public class Window extends Observable implements Runnable{
 
             // simulates the time for the groups of passengers to arrive
             try{
-                Thread.sleep(Utils.getIntBetween(1000,3000));
+                Thread.sleep(Utils.getIntBetween(2000,2000));
             } catch (InterruptedException e) {
 
             }
@@ -137,7 +137,7 @@ public class Window extends Observable implements Runnable{
         Taxi temporaryTaxi = taxiData.getTaxiQueue().popTaxi();
 
         try{
-            Thread.sleep(Utils.getIntBetween(1000,3000));
+            Thread.sleep(Utils.getIntBetween(2000,2000));
         } catch (InterruptedException e) {
 
         }
@@ -150,6 +150,14 @@ public class Window extends Observable implements Runnable{
      * function to call to simulate that some passengers of a group left
      */
     public void partOfGroupLeaves(){
+
+
+        // simulates the people leaving
+        try{
+            Thread.sleep(Utils.getIntBetween(4000,4000));
+        } catch (InterruptedException e) {
+
+        }
 
 
         if(taxi != null) {
@@ -169,7 +177,7 @@ public class Window extends Observable implements Runnable{
 
         // simulates the time between each  group allocation
         try{
-            Thread.sleep(Utils.getIntBetween(1000,3000));
+            Thread.sleep(Utils.getIntBetween(2000,2000));
         } catch (InterruptedException e) {
 
         }
@@ -205,7 +213,7 @@ public class Window extends Observable implements Runnable{
         setStatus(WindowStatuses.AVAILABLE.toString());
 
         try{
-            Thread.sleep(Utils.getIntBetween(1000,5000));
+            Thread.sleep(Utils.getIntBetween(2000,2000));
         } catch (InterruptedException e) {
 
         }
@@ -241,6 +249,7 @@ public class Window extends Observable implements Runnable{
 
     public void setGroupOfPassengers(GroupOfPassengers groupOfPassengers) {
         this.groupOfPassengers = groupOfPassengers;
+        setChanged();
         notifyObservers();
     }
 
@@ -250,6 +259,7 @@ public class Window extends Observable implements Runnable{
 
     public void setTaxi(Taxi taxi) {
         this.taxi = taxi;
+        setChanged();
         notifyObservers();
     }
 
@@ -259,6 +269,7 @@ public class Window extends Observable implements Runnable{
 
     public void setStatus(String status) {
         this.status = status;
+        setChanged();
         notifyObservers();
     }
 
@@ -268,6 +279,7 @@ public class Window extends Observable implements Runnable{
 
     public void setRemainingNumberOfPassengers(int remainingNumberOfPassengers) {
         this.remainingNumberOfPassengers = remainingNumberOfPassengers;
+        setChanged();
         notifyObservers();
     }
 
@@ -285,7 +297,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfPassengersServed(int totalNumberOfPassengersServed) {
         this.totalNumberOfPassengersServed = totalNumberOfPassengersServed;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public int getTotalNumberOfGroupsServed() {
@@ -294,7 +307,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfGroupsServed(int totalNumberOfGroupsServed) {
         this.totalNumberOfGroupsServed = totalNumberOfGroupsServed;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public int getTotalNumberOfAllocatedTaxis() {
@@ -303,7 +317,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfAllocatedTaxis(int totalNumberOfAllocatedTaxis) {
         this.totalNumberOfAllocatedTaxis = totalNumberOfAllocatedTaxis;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public long getWorkingStartTime() {
@@ -312,7 +327,8 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingStartTime(long workingStartTime) {
         this.workingStartTime = workingStartTime;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public long getWorkingEndTime() {
@@ -321,7 +337,8 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingEndTime(long workingEndTime) {
         this.workingEndTime = workingEndTime;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public int getSmallestGroupSizeServed() {
@@ -330,7 +347,8 @@ public class Window extends Observable implements Runnable{
 
     public void setSmallestGroupSizeServed(int smallestGroupSizeServed) {
         this.smallestGroupSizeServed = smallestGroupSizeServed;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public int getBiggestGroupSizeServed() {
@@ -339,7 +357,8 @@ public class Window extends Observable implements Runnable{
 
     public void setBiggestGroupSizeServed(int biggestGroupSizeServed) {
         this.biggestGroupSizeServed = biggestGroupSizeServed;
-        notifyObservers();
+        //setChanged();
+        //notifyObservers();
     }
 
     public boolean isStopped() {
