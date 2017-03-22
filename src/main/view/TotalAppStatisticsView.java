@@ -7,9 +7,9 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javax.swing.JFrame;
-
 import main.model.Stats;
+
+import javax.swing.*;
 
 
 public class TotalAppStatisticsView {
@@ -54,11 +54,17 @@ public class TotalAppStatisticsView {
 
         for( int i=0; i<stats.getWindows().length; i++ ) {
 
-            series1.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfPassengerThisWindow(i)) );
+            if (  stats.getNumberOfPassengerThisWindow(i) < 0 )
+                series1.getData().add( new XYChart.Data("Window" + i, 0 ));
+            else
+                series1.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfPassengerThisWindow(i)) );
 
         }
 
-        series1.getData().add( new XYChart.Data( "Avg Num Of Passengers", stats.getAverageNumberOfPassengersPerWindow() ) );
+        if (   stats.getAverageNumberOfPassengersPerWindow() < 0 )
+            series1.getData().add( new XYChart.Data( "Avg Passengers", 0 ) );
+        else
+            series1.getData().add( new XYChart.Data( "Avg Passengers", stats.getAverageNumberOfPassengersPerWindow() ) );
 
 
 
@@ -67,11 +73,17 @@ public class TotalAppStatisticsView {
 
         for( int i=0; i<stats.getWindows().length; i++ ) {
 
-            series2.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfTaxisThisWindow(i)) );
+            if (  stats.getNumberOfTaxisThisWindow(i) < 0 )
+                series2.getData().add( new XYChart.Data("Window" + i, 0 ));
+            else
+                series2.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfTaxisThisWindow(i)) );
 
         }
 
-        series2.getData().add( new XYChart.Data( "Avg Num Of Taxis", stats.getAverageTaxisPerWindow() ) );
+        if (  stats.getAverageTaxisPerWindow() < 0 )
+            series2.getData().add( new XYChart.Data("Avg Taxis", 0 ));
+        else
+            series2.getData().add( new XYChart.Data( "Avg Taxis", stats.getAverageTaxisPerWindow() ) );
 
 
 
@@ -79,10 +91,16 @@ public class TotalAppStatisticsView {
         series3.setName("Number Of Groups");
         for( int i=0; i<stats.getWindows().length; i++ ) {
 
-            series3.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfGroupsThisWindow(i) ));
+            if (  stats.getNumberOfGroupsThisWindow(i) < 0 )
+                series3.getData().add( new XYChart.Data("Window" + i, 0 ));
+            else
+                series3.getData().add( new XYChart.Data("Window" + i, stats.getNumberOfGroupsThisWindow(i) ));
         }
 
-        series3.getData().add( new XYChart.Data( "Avg Num Of Groups", stats.getAverageGroupsPerWindow() ) );
+        if (  stats.getAverageGroupsPerWindow() < 0 )
+            series3.getData().add( new XYChart.Data("Avg Groups", 0 ));
+        else
+            series3.getData().add( new XYChart.Data( "Avg Groups", stats.getAverageGroupsPerWindow() ) );
 
 
         Scene scene  = new Scene(bc,1600,900);

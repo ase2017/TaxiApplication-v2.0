@@ -19,9 +19,9 @@ public class Stats {
      * Get the average number of passengers per window
      * @return
      */
-    public int getAverageNumberOfPassengersPerWindow(){
+    public double getAverageNumberOfPassengersPerWindow(){
 
-        int passPerWindow = 0;
+        double passPerWindow = 0;
 
         if(windows != null && windows.length > 0 ){
             for(Window window : windows) {
@@ -39,9 +39,9 @@ public class Stats {
 
 
 
-    public int getAverageTaxisPerWindow() {
+    public double getAverageTaxisPerWindow() {
 
-        int taxisPerWindow = 0;
+        double taxisPerWindow = 0;
 
         if(windows != null && windows.length > 0 ){
 
@@ -59,9 +59,9 @@ public class Stats {
     }
 
 
-    public int getAverageGroupsPerWindow() {
+    public double getAverageGroupsPerWindow() {
 
-        int groupsPerWindow = 0;
+        double groupsPerWindow = 0;
 
         if(windows != null && windows.length > 0 ){
 
@@ -80,9 +80,9 @@ public class Stats {
 
 
 
-    public long getAverageWorkingTimePerWindow() {
+    public double getAverageWorkingTimePerWindow() {
 
-        long avgTime = 0;
+        double avgTime = 0;
 
         if(windows != null && windows.length > 0 ){
 
@@ -91,8 +91,6 @@ public class Stats {
                     avgTime += getWorkingTimeThisWindow(i);
                 }
             }
-
-            avgTime /= windows.length;
 
         }
 
@@ -135,11 +133,11 @@ public class Stats {
 
 
 
-    public long getWorkingTimeThisWindow( int windowIndex ) {
+    public double getWorkingTimeThisWindow( int windowIndex ) {
 
 
         if ( windows != null && windowIndex < windows.length )
-            return ( windows[windowIndex].getWorkingEndTime() - windows[windowIndex].getWorkingStartTime() );
+            return (double)( windows[windowIndex].getWorkingEndTime() - windows[windowIndex].getWorkingStartTime() ) / 1000;
         else
             return -1;
     }
@@ -173,11 +171,6 @@ public class Stats {
         this.windows = windows;
     }
 
-    //public static void main(String[] args) {
-         //Sample s = new Sample();
-         //s.launch();
-        // Stage stage = new Stage();
-        // s.start(stage);
-     //}
+
 
 }

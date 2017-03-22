@@ -207,11 +207,14 @@ public class SimulationView implements ActionListener,Observer{
 
         graphButton.setBackground(buttonBackgroundColor);
         graphButton.setForeground(buttonForegroundColor);
+
+        graphButton.addActionListener(this);
         graphButton.setEnabled(true);
 
         int size = windowList.size();
 
         breakButton.setName("breakButton" + size);
+        graphButton.setName("graphButton" + size);
 
         breakButton.addActionListener(this);
 
@@ -381,6 +384,16 @@ public class SimulationView implements ActionListener,Observer{
                 t.setStats(md.getStats());
                 t.initAndShowGUI();
             });
+
+        } else if(jc.getName().contains("graphButton")){
+
+            SwingUtilities.invokeLater(() -> {
+                IndividualWindowStatisticsView t = new IndividualWindowStatisticsView(Integer.parseInt(jc.getName().replace("graphButton","")));
+                md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
+                t.setStats(md.getStats());
+                t.initAndShowGUI();
+            });
+
          // taxi tick box
         } else if(e.getSource() == taxiCheck){
             if(taxiCheck.isSelected()) {
@@ -395,6 +408,7 @@ public class SimulationView implements ActionListener,Observer{
             } else {
                 //md.AUTOMATIC_ADDING_OF_GROUPS = false;
             }
+
         }
     }
 
