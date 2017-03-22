@@ -50,8 +50,13 @@ public class SimulationView implements ActionListener,Observer{
     }
 
     public void createWindows(){
-        for(int i=0; i<this.md.getWindows().length; i++)
+
+        if (md.getWindows() == null){
+            System.out.println(md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().size());
+        }
+        for(int i=0; i<this.md.getWindows().length; i++) {
             addWindow();
+        }
     }
 
     public void initializeComponents(){
@@ -478,7 +483,7 @@ public class SimulationView implements ActionListener,Observer{
 
     private void updateWindows() {
         for(int i =0; i<windowList.size(); i++){
-            String newContent = "WINDOW " + i + "\n" + "Destination: "
+            String newContent = "Destination: "
                     + (md.getWindows()[i].getGroupOfPassengers() == null ? "" : md.getWindows()[i].getGroupOfPassengers().getDestinationName())
                     + "\nTotal number of passengers : " + (md.getWindows()[i].getGroupOfPassengers() == null ? "" : md.getWindows()[i].getGroupOfPassengers().getNumberOfPassengers())
                     + "\nRemaining number of passengers : " + md.getWindows()[i].getRemainingNumberOfPassengers()
@@ -552,5 +557,57 @@ public class SimulationView implements ActionListener,Observer{
         md.getTaxiData().getTaxiQueue().getTaxisQueue().size();
         md.getTaxiData().getTaxiQueue().getTaxisQueue().get(0).getTaxiRegistrationNumber();
 
+    }
+
+    public void addListner(JButton jButton, ActionListener actionListener){
+        jButton.addActionListener(actionListener);
+    }
+
+    public JButton getStartButton() {
+        return startButton;
+    }
+
+    public void setStartButton(JButton startButton) {
+        this.startButton = startButton;
+    }
+
+    public JButton getResumeButton() {
+        return resumeButton;
+    }
+
+    public void setResumeButton(JButton resumeButton) {
+        this.resumeButton = resumeButton;
+    }
+
+    public JButton getStopButton() {
+        return stopButton;
+    }
+
+    public void setStopButton(JButton stopButton) {
+        this.stopButton = stopButton;
+    }
+
+    public JButton getExportButton() {
+        return exportButton;
+    }
+
+    public void setExportButton(JButton exportButton) {
+        this.exportButton = exportButton;
+    }
+
+    public JButton getTaxiButton() {
+        return taxiButton;
+    }
+
+    public void setTaxiButton(JButton taxiButton) {
+        this.taxiButton = taxiButton;
+    }
+
+    public JButton getGroupButton() {
+        return groupButton;
+    }
+
+    public void setGroupButton(JButton groupButton) {
+        this.groupButton = groupButton;
     }
 }
