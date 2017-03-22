@@ -1,11 +1,12 @@
 package main.view;
 
-import javafx.application.Platform;
 import main.log.LoggerSingleton;
 import main.model.MainModel;
 import main.model.Stats;
+
 import main.model.ViewTotalWindowsChart;
 import main.model.WindowStatuses;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,9 +44,6 @@ public class SimulationView implements ActionListener,Observer{
     public SimulationView(MainModel md){
 
         this.md = md;
-
-
-
 
     }
 
@@ -311,6 +309,7 @@ public class SimulationView implements ActionListener,Observer{
 
         // GENERAL START
         if(e.getSource() == startButton){
+
             LoggerSingleton.getInstance().add("Starting");
             startButton.setEnabled(false);
             md.addObserver(this);
@@ -343,14 +342,17 @@ public class SimulationView implements ActionListener,Observer{
 
         // EXPORT
         } else if (e.getSource() == exportButton) {
-            exportButton.setEnabled(false);
-            ViewTotalWindowsChart viewTotal = new ViewTotalWindowsChart();
-            Platform.setImplicitExit(false);
-            md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
-
             viewTotal.setStats(md.getStats());
             viewTotal.exportSummaryStatisticsChart();
+
             LoggerSingleton.getInstance().exportData();
+
+            SwingUtilities.invokeLater(() -> {
+                TotalAppStatisticsView t = new TotalAppStatisticsView();
+                md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
+                t.setStats(md.getStats());
+                t.initAndShowGUI();
+            });
         }
     }
 
@@ -416,8 +418,6 @@ public class SimulationView implements ActionListener,Observer{
         updateWindows();
         updateTaxiQueue();
         updateGroupsQueue();
-        //System.err.println(md.getWindows()[0].getGroupOfPassengers().getDestinationName());
-        //updateContent(0, md.getWindows()[0].getGroupOfPassengers().getDestinationName());
     }
 
     private void updateWindows() {
