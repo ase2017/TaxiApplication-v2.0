@@ -92,6 +92,8 @@ public class Stats {
                 }
             }
 
+            avgTime /= windows.length;
+
         }
 
         return avgTime;

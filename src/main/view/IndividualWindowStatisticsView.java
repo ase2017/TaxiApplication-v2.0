@@ -44,9 +44,6 @@ public class IndividualWindowStatisticsView {
     private Scene createScene() {
 
 
-
-
-
         final NumberAxis xAxis = new NumberAxis();
         final CategoryAxis yAxis = new CategoryAxis();
         final BarChart<Number,String> bc =
@@ -84,26 +81,26 @@ public class IndividualWindowStatisticsView {
 
 
         XYChart.Series series4 = new XYChart.Series();
-        series4.setName("Working Time");
+        series4.setName("Working Time in secs");
         if (stats.getNumberOfPassengerThisWindow(this.windowID) < 0 )
-            series4.getData().add( new XYChart.Data(0,"Working Time") );
+            series4.getData().add( new XYChart.Data(0,"Working Time in secs") );
         else
-            series4.getData().add(new XYChart.Data( stats.getWorkingTimeThisWindow(this.windowID), "Working Time"));
+            series4.getData().add(new XYChart.Data( stats.getWorkingTimeThisWindow(this.windowID), "Working Time in secs"));
 
 
         XYChart.Series series5 = new XYChart.Series();
-        series5.setName("Average Working Time");
+        series5.setName("Average Working Time in secs");
         if (stats.getNumberOfPassengerThisWindow(this.windowID) < 0 )
-            series5.getData().add( new XYChart.Data( 0, "Average Working Time") );
+            series5.getData().add( new XYChart.Data( 0, "Average Working Time in secs") );
         else
-            series5.getData().add(new XYChart.Data( stats.getAverageWorkingTimePerWindow(), "Average Working Time"));
+            series5.getData().add(new XYChart.Data( stats.getAverageWorkingTimePerWindow(), "Average Working Time in secs"));
 
 
         Scene scene  = new Scene(bc,1600,900);
 
         bc.getData().addAll(series1, series2, series3, series4, series5);
-        bc.setBarGap(3);
-        bc.setCategoryGap(20);
+        //bc.setBarGap(3);
+        //bc.setCategoryGap(20);
 
         return (scene);
     }
