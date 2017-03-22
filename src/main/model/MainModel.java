@@ -38,42 +38,12 @@ public class MainModel extends Observable{
 
     /* ************* GUI methods ********************* */
 
-    /**
-     * For PAUSE / RESUME button (general button)
-     */
-    /*public void pauseOrResumeAllWindows(){
-        for (int i = 0; i < windows.length;i++){
-            windows[i].setOnBreak();
-            try{
-                windowsThreads[i].sleep(10000);
-            } catch (InterruptedException e) {
-
-            }
-
-        }
-
-    }*/
-   /* public void pauseOrResumeAllWindowsOnBreak(){
-        for (int i = 0; i < windows.length;i++){
-            if(windows[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())) {
-                windows[i].setOnBreak();
-            }
-        }
-
-    }*/
 
 
-    public void goBreakOrGoBack(int index){
-        System.out.println("test index " + index);
-        System.out.println(windows[index].getStatus());
-            if(windows[index].getStatus().equals(WindowStatuses.AVAILABLE.toString())) {
-                System.out.println("currently available");
-                windows[index].setOnBreak(true);
+    public void endOfDay(int index){
 
-            } else if(windows[index].getStatus().equals(WindowStatuses.BREAK.toString())){
-                System.out.println("currently on break");
-                windows[index].setOnBreak(false);
-            }
+        windows[index].setStopped();
+
 
     }
 
@@ -109,33 +79,7 @@ public class MainModel extends Observable{
 
 
 
-        /* ********** STILL have to sort out how to make it work for a tick box ************* */
-        /*for(int i  = 0; i < 5; i++) {
-            System.out.println(taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
-            taxiData.addGroup();
-            System.out.println(taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
-            System.out.println("ADDED A GROUP");
-            try{
-                TimeUnit.SECONDS.sleep(5);
-                //1-2 seconds “sleep” (of waiting)
-            } catch (InterruptedException e){
 
-            }
-
-        }*/
-
-        // TODO : NOT REMOVE
-        /*while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
-                && taxiData.getTaxiQueue().getTaxisQueue().size() > 0 ) {
-            randomlyPutWindowsToBreak();
-
-            try{
-                TimeUnit.SECONDS.sleep(1);
-                //1-2 seconds “sleep” (of waiting)
-            } catch (InterruptedException e){
-
-            }
-        }*/
     }
 
     /**
@@ -153,24 +97,7 @@ public class MainModel extends Observable{
 
 
 
-    /**
-     *
-     * Randomly puts a window to "BREAK" status
-     */
-    public void randomlyPutWindowsToBreak(){
-        for(int i = 0; i < windowsThreads.length; i++){
-            if(windows[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())){
-                try{
 
-                    windowsThreads[i].sleep(5000);
-                    windows[i].setStatus(WindowStatuses.BREAK.toString());
-                    System.out.println("@@@@@@@@@@@PUT window " + i + " to break");
-                } catch (InterruptedException e){
-
-                }
-            }
-        }
-    }
 
     public Window[] getWindows() {
         return windows;
