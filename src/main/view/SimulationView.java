@@ -24,7 +24,9 @@ import java.util.Observer;
 public class SimulationView implements Observer{
 
     private JFrame mainFrame = new JFrame();
-    private JPanel mainPanel,menuPanel,leftPanel,rightPanel,simulationPanel,taxiPanel,groupPanel;
+    private JPanel mainPanel,menuPanel,simulationPanel,taxiPanel,groupPanel;
+    private RightPanel rightPanel;
+    private LeftPanel leftPanel;
     private JButton startButton, resumeButton, stopButton, exportButton, taxiButton, groupButton;
     private JTextArea taxiArea, groupArea;
     private JCheckBox taxiCheck, groupCheck;
@@ -111,7 +113,7 @@ public class SimulationView implements Observer{
 
     private void initializeLeftPanel() {
 
-        leftPanel = new JPanel();
+        leftPanel = new LeftPanel();
         scroll = new JScrollPane(leftPanel);
 
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -122,7 +124,7 @@ public class SimulationView implements Observer{
 
     private void initializeRightPanel() {
 
-        rightPanel = new JPanel();
+        rightPanel = new RightPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.setBackground(backgroundColor);
 
