@@ -5,7 +5,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.net.SocketImpl;
 
 /**
  * Created by Giorgos on 22-Mar-17.
@@ -13,7 +12,7 @@ import java.net.SocketImpl;
 public class WindowPanel extends JPanel{
 
     private JPanel windowPanel, buttonPanel, windowTextPanel;
-    private JButton breakButton, graphButton;
+    private JButton endOfDayButton, graphButton;
     private JTextArea windowContent;
     private JScrollPane windowScroll;
 
@@ -31,13 +30,13 @@ public class WindowPanel extends JPanel{
 
         buttonPanel.setBackground(SimulationView.backgroundColor);
 
-        breakButton = new JButton("Break");
+        endOfDayButton = new JButton("End of day");
         graphButton = new JButton("Show graph");
 
-        breakButton.setBackground(SimulationView.buttonBackgroundColor);
-        breakButton.setForeground(SimulationView.buttonForegroundColor);
-        breakButton.setEnabled(false);
-        breakButton.setName("breakButton" + this.windowID);
+        endOfDayButton.setBackground(SimulationView.buttonBackgroundColor);
+        endOfDayButton.setForeground(SimulationView.buttonForegroundColor);
+        endOfDayButton.setEnabled(false);
+        endOfDayButton.setName("endOfDayButton" + this.windowID);
 
         graphButton.setBackground(SimulationView.buttonBackgroundColor);
         graphButton.setForeground(SimulationView.buttonForegroundColor);
@@ -62,7 +61,7 @@ public class WindowPanel extends JPanel{
         windowContent.setPreferredSize(new Dimension(150,100));
 
         this.add(windowTextPanel);
-        buttonPanel.add(breakButton);
+        buttonPanel.add(endOfDayButton);
         buttonPanel.add(graphButton);
         this.add(buttonPanel);
 
@@ -93,12 +92,12 @@ public class WindowPanel extends JPanel{
         this.windowTextPanel = windowTextPanel;
     }
 
-    public JButton getBreakButton() {
-        return breakButton;
+    public JButton getEndOfDayButton() {
+        return endOfDayButton;
     }
 
-    public void setBreakButton(JButton breakButton) {
-        this.breakButton = breakButton;
+    public void setEndOfDayButton(JButton endOfDayButton) {
+        this.endOfDayButton = endOfDayButton;
     }
 
     public JButton getGraphButton() {

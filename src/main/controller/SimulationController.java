@@ -23,8 +23,6 @@ public class SimulationController {
 
         sv.addListeners(new SimulationButtonsListener());
 
-        System.out.println(mm.getWindows().length);
-        System.out.println(mm.getTaxiData().getTaxiQueue().getTaxisQueue().size());
 
     }
 
@@ -93,11 +91,11 @@ public class SimulationController {
                 });
 
             // specific breakbutton
-            }else if(temp.getName().contains("breakButton")){
+            }else if(temp.getName().contains("endOfDayButton")){
 
 
-                int index =Integer.parseInt(temp.getName().replace("breakButton",""));
-                mm.goBreakOrGoBack(index);
+                int index =Integer.parseInt(temp.getName().replace("endOfDayButton",""));
+                mm.endOfDay(index);
 
             // taxi tick box
             } else if(temp == sv.getRightPanel().getTaxiPanel().getSubCheck()){

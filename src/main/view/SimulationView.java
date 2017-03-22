@@ -164,7 +164,7 @@ public class SimulationView implements Observer{
         this.getRightPanel().getGroupPanel().getSubCheck().setEnabled(true);
 
         for(int i =0; i< this.md.getWindows().length; i++) {
-            this.getLeftPanel().getWindows().get(i).getBreakButton().setEnabled(true);
+            this.getLeftPanel().getWindows().get(i).getEndOfDayButton().setEnabled(true);
             this.getLeftPanel().getWindows().get(i).getGraphButton().setEnabled(true);
         }
     }
@@ -178,7 +178,7 @@ public class SimulationView implements Observer{
         this.getRightPanel().getGroupPanel().getSubCheck().setEnabled(false);
 
         for(int i =0; i< this.md.getWindows().length; i++) {
-            this.getLeftPanel().getWindows().get(i).getBreakButton().setEnabled(false);
+            this.getLeftPanel().getWindows().get(i).getEndOfDayButton().setEnabled(false);
         }
     }
 
@@ -193,7 +193,7 @@ public class SimulationView implements Observer{
         this.getRightPanel().getGroupPanel().getSubCheck().addActionListener(actionListener);
 
         for(int i =0; i< this.md.getWindows().length; i++) {
-            this.getLeftPanel().getWindows().get(i).getBreakButton().addActionListener(actionListener);
+            this.getLeftPanel().getWindows().get(i).getEndOfDayButton().addActionListener(actionListener);
             this.getLeftPanel().getWindows().get(i).getGraphButton().addActionListener(actionListener);
         }
 
@@ -255,11 +255,11 @@ public class SimulationView implements Observer{
             this.getLeftPanel().getWindows().get(i ).getWindowContent().revalidate();
 
         }
-        System.out.println("UPDATE!!!");
+
     }
 
     private void updateWindowColor(int i){
-        //System.out.println("updateWindowColor, Window " + i + " status : " + md.getWindows()[i].getStatus());
+
         if(md.getWindows()[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())){
             availableWindow(i);
         } else if(md.getWindows()[i].getStatus().equals(WindowStatuses.BREAK.toString())){
