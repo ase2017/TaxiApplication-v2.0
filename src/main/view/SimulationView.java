@@ -187,7 +187,7 @@ public class SimulationView implements ActionListener,Observer{
 
         graphButton.setBackground(buttonBackgroundColor);
         graphButton.setForeground(buttonForegroundColor);
-        graphButton.setEnabled(false);
+        graphButton.setEnabled(true);
 
         int size = windowList.size() + 1;
 
@@ -352,6 +352,20 @@ public class SimulationView implements ActionListener,Observer{
                 t.setStats(md.getStats());
                 t.initAndShowGUI();
             });
+         // taxi tick box
+        } else if(e.getSource() == taxiCheck){
+            if(taxiCheck.isSelected()) {
+                //md.AUTOMATIC_ADDING_OF_TAXIS = true;
+            } else {
+                //md.AUTOMATIC_ADDING_OF_TAXIS = false;
+            }
+        // group tick box
+        } else if(e.getSource() == groupCheck) {
+            if (groupCheck.isSelected()) {
+                //md.AUTOMATIC_ADDING_OF_GROUPS = true;
+            } else {
+                //md.AUTOMATIC_ADDING_OF_GROUPS = false;
+            }
         }
     }
 
