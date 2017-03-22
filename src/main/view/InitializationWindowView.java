@@ -1,6 +1,5 @@
 package main.view;
 
-import main.model.GroupOfPassengers;
 import main.model.GroupOfPassengersGenerator;
 import main.model.MainModel;
 
@@ -8,7 +7,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.Observer;
 
 
 public class InitializationWindowView implements ActionListener{
@@ -23,7 +21,6 @@ public class InitializationWindowView implements ActionListener{
     private static final int DEFAULT_NUM_OF_WINDOWS = 2;
     private static final int DEFAULT_NUM_OF_GROUPS = 10;
     private static final int DEFAULT_NUM_OF_PASSENGERS = 5;
-    private static final double DEFAULT_SIMULATION_SPEED = 1.0;
 
     private static final int MINIMUM_NUM_OF_TAXIS = 0;
     private static final int MAXIMUM_NUM_OF_TAXIS = 20;
@@ -33,23 +30,20 @@ public class InitializationWindowView implements ActionListener{
     private static final int MAXIMUM_NUM_OF_GROUPS = 1000;
     private static final int MINIMUM_NUM_OF_PASSENGERS = 1;
     private static final int MAXIMUM_NUM_OF_PASSENGERS = 30;
-    private static final double MINIMUM_SIMULATION_SPEED = 0.1;
-    private static final double MAXIMUM_SIMULATION_SPEED = 2.0;
 
     private JFrame initializationFrame;
     private JPanel initializationPanel, northPanel, southPanel, centerPanel;
     private JLabel mainLabel, numOfTaxLabel,numPassGroupsLabel, passPerGroupLabel, numWindowsLabel,
-            simSpeedLabel, startButtonLabel, exitButtonLabel;
+             startButtonLabel, exitButtonLabel;
 
     private JButton startButton, exitButton;
-    private JSpinner numTaxisSpinner, groupsSpinner, numGroupsSpinner, numWindowsSpinner, speedSpinner;
+    private JSpinner numTaxisSpinner, groupsSpinner, numGroupsSpinner, numWindowsSpinner;
 
 
     public static int numberOfTaxis = 0;
     public static int numberOfGroups = 0;
     public static int numberOfWindows = 0;
     public static int maxPassengersPerGroup = 0;
-    public static double simulationSpeed = 0;
 
     private MainModel mm;
 
@@ -122,20 +116,16 @@ public class InitializationWindowView implements ActionListener{
                 MAXIMUM_NUM_OF_PASSENGERS, 1);
         SpinnerModel numWindowsModel = new SpinnerNumberModel(DEFAULT_NUM_OF_WINDOWS, MINIMUM_NUM_OF_WINDOWS,
                 MAXIMUM_NUM_OF_WINDOWS, 1);
-        SpinnerModel speedModel = new SpinnerNumberModel(DEFAULT_SIMULATION_SPEED, MINIMUM_SIMULATION_SPEED,
-                MAXIMUM_SIMULATION_SPEED, 0.1);
 
         numTaxisSpinner.setModel(numOfTaxisModel);
         numGroupsSpinner.setModel(numGroupsModel);
         groupsSpinner.setModel(passengerModel);
         numWindowsSpinner.setModel(numWindowsModel);
-        speedSpinner.setModel(speedModel);
 
         ((JSpinner.DefaultEditor) numTaxisSpinner.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) numGroupsSpinner.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) groupsSpinner.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) numWindowsSpinner.getEditor()).getTextField().setEditable(false);
-        ((JSpinner.DefaultEditor) speedSpinner.getEditor()).getTextField().setEditable(false);
     }
 
     private void initializeHandlers(){
@@ -175,7 +165,6 @@ public class InitializationWindowView implements ActionListener{
         maxPassengersPerGroup = (Integer)numGroupsSpinner.getValue();
         numberOfWindows = (Integer)numWindowsSpinner.getValue();
         numberOfGroups = (Integer)groupsSpinner.getValue();
-        simulationSpeed = (Double)speedSpinner.getValue();
 
         mm = new MainModel(numberOfTaxis, numberOfGroups, numberOfWindows);
         GroupOfPassengersGenerator.MAX_NUMBER_OF_PEOPLE_IN_GROUP = maxPassengersPerGroup;
@@ -192,9 +181,6 @@ public class InitializationWindowView implements ActionListener{
                 " in the range [" + MINIMUM_NUM_OF_PASSENGERS + "-" + MAXIMUM_NUM_OF_PASSENGERS + "].");
         numWindowsSpinner.setToolTipText("The number of available windows. It should be a number" +
                 " in the range [" + MINIMUM_NUM_OF_WINDOWS + "-" + MAXIMUM_NUM_OF_WINDOWS + "].");
-        speedSpinner.setToolTipText("The speed of the simulation i.e. if it is 1.1, the simulation runs at speed" +
-                "110%. It should be a number" + " in the range [" + MINIMUM_SIMULATION_SPEED + "-" + MAXIMUM_SIMULATION_SPEED + "].");
-
     }
 
     @Override
@@ -230,8 +216,5 @@ public class InitializationWindowView implements ActionListener{
         return maxPassengersPerGroup;
     }
 
-    public static double getSimulationSpeed() {
-        return simulationSpeed;
-    }
 
 }

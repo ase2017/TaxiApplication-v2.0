@@ -1,11 +1,17 @@
 package main.view;
 
+import javafx.application.Platform;
 import main.log.LoggerSingleton;
 import main.model.MainModel;
 import main.model.Stats;
 
+import main.model.WindowStatuses;
+
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -127,11 +133,29 @@ public class SimulationView implements ActionListener,Observer{
         groupPanel.setBorder(new EmptyBorder(10,10,50,10));
         taxiPanel.setBorder(new EmptyBorder(10,10,50,10));
 
+        JPanel taxiTextPanel = new JPanel();
+        taxiTextPanel.setLayout(new BoxLayout(taxiTextPanel,BoxLayout.Y_AXIS));
+        taxiTextPanel.setBorder(new TitledBorder(new EtchedBorder(), "Taxi Queue"));
         taxiArea = new JTextArea("empty");
         taxiArea.setBackground(textAreaColor);
+        taxiArea.setEditable(false);
 
+        JScrollPane taxiScroll = new JScrollPane(taxiArea);
+        taxiScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        taxiTextPanel.add(taxiScroll);
+
+        JPanel groupTextPanel = new JPanel();
+        groupTextPanel.setLayout(new BoxLayout(groupTextPanel,BoxLayout.Y_AXIS));
+        groupTextPanel.setBorder(new TitledBorder(new EtchedBorder(), "Group Queue"));
         groupArea = new JTextArea("empty");
         groupArea.setBackground(textAreaColor);
+        groupArea.setEditable(false);
+
+        JScrollPane groupScroll = new JScrollPane(groupArea);
+        groupScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        groupTextPanel.add(groupScroll);
 
         taxiButton = new JButton("Add Taxi");
         taxiButton.addActionListener(this);
@@ -153,12 +177,12 @@ public class SimulationView implements ActionListener,Observer{
         groupCheck.setBackground(backgroundColor);
         groupCheck.setEnabled(false);
 
-        rightPanel.add(taxiArea);
+        rightPanel.add(taxiTextPanel);
         taxiPanel.add(taxiCheck);
         taxiPanel.add(taxiButton);
         rightPanel.add(taxiPanel);
 
-        rightPanel.add(groupArea);
+        rightPanel.add(groupTextPanel);
         groupPanel.add(groupCheck);
         groupPanel.add(groupButton);
         rightPanel.add(groupPanel);
@@ -183,7 +207,9 @@ public class SimulationView implements ActionListener,Observer{
 
         graphButton.setBackground(buttonBackgroundColor);
         graphButton.setForeground(buttonForegroundColor);
+
         graphButton.addActionListener(this);
+        graphButton.setEnabled(true);
 
         int size = windowList.size();
 
@@ -192,14 +218,23 @@ public class SimulationView implements ActionListener,Observer{
 
         breakButton.addActionListener(this);
 
+        JPanel windowTextPanel = new JPanel();
+        windowTextPanel.setLayout(new BoxLayout(windowTextPanel,BoxLayout.Y_AXIS));
+        windowTextPanel.setBorder(new TitledBorder(new EtchedBorder(), "Window " + size));
         JTextArea windowContent = new JTextArea("Ready to start...");
+        windowContent.setEditable(false);
         windowContent.setBackground(textAreaColor);
+
+        JScrollPane windowScroll = new JScrollPane(windowContent);
+        windowScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        windowTextPanel.add(windowScroll);
 
         windowPanel.setBorder(new EmptyBorder(15,10,0,10));
         windowPanel.setBackground(backgroundColor);
         windowContent.setPreferredSize(new Dimension(150,100));
 
-        windowPanel.add(windowContent);
+        windowPanel.add(windowTextPanel);
         buttonPanel.add(breakButton);
         buttonPanel.add(graphButton);
         windowPanel.add(buttonPanel);
@@ -223,7 +258,7 @@ public class SimulationView implements ActionListener,Observer{
         startButton.setBackground(buttonBackgroundColor);
         startButton.setForeground(buttonForegroundColor);
 
-        resumeButton = new JButton("Resume");
+        resumeButton = new JButton("Pause");
         resumeButton.addActionListener(this);
 
         resumeButton.setBackground(buttonBackgroundColor);
@@ -288,11 +323,23 @@ public class SimulationView implements ActionListener,Observer{
         }*/
 
     }
+
+    public void disableButtonsOnStop(){
+        stopButton.setEnabled(false);
+        resumeButton.setEnabled(false);
+        taxiButton.setEnabled(false);
+        groupButton.setEnabled(false);
+        groupCheck.setEnabled(false);
+        taxiCheck.setEnabled(false);
+    }
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
         JComponent jc = (JComponent) e.getSource();
 
+        // GENERAL START
         if(e.getSource() == startButton){
 
             LoggerSingleton.getInstance().add("Starting");
@@ -306,21 +353,28 @@ public class SimulationView implements ActionListener,Observer{
             md.run();
             enableButtonsOnStart();
 
-        } else if(e.getSource() == stopButton){
 
-            stopButton.setEnabled(false);
-            resumeButton.setEnabled(false);
-            taxiButton.setEnabled(false);
-            groupButton.setEnabled(false);
-            groupCheck.setEnabled(false);
-            taxiCheck.setEnabled(false);
+        // GENERAL PAUSE / RESUME
+        } else if(e.getSource() == resumeButton){
+            swapButton();
+            //md.pauseAllWindows();
+
+        // GENERAL STOP
+        } else if(e.getSource() == stopButton){
+            disableButtonsOnStop();
             md.stopAllWindows();
 
+        // ADD TAXI
         } else if(e.getSource() == taxiButton){
             md.getTaxiData().generateAndAddTaxi();
+
+        // ADD GROUP
         } else if(e.getSource() == groupButton){
             md.getTaxiData().generateAndAddGroup();
+
+        // EXPORT
         } else if (e.getSource() == exportButton) {
+
 
             LoggerSingleton.getInstance().exportData();
 
@@ -330,6 +384,7 @@ public class SimulationView implements ActionListener,Observer{
                 t.setStats(md.getStats());
                 t.initAndShowGUI();
             });
+
         } else if(jc.getName().contains("graphButton")){
 
             SwingUtilities.invokeLater(() -> {
@@ -338,26 +393,48 @@ public class SimulationView implements ActionListener,Observer{
                 t.setStats(md.getStats());
                 t.initAndShowGUI();
             });
+
+         // taxi tick box
+        } else if(e.getSource() == taxiCheck){
+            if(taxiCheck.isSelected()) {
+                //md.AUTOMATIC_ADDING_OF_TAXIS = true;
+            } else {
+                //md.AUTOMATIC_ADDING_OF_TAXIS = false;
+            }
+        // group tick box
+        } else if(e.getSource() == groupCheck) {
+            if (groupCheck.isSelected()) {
+                //md.AUTOMATIC_ADDING_OF_GROUPS = true;
+            } else {
+                //md.AUTOMATIC_ADDING_OF_GROUPS = false;
+            }
+
         }
     }
 
     private void swapButton() {
         if(!isRunning){
-            pauseWindow(0);
-            startButton.setText("Pause");
+            resumeButton.setText("Pause");
             isRunning = true;
         } else if (isRunning) {
-            startButton.setText("Start");
+            resumeButton.setText("Resume");
             isRunning = false;
         }
     }
+
+
+    private void busyWindow(int windowID){
+        windowList.get(windowID).setBackground(new Color(80,200,240));
+        windowList.get(windowID).setForeground(new Color(0,0,0));
+    }
+
 
     private void pauseWindow(int windowID){
         windowList.get(windowID).setBackground(new Color(245,221,80));
         windowList.get(windowID).setForeground(new Color(0,0,0));
     }
 
-    private void activeWindow(int windowID){
+    private void availableWindow(int windowID){
         windowList.get(windowID).setBackground(new Color(146,200,138)); //204.232.202
         windowList.get(windowID).setForeground(new Color(0,0,0));
     }
@@ -367,16 +444,16 @@ public class SimulationView implements ActionListener,Observer{
         windowList.get(windowID).setForeground(new Color(75,0,0));
     }
 
-    private void runningWindow(int windowID){
+    /*private void initWindo(int windowID){
         windowList.get(windowID).setBackground(textAreaColor);
         windowList.get(windowID).setForeground(new Color(0,0,0));
-    }
+    }*/
 
     private void updateContent(int windowID, String content){
         windowList.get(windowID).setText(content);
     }
 
-    private void changeStateAll(String state){
+    /*private void changeStateAll(String state){
 
         if(state.equals("PAUSE"))
             for(int j =0; j<windowList.size(); j++)
@@ -390,7 +467,7 @@ public class SimulationView implements ActionListener,Observer{
         else if(state.equals("ACTIVE"))
             for(int j =0; j<windowList.size(); j++)
                 activeWindow(j);
-    }
+    }*/
 
     @Override
     public void update(java.util.Observable o, Object arg) {
@@ -407,9 +484,24 @@ public class SimulationView implements ActionListener,Observer{
                     + "\nRemaining number of passengers : " + md.getWindows()[i].getRemainingNumberOfPassengers()
                     + "\nTaxi : " + (md.getWindows()[i].getTaxi() == null ? "" : md.getWindows()[i].getTaxi().getTaxiRegistrationNumber());
             updateContent(i, newContent);
+            updateWindowColor(i);
 
         }
         System.out.println("UPDATE!!!");
+    }
+
+    private void updateWindowColor(int i){
+        //System.out.println("updateWindowColor, Window " + i + " status : " + md.getWindows()[i].getStatus());
+        if(md.getWindows()[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())){
+            availableWindow(i);
+        } else if(md.getWindows()[i].getStatus().equals(WindowStatuses.BREAK.toString())){
+            pauseWindow(i);
+        } else if(md.getWindows()[i].getStatus().equals(WindowStatuses.BUSY.toString())){
+            busyWindow(i);
+        } else if(md.getWindows()[i].getStatus().equals(WindowStatuses.UNAVAILABLE.toString())){
+            stopWindow(i);
+        }
+        windowList.get(i).repaint();
     }
 
     private void updateTaxiQueue(){
