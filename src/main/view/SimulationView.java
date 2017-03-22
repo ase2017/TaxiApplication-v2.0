@@ -183,11 +183,12 @@ public class SimulationView implements ActionListener,Observer{
 
         graphButton.setBackground(buttonBackgroundColor);
         graphButton.setForeground(buttonForegroundColor);
-        graphButton.setEnabled(false);
+        graphButton.addActionListener(this);
 
-        int size = windowList.size() + 1;
+        int size = windowList.size();
 
         breakButton.setName("breakButton" + size);
+        graphButton.setName("graphButton" + size);
 
         breakButton.addActionListener(this);
 
@@ -325,6 +326,14 @@ public class SimulationView implements ActionListener,Observer{
 
             SwingUtilities.invokeLater(() -> {
                 TotalAppStatisticsView t = new TotalAppStatisticsView();
+                md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
+                t.setStats(md.getStats());
+                t.initAndShowGUI();
+            });
+        } else if(jc.getName().contains("graphButton")){
+
+            SwingUtilities.invokeLater(() -> {
+                IndividualWindowStatisticsView t = new IndividualWindowStatisticsView(Integer.parseInt(jc.getName().replace("graphButton","")));
                 md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
                 t.setStats(md.getStats());
                 t.initAndShowGUI();

@@ -61,9 +61,9 @@ public class ViewIndividualWindowChart extends  Application {
         series5.getData().add(new XYChart.Data("Average Working Time", stats.getAverageWorkingTimePerWindow()));
 
 
-        Scene scene  = new Scene(bc,800,600);
+        Scene scene  = new Scene(bc,1600,900);
 
-        bc.getData().addAll(series1, series2, series3);
+        bc.getData().addAll(series1, series2, series3, series4, series5);
         bc.setBarGap(3);
         bc.setCategoryGap(20);
 
