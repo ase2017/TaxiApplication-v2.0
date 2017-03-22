@@ -21,7 +21,7 @@ import java.util.Observer;
 /**
  * Created by Giorgos on 19-Mar-17.
  */
-public class SimulationView implements ActionListener,Observer{
+public class SimulationView implements Observer{
 
     private JFrame mainFrame = new JFrame();
     private JPanel mainPanel,menuPanel,leftPanel,rightPanel,simulationPanel,taxiPanel,groupPanel;
@@ -163,7 +163,7 @@ public class SimulationView implements ActionListener,Observer{
         groupTextPanel.add(groupScroll);
 
         taxiButton = new JButton("Add Taxi");
-        taxiButton.addActionListener(this);
+        //taxiButton.addActionListener(this);
         taxiButton.setForeground(buttonForegroundColor);
         taxiButton.setBackground(buttonBackgroundColor);
         taxiButton.setEnabled(false);
@@ -173,7 +173,7 @@ public class SimulationView implements ActionListener,Observer{
         taxiCheck.setEnabled(false);
 
         groupButton = new JButton("Add Group");
-        groupButton.addActionListener(this);
+        //groupButton.addActionListener(this);
         groupButton.setForeground(buttonForegroundColor);
         groupButton.setBackground(buttonBackgroundColor);
         groupButton.setEnabled(false);
@@ -213,15 +213,12 @@ public class SimulationView implements ActionListener,Observer{
         graphButton.setBackground(buttonBackgroundColor);
         graphButton.setForeground(buttonForegroundColor);
 
-        graphButton.addActionListener(this);
         graphButton.setEnabled(true);
 
         int size = windowList.size();
 
         breakButton.setName("breakButton" + size);
         graphButton.setName("graphButton" + size);
-
-        breakButton.addActionListener(this);
 
         JPanel windowTextPanel = new JPanel();
         windowTextPanel.setLayout(new BoxLayout(windowTextPanel,BoxLayout.Y_AXIS));
@@ -258,22 +255,22 @@ public class SimulationView implements ActionListener,Observer{
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.X_AXIS));
 
         startButton = new JButton("Start");
-        startButton.addActionListener(this);
+        //startButton.addActionListener(this);
 
         startButton.setBackground(buttonBackgroundColor);
         startButton.setForeground(buttonForegroundColor);
 
         resumeButton = new JButton("Pause");
-        resumeButton.addActionListener(this);
+        //resumeButton.addActionListener(this);
 
         resumeButton.setBackground(buttonBackgroundColor);
         resumeButton.setForeground(buttonForegroundColor);
 
         stopButton = new JButton("Stop");
-        stopButton.addActionListener(this);
+        //stopButton.addActionListener(this);
 
         exportButton = new JButton("Export");
-        exportButton.addActionListener(this);
+        //exportButton.addActionListener(this);
 
         stopButton.setBackground(buttonBackgroundColor);
         stopButton.setForeground(buttonForegroundColor);
@@ -323,9 +320,6 @@ public class SimulationView implements ActionListener,Observer{
         groupCheck.setEnabled(true);
         taxiCheck.setEnabled(true);
 
-        /*for(int i = 0; i < windowPanels.size(); i++){
-            // currently not access to window buttons to re enable them
-        }*/
 
     }
 
@@ -339,85 +333,21 @@ public class SimulationView implements ActionListener,Observer{
     }
 
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void addListeners(ActionListener actionListener){
+        startButton.addActionListener(actionListener);
+        stopButton.addActionListener(actionListener);
+        resumeButton.addActionListener(actionListener);
+        taxiButton.addActionListener(actionListener);
+        groupButton.addActionListener(actionListener);
+        groupCheck.addActionListener(actionListener);
+        taxiCheck.addActionListener(actionListener);
+        exportButton.addActionListener(actionListener);
 
-        JComponent jc = (JComponent) e.getSource();
-
-        // GENERAL START
-        if(e.getSource() == startButton){
-
-            LoggerSingleton.getInstance().add("Starting");
-            startButton.setEnabled(false);
-            md.addObserver(this);
-            for (int i = 0; i < md.getWindows().length; i++){
-                md.getWindows()[i].addObserver(this);
-            }
-            md.getTaxiData().getPassengerQueue().addObserver(this);
-            md.getTaxiData().getTaxiQueue().addObserver(this);
-            md.run();
-            enableButtonsOnStart();
-
-
-        // GENERAL PAUSE / RESUME
-        } else if(e.getSource() == resumeButton){
-            swapButton();
-            //md.pauseAllWindows();
-
-        // GENERAL STOP
-        } else if(e.getSource() == stopButton){
-            disableButtonsOnStop();
-            md.stopAllWindows();
-
-        // ADD TAXI
-        } else if(e.getSource() == taxiButton){
-            md.getTaxiData().generateAndAddTaxi();
-
-        // ADD GROUP
-        } else if(e.getSource() == groupButton){
-            md.getTaxiData().generateAndAddGroup();
-
-        // EXPORT
-        } else if (e.getSource() == exportButton) {
-
-
-            LoggerSingleton.getInstance().exportData();
-
-            SwingUtilities.invokeLater(() -> {
-                TotalAppStatisticsView t = new TotalAppStatisticsView();
-                md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
-                t.setStats(md.getStats());
-                t.initAndShowGUI();
-            });
-
-        } else if(jc.getName().contains("graphButton")){
-
-            SwingUtilities.invokeLater(() -> {
-                IndividualWindowStatisticsView t = new IndividualWindowStatisticsView(Integer.parseInt(jc.getName().replace("graphButton","")));
-                md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
-                t.setStats(md.getStats());
-                t.initAndShowGUI();
-            });
-
-         // taxi tick box
-        } else if(e.getSource() == taxiCheck){
-            if(taxiCheck.isSelected()) {
-                //md.AUTOMATIC_ADDING_OF_TAXIS = true;
-            } else {
-                //md.AUTOMATIC_ADDING_OF_TAXIS = false;
-            }
-        // group tick box
-        } else if(e.getSource() == groupCheck) {
-            if (groupCheck.isSelected()) {
-                //md.AUTOMATIC_ADDING_OF_GROUPS = true;
-            } else {
-                //md.AUTOMATIC_ADDING_OF_GROUPS = false;
-            }
-
-        }
     }
 
-    private void swapButton() {
+
+
+    public void swapButton() {
         if(!isRunning){
             resumeButton.setText("Pause");
             isRunning = true;
@@ -609,5 +539,21 @@ public class SimulationView implements ActionListener,Observer{
 
     public void setGroupButton(JButton groupButton) {
         this.groupButton = groupButton;
+    }
+
+    public JCheckBox getTaxiCheck() {
+        return taxiCheck;
+    }
+
+    public void setTaxiCheck(JCheckBox taxiCheck) {
+        this.taxiCheck = taxiCheck;
+    }
+
+    public JCheckBox getGroupCheck() {
+        return groupCheck;
+    }
+
+    public void setGroupCheck(JCheckBox groupCheck) {
+        this.groupCheck = groupCheck;
     }
 }
