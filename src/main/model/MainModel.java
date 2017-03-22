@@ -15,8 +15,6 @@ public class MainModel extends Observable{
     private Thread[] windowsThreads;
     private Stats stats;
 
-    private boolean stopped = false;
-
     public MainModel(){
 
     }
@@ -32,6 +30,8 @@ public class MainModel extends Observable{
             windowsThreads[i].setName("Window " + i);
         }
 
+        stats = new Stats(taxiData,windows);
+
 
     }
 
@@ -39,12 +39,29 @@ public class MainModel extends Observable{
     /* ************* GUI methods ********************* */
 
     /**
+     * For PAUSE / RESUME button (general button)
+     */
+    public void pauseAllWindows(){
+        for (int i = 0; i < windows.length;i++){
+            windows[i].setOnBreak();
+            try{
+                windowsThreads[i].sleep(10000);
+            } catch (InterruptedException e) {
+
+            }
+
+        }
+
+    }
+
+    /**
      * For STOP button (general button)
      */
     public void stopAllWindows(){
-        stopped = true;
+        taxiData.getPassengerQueue().getGroupOfPassengersQueue().clear();
+        taxiData.getTaxiQueue().getTaxisQueue().clear();
         for(int i  = 0; i < windows.length; i++) {
-            windows[i].setStopped(true);
+            windows[i].setStopped();
         }
     }
 
@@ -54,7 +71,7 @@ public class MainModel extends Observable{
      */
     public void run(){
 
-        Stats stats = new Stats(taxiData,windows);
+
 
         for(int i  = 0; i < windows.length; i++) {
             windowsThreads[i].start();
@@ -101,20 +118,13 @@ public class MainModel extends Observable{
     /**
      * For PAUSE button (general button)
      */
-    public void pauseAllWindows(){
+    /*public void pauseAllWindows(){
         for (Window window : windows){
-            window.setOnBreak(true);
+            window.setOnBreak();
         }
-    }
+    }*/
 
-    /**
-     * For RESUME button (general button)
-     */
-    public void resumeAllWindows(){
-        for (Window window : windows){
-            window.setOnBreak(false);
-        }
-    }
+
 
     /* *************************************************** */
 
