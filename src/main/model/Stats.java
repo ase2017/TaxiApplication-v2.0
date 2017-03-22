@@ -9,9 +9,9 @@ public class Stats {
     Window[] windows;
 
     public Stats(TaxiData taxiData, Window[] windows) {
+
         this.taxiData = taxiData;
         this.windows = windows;
-
 
     }
 
