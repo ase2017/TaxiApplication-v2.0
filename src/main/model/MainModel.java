@@ -41,7 +41,7 @@ public class MainModel extends Observable{
     /**
      * For PAUSE / RESUME button (general button)
      */
-    public void pauseAllWindows(){
+    /*public void pauseOrResumeAllWindows(){
         for (int i = 0; i < windows.length;i++){
             windows[i].setOnBreak();
             try{
@@ -51,6 +51,29 @@ public class MainModel extends Observable{
             }
 
         }
+
+    }*/
+   /* public void pauseOrResumeAllWindowsOnBreak(){
+        for (int i = 0; i < windows.length;i++){
+            if(windows[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())) {
+                windows[i].setOnBreak();
+            }
+        }
+
+    }*/
+
+
+    public void goBreakOrGoBack(int index){
+        System.out.println("test index " + index);
+        System.out.println(windows[index].getStatus());
+            if(windows[index].getStatus().equals(WindowStatuses.AVAILABLE.toString())) {
+                System.out.println("currently available");
+                windows[index].setOnBreak(true);
+
+            } else if(windows[index].getStatus().equals(WindowStatuses.BREAK.toString())){
+                System.out.println("currently on break");
+                windows[index].setOnBreak(false);
+            }
 
     }
 

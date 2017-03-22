@@ -162,6 +162,11 @@ public class SimulationView implements Observer{
         this.getRightPanel().getGroupPanel().getSubButton().setEnabled(true);
         this.getRightPanel().getTaxiPanel().getSubCheck().setEnabled(true);
         this.getRightPanel().getGroupPanel().getSubCheck().setEnabled(true);
+
+        for(int i =0; i< this.md.getWindows().length; i++) {
+            this.getLeftPanel().getWindows().get(i).getBreakButton().setEnabled(true);
+            this.getLeftPanel().getWindows().get(i).getGraphButton().setEnabled(true);
+        }
     }
 
     public void disableButtonsOnStop(){
@@ -171,6 +176,10 @@ public class SimulationView implements Observer{
         this.getRightPanel().getGroupPanel().getSubButton().setEnabled(false);
         this.getRightPanel().getTaxiPanel().getSubCheck().setEnabled(false);
         this.getRightPanel().getGroupPanel().getSubCheck().setEnabled(false);
+
+        for(int i =0; i< this.md.getWindows().length; i++) {
+            this.getLeftPanel().getWindows().get(i).getBreakButton().setEnabled(false);
+        }
     }
 
     public void addListeners(ActionListener actionListener){

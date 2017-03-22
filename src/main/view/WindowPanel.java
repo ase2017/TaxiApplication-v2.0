@@ -37,6 +37,7 @@ public class WindowPanel extends JPanel{
         breakButton.setBackground(SimulationView.buttonBackgroundColor);
         breakButton.setForeground(SimulationView.buttonForegroundColor);
         breakButton.setEnabled(false);
+        breakButton.setName("breakButton" + this.windowID);
 
         graphButton.setBackground(SimulationView.buttonBackgroundColor);
         graphButton.setForeground(SimulationView.buttonForegroundColor);

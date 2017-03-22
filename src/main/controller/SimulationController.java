@@ -37,7 +37,7 @@ public class SimulationController {
 
             JComponent temp = (JComponent) e.getSource();
 
-            System.out.println("ACTION PERFormed");
+            System.out.println("Action Performed");
             if(temp == sv.getStartButton()){
 
                 LoggerSingleton.getInstance().add("Starting");
@@ -55,7 +55,7 @@ public class SimulationController {
                 // GENERAL PAUSE / RESUME
             } else if(temp == sv.getResumeButton()){
                 sv.swapButton();
-                //md.pauseAllWindows();
+                //mm.pauseOrResumeAllWindowsOnBreak();
 
                 // GENERAL STOP
             } else if(temp == sv.getStopButton()){
@@ -92,7 +92,14 @@ public class SimulationController {
                     t.initAndShowGUI();
                 });
 
-                // taxi tick box
+            // specific breakbutton
+            }else if(temp.getName().contains("breakButton")){
+
+
+                int index =Integer.parseInt(temp.getName().replace("breakButton",""));
+                mm.goBreakOrGoBack(index);
+
+            // taxi tick box
             } else if(temp == sv.getRightPanel().getTaxiPanel().getSubCheck()){
                 if(sv.getRightPanel().getTaxiPanel().getSubCheck().isSelected()) {
                     //md.AUTOMATIC_ADDING_OF_TAXIS = true;
