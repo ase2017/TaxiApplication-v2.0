@@ -291,13 +291,14 @@ public class Window extends Observable implements Runnable{
     }
 
     public void setStatus(String status) {
-        System.out.println("Setting window " + windowNumber + " to " + status);
+
         String previousStatus = new String(this.getStatus());
         this.status = status;
-        if (!previousStatus.equals(previousStatus)){
+        //if (!previousStatus.equals(previousStatus)){
+            System.out.println("Setting window " + windowNumber + " to " + status);
             setChanged();
             notifyObservers();
-        }
+        //}
 
     }
 
