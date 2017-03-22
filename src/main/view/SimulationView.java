@@ -10,6 +10,8 @@ import main.model.WindowStatuses;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -131,11 +133,29 @@ public class SimulationView implements ActionListener,Observer{
         groupPanel.setBorder(new EmptyBorder(10,10,50,10));
         taxiPanel.setBorder(new EmptyBorder(10,10,50,10));
 
+        JPanel taxiTextPanel = new JPanel();
+        taxiTextPanel.setLayout(new BoxLayout(taxiTextPanel,BoxLayout.Y_AXIS));
+        taxiTextPanel.setBorder(new TitledBorder(new EtchedBorder(), "Taxi Queue"));
         taxiArea = new JTextArea("empty");
         taxiArea.setBackground(textAreaColor);
+        taxiArea.setEditable(false);
 
+        JScrollPane taxiScroll = new JScrollPane(taxiArea);
+        taxiScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        taxiTextPanel.add(taxiScroll);
+
+        JPanel groupTextPanel = new JPanel();
+        groupTextPanel.setLayout(new BoxLayout(groupTextPanel,BoxLayout.Y_AXIS));
+        groupTextPanel.setBorder(new TitledBorder(new EtchedBorder(), "Group Queue"));
         groupArea = new JTextArea("empty");
         groupArea.setBackground(textAreaColor);
+        groupArea.setEditable(false);
+
+        JScrollPane groupScroll = new JScrollPane(groupArea);
+        groupScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        groupTextPanel.add(groupScroll);
 
         taxiButton = new JButton("Add Taxi");
         taxiButton.addActionListener(this);
@@ -157,12 +177,12 @@ public class SimulationView implements ActionListener,Observer{
         groupCheck.setBackground(backgroundColor);
         groupCheck.setEnabled(false);
 
-        rightPanel.add(taxiArea);
+        rightPanel.add(taxiTextPanel);
         taxiPanel.add(taxiCheck);
         taxiPanel.add(taxiButton);
         rightPanel.add(taxiPanel);
 
-        rightPanel.add(groupArea);
+        rightPanel.add(groupTextPanel);
         groupPanel.add(groupCheck);
         groupPanel.add(groupButton);
         rightPanel.add(groupPanel);
@@ -189,20 +209,29 @@ public class SimulationView implements ActionListener,Observer{
         graphButton.setForeground(buttonForegroundColor);
         graphButton.setEnabled(true);
 
-        int size = windowList.size() + 1;
+        int size = windowList.size();
 
         breakButton.setName("breakButton" + size);
 
         breakButton.addActionListener(this);
 
+        JPanel windowTextPanel = new JPanel();
+        windowTextPanel.setLayout(new BoxLayout(windowTextPanel,BoxLayout.Y_AXIS));
+        windowTextPanel.setBorder(new TitledBorder(new EtchedBorder(), "Window " + size));
         JTextArea windowContent = new JTextArea("Ready to start...");
+        windowContent.setEditable(false);
         windowContent.setBackground(textAreaColor);
+
+        JScrollPane windowScroll = new JScrollPane(windowContent);
+        windowScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        windowTextPanel.add(windowScroll);
 
         windowPanel.setBorder(new EmptyBorder(15,10,0,10));
         windowPanel.setBackground(backgroundColor);
         windowContent.setPreferredSize(new Dimension(150,100));
 
-        windowPanel.add(windowContent);
+        windowPanel.add(windowTextPanel);
         buttonPanel.add(breakButton);
         buttonPanel.add(graphButton);
         windowPanel.add(buttonPanel);
