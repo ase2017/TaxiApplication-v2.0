@@ -1,5 +1,6 @@
 package main.view;
 
+import main.controller.SimulationController;
 import main.model.GroupOfPassengersGenerator;
 import main.model.MainModel;
 
@@ -9,7 +10,7 @@ import java.awt.event.*;
 import java.io.File;
 
 
-public class InitializationWindowView implements ActionListener{
+public class InitializationWindowView{
 
     private final String ICON_PATH = "resources/taxiIcon.png";
     private final String START_ICON_PATH = "resources/startButton.png";
@@ -38,6 +39,7 @@ public class InitializationWindowView implements ActionListener{
 
     private JButton startButton, exitButton;
     private JSpinner numTaxisSpinner, groupsSpinner, numGroupsSpinner, numWindowsSpinner;
+    private SimulationController simulationController;
 
 
     public static int numberOfTaxis = 0;
@@ -130,8 +132,8 @@ public class InitializationWindowView implements ActionListener{
 
     private void initializeHandlers(){
 
-        startButton.addActionListener(this);
-        exitButton.addActionListener(this);
+        //startButton.addActionListener(this);
+        //exitButton.addActionListener(this);
 
         startButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -159,7 +161,7 @@ public class InitializationWindowView implements ActionListener{
 
     }
 
-    private void getValues(){
+    public void getValues(){
 
         numberOfTaxis = (Integer)numTaxisSpinner.getValue();
         maxPassengersPerGroup = (Integer)numGroupsSpinner.getValue();
@@ -170,6 +172,16 @@ public class InitializationWindowView implements ActionListener{
         GroupOfPassengersGenerator.MAX_NUMBER_OF_PEOPLE_IN_GROUP = maxPassengersPerGroup;
 
     }
+    public void addStartButtonListener (ActionListener al){
+        startButton.addActionListener(al);
+    }
+
+    public void addExitButtonListener (ActionListener al){
+        exitButton.addActionListener(al);
+    }
+
+
+
 
     private void initializeTooltipDescriptions(){
 
@@ -181,23 +193,6 @@ public class InitializationWindowView implements ActionListener{
                 " in the range [" + MINIMUM_NUM_OF_PASSENGERS + "-" + MAXIMUM_NUM_OF_PASSENGERS + "].");
         numWindowsSpinner.setToolTipText("The number of available windows. It should be a number" +
                 " in the range [" + MINIMUM_NUM_OF_WINDOWS + "-" + MAXIMUM_NUM_OF_WINDOWS + "].");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        Object temp = e.getSource();
-
-        if(temp == startButton) {
-            getValues();
-            SimulationView sm = new SimulationView(mm);
-            sm.initializeComponents();
-            sm.createWindows();
-            initializationFrame.setVisible(false);
-        }
-         else if(temp == exitButton)
-            System.exit(0);
-
     }
 
     public static int getNumberOfTaxis() {
@@ -216,5 +211,40 @@ public class InitializationWindowView implements ActionListener{
         return maxPassengersPerGroup;
     }
 
+    public JButton getStartButton() {
+        return startButton;
+    }
 
+    public void setStartButton(JButton startButton) {
+        this.startButton = startButton;
+    }
+
+    public JButton getExitButton() {
+        return exitButton;
+    }
+
+    public void setExitButton(JButton exitButton) {
+        this.exitButton = exitButton;
+    }
+
+    public JFrame getInitializationFrame() {
+        return initializationFrame;
+    }
+
+    public void setInitializationFrame(JFrame initializationFrame) {
+        this.initializationFrame = initializationFrame;
+    }
+
+
+    public static void setMaxPassengersPerGroup(int maxPassengersPerGroup) {
+        InitializationWindowView.maxPassengersPerGroup = maxPassengersPerGroup;
+    }
+
+    public MainModel getMm() {
+        return mm;
+    }
+
+    public void setMm(MainModel mm) {
+        this.mm = mm;
+    }
 }
