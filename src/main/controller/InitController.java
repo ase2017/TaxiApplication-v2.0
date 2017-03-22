@@ -41,8 +41,8 @@ public class InitController {
 
                 // creating the simulation view
                 SimulationView sm = new SimulationView(mainModel);
-                sm.initializeComponents();
-                sm.createWindows();
+                //sm.initializeComponents();
+                //sm.createWindows();
                 // creating the simulation controller
                 SimulationController sc = new SimulationController(mainModel, sm);
                 initializationWindowView.getInitializationFrame().setVisible(false);
