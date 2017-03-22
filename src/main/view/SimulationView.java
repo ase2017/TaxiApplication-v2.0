@@ -434,7 +434,7 @@ public class SimulationView implements ActionListener,Observer{
     }
 
     private void updateWindowColor(int i){
-        System.out.println("updateWindowColor, Window " + i + " status : " + md.getWindows()[i].getStatus());
+        //System.out.println("updateWindowColor, Window " + i + " status : " + md.getWindows()[i].getStatus());
         if(md.getWindows()[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())){
             availableWindow(i);
         } else if(md.getWindows()[i].getStatus().equals(WindowStatuses.BREAK.toString())){
