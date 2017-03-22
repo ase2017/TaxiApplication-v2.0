@@ -33,10 +33,9 @@ public class SimulationController {
     class SimulationButtonsListener implements ActionListener
     {
         @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            Object temp = e.getSource();
-            JComponent jc = (JComponent) e.getSource();
+        public void actionPerformed(ActionEvent e) {
+
+            JComponent temp = (JComponent) e.getSource();
 
             System.out.println("ACTION PERFormed");
             if(temp == sv.getStartButton()){
@@ -64,11 +63,11 @@ public class SimulationController {
                 mm.stopAllWindows();
 
                 // ADD TAXI
-            } else if(temp == sv.getTaxiButton()){
+            } else if(temp == sv.getRightPanel().getTaxiPanel().getSubButton()){
                 mm.getTaxiData().generateAndAddTaxi();
 
                 // ADD GROUP
-            } else if(temp == sv.getGroupButton()){
+            } else if(temp == sv.getRightPanel().getGroupPanel().getSubButton()){
                 mm.getTaxiData().generateAndAddGroup();
 
                 // EXPORT
@@ -84,25 +83,25 @@ public class SimulationController {
                     t.initAndShowGUI();
                 });
 
-            } else if(jc.getName().contains("graphButton")){
+            } else if(temp.getName().contains("graphButton")){
 
                 SwingUtilities.invokeLater(() -> {
-                    IndividualWindowStatisticsView t = new IndividualWindowStatisticsView(Integer.parseInt(jc.getName().replace("graphButton","")));
+                    IndividualWindowStatisticsView t = new IndividualWindowStatisticsView(Integer.parseInt(temp.getName().replace("graphButton","")));
                     mm.setStats(new Stats(mm.getTaxiData(),mm.getWindows()));
                     t.setStats(mm.getStats());
                     t.initAndShowGUI();
                 });
 
                 // taxi tick box
-            } else if(temp == sv.getTaxiCheck()){
-                if(sv.getTaxiCheck().isSelected()) {
+            } else if(temp == sv.getRightPanel().getTaxiPanel().getSubCheck()){
+                if(sv.getRightPanel().getTaxiPanel().getSubCheck().isSelected()) {
                     //md.AUTOMATIC_ADDING_OF_TAXIS = true;
                 } else {
                     //md.AUTOMATIC_ADDING_OF_TAXIS = false;
                 }
                 // group tick box
-            } else if(temp == sv.getGroupCheck()) {
-                if (sv.getGroupCheck().isSelected()) {
+            } else if(temp == sv.getRightPanel().getGroupPanel().getSubCheck()) {
+                if (sv.getRightPanel().getGroupPanel().getSubCheck().isSelected()) {
                     //md.AUTOMATIC_ADDING_OF_GROUPS = true;
                 } else {
                     //md.AUTOMATIC_ADDING_OF_GROUPS = false;
