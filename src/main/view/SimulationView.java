@@ -5,6 +5,7 @@ import main.log.LoggerSingleton;
 import main.model.MainModel;
 import main.model.Stats;
 import main.model.ViewTotalWindowsChart;
+import main.model.WindowStatuses;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -227,7 +228,7 @@ public class SimulationView implements ActionListener,Observer{
         startButton.setBackground(buttonBackgroundColor);
         startButton.setForeground(buttonForegroundColor);
 
-        resumeButton = new JButton("Resume");
+        resumeButton = new JButton("Pause");
         resumeButton.addActionListener(this);
 
         resumeButton.setBackground(buttonBackgroundColor);
@@ -292,11 +293,23 @@ public class SimulationView implements ActionListener,Observer{
         }*/
 
     }
+
+    public void disableButtonsOnStop(){
+        stopButton.setEnabled(false);
+        resumeButton.setEnabled(false);
+        taxiButton.setEnabled(false);
+        groupButton.setEnabled(false);
+        groupCheck.setEnabled(false);
+        taxiCheck.setEnabled(false);
+    }
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
         JComponent jc = (JComponent) e.getSource();
 
+        // GENERAL START
         if(e.getSource() == startButton){
             LoggerSingleton.getInstance().add("Starting");
             startButton.setEnabled(false);
@@ -310,20 +323,25 @@ public class SimulationView implements ActionListener,Observer{
             enableButtonsOnStart();
 
 
+        // GENERAL PAUSE / RESUME
+        } else if(e.getSource() == resumeButton){
+            swapButton();
+            //md.pauseAllWindows();
+
+        // GENERAL STOP
         } else if(e.getSource() == stopButton){
-            stopButton.setEnabled(false);
-            resumeButton.setEnabled(false);
-            taxiButton.setEnabled(false);
-            groupButton.setEnabled(false);
-            groupCheck.setEnabled(false);
-            taxiCheck.setEnabled(false);
+            disableButtonsOnStop();
             md.stopAllWindows();
 
-
+        // ADD TAXI
         } else if(e.getSource() == taxiButton){
             md.getTaxiData().generateAndAddTaxi();
+
+        // ADD GROUP
         } else if(e.getSource() == groupButton){
             md.getTaxiData().generateAndAddGroup();
+
+        // EXPORT
         } else if (e.getSource() == exportButton) {
             exportButton.setEnabled(false);
             ViewTotalWindowsChart viewTotal = new ViewTotalWindowsChart();
@@ -331,28 +349,34 @@ public class SimulationView implements ActionListener,Observer{
             md.setStats(new Stats(md.getTaxiData(),md.getWindows()));
 
             viewTotal.setStats(md.getStats());
-           viewTotal.exportSummaryStatisticsChart();
+            viewTotal.exportSummaryStatisticsChart();
             LoggerSingleton.getInstance().exportData();
         }
     }
 
     private void swapButton() {
         if(!isRunning){
-            pauseWindow(0);
-            startButton.setText("Pause");
+            resumeButton.setText("Pause");
             isRunning = true;
         } else if (isRunning) {
-            startButton.setText("Start");
+            resumeButton.setText("Resume");
             isRunning = false;
         }
     }
+
+
+    private void busyWindow(int windowID){
+        windowList.get(windowID).setBackground(new Color(80,200,240));
+        windowList.get(windowID).setForeground(new Color(0,0,0));
+    }
+
 
     private void pauseWindow(int windowID){
         windowList.get(windowID).setBackground(new Color(245,221,80));
         windowList.get(windowID).setForeground(new Color(0,0,0));
     }
 
-    private void activeWindow(int windowID){
+    private void availableWindow(int windowID){
         windowList.get(windowID).setBackground(new Color(146,200,138)); //204.232.202
         windowList.get(windowID).setForeground(new Color(0,0,0));
     }
@@ -362,16 +386,16 @@ public class SimulationView implements ActionListener,Observer{
         windowList.get(windowID).setForeground(new Color(75,0,0));
     }
 
-    private void runningWindow(int windowID){
+    /*private void initWindo(int windowID){
         windowList.get(windowID).setBackground(textAreaColor);
         windowList.get(windowID).setForeground(new Color(0,0,0));
-    }
+    }*/
 
     private void updateContent(int windowID, String content){
         windowList.get(windowID).setText(content);
     }
 
-    private void changeStateAll(String state){
+    /*private void changeStateAll(String state){
 
         if(state.equals("PAUSE"))
             for(int j =0; j<windowList.size(); j++)
@@ -385,7 +409,7 @@ public class SimulationView implements ActionListener,Observer{
         else if(state.equals("ACTIVE"))
             for(int j =0; j<windowList.size(); j++)
                 activeWindow(j);
-    }
+    }*/
 
     @Override
     public void update(java.util.Observable o, Object arg) {
@@ -404,9 +428,24 @@ public class SimulationView implements ActionListener,Observer{
                     + "\nRemaining number of passengers : " + md.getWindows()[i].getRemainingNumberOfPassengers()
                     + "\nTaxi : " + (md.getWindows()[i].getTaxi() == null ? "" : md.getWindows()[i].getTaxi().getTaxiRegistrationNumber());
             updateContent(i, newContent);
+            updateWindowColor(i);
 
         }
         System.out.println("UPDATE!!!");
+    }
+
+    private void updateWindowColor(int i){
+        System.out.println("updateWindowColor, Window " + i + " status : " + md.getWindows()[i].getStatus());
+        if(md.getWindows()[i].getStatus().equals(WindowStatuses.AVAILABLE.toString())){
+            availableWindow(i);
+        } else if(md.getWindows()[i].getStatus().equals(WindowStatuses.BREAK.toString())){
+            pauseWindow(i);
+        } else if(md.getWindows()[i].getStatus().equals(WindowStatuses.BUSY.toString())){
+            busyWindow(i);
+        } else if(md.getWindows()[i].getStatus().equals(WindowStatuses.UNAVAILABLE.toString())){
+            stopWindow(i);
+        }
+        windowList.get(i).repaint();
     }
 
     private void updateTaxiQueue(){
