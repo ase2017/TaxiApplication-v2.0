@@ -1,10 +1,10 @@
 package main.view;
 
+import javafx.application.Platform;
 import main.log.LoggerSingleton;
 import main.model.MainModel;
 import main.model.Stats;
 
-import main.model.ViewTotalWindowsChart;
 import main.model.WindowStatuses;
 
 
@@ -342,8 +342,7 @@ public class SimulationView implements ActionListener,Observer{
 
         // EXPORT
         } else if (e.getSource() == exportButton) {
-            viewTotal.setStats(md.getStats());
-            viewTotal.exportSummaryStatisticsChart();
+
 
             LoggerSingleton.getInstance().exportData();
 
