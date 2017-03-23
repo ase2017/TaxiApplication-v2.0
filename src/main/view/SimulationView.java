@@ -18,15 +18,13 @@ public class SimulationView implements Observer{
     private JPanel mainPanel,menuPanel,simulationPanel;
     private RightPanel rightPanel;
     private LeftPanel leftPanel;
-    private JButton startButton, resumeButton, stopButton, exportButton;
+    private JButton startButton, stopButton, exportButton;
     private JSplitPane split1;
 
     public static Color backgroundColor = new Color(217,217,217);
     public static Color textAreaColor = new Color(255,255,253);
     public static Color buttonBackgroundColor = new Color(44,62,80);
     public static Color buttonForegroundColor = new Color(255,255,255);
-
-    private boolean isRunning = false;
 
     private MainModel md;
 
@@ -112,10 +110,6 @@ public class SimulationView implements Observer{
         startButton.setBackground(buttonBackgroundColor);
         startButton.setForeground(buttonForegroundColor);
 
-        resumeButton = new JButton("Pause");
-        resumeButton.setBackground(buttonBackgroundColor);
-        resumeButton.setForeground(buttonForegroundColor);
-
         stopButton = new JButton("Stop");
 
         exportButton = new JButton("Export");
@@ -127,25 +121,21 @@ public class SimulationView implements Observer{
         exportButton.setForeground(buttonForegroundColor);
 
         startButton.setToolTipText("Start simulation");
-        resumeButton.setToolTipText("Resume simulation");
         stopButton.setToolTipText("Stop simulation");
         exportButton.setToolTipText("Print report");
 
         startButton.setHorizontalAlignment(JLabel.CENTER);
-        resumeButton.setHorizontalAlignment(JLabel.CENTER);
         stopButton.setHorizontalAlignment(JLabel.CENTER);
         exportButton.setHorizontalAlignment(JLabel.CENTER);
 
 
         /* DISABLING BUTTONS AT FIRST */
 
-        resumeButton.setEnabled(false);
         stopButton.setEnabled(false);
 
         /* ************************ */
 
         menuPanel.add(startButton);
-        menuPanel.add(resumeButton);
         menuPanel.add(stopButton);
         menuPanel.add(exportButton);
 
@@ -157,7 +147,6 @@ public class SimulationView implements Observer{
 
     public void enableButtonsOnStart(){
         stopButton.setEnabled(true);
-        resumeButton.setEnabled(true);
         this.getRightPanel().getTaxiPanel().getSubButton().setEnabled(true);
         this.getRightPanel().getGroupPanel().getSubButton().setEnabled(true);
         this.getRightPanel().getTaxiPanel().getSubCheck().setEnabled(true);
@@ -170,8 +159,8 @@ public class SimulationView implements Observer{
     }
 
     public void disableButtonsOnStop(){
+
         stopButton.setEnabled(false);
-        resumeButton.setEnabled(false);
         this.getRightPanel().getTaxiPanel().getSubButton().setEnabled(false);
         this.getRightPanel().getGroupPanel().getSubButton().setEnabled(false);
         this.getRightPanel().getTaxiPanel().getSubCheck().setEnabled(false);
@@ -186,7 +175,6 @@ public class SimulationView implements Observer{
 
         startButton.addActionListener(actionListener);
         stopButton.addActionListener(actionListener);
-        resumeButton.addActionListener(actionListener);
         this.getRightPanel().getTaxiPanel().getSubButton().addActionListener(actionListener);
         this.getRightPanel().getTaxiPanel().getSubCheck().addActionListener(actionListener);
         this.getRightPanel().getGroupPanel().getSubButton().addActionListener(actionListener);
@@ -200,16 +188,6 @@ public class SimulationView implements Observer{
 
         exportButton.addActionListener(actionListener);
 
-    }
-
-    public void swapButton() {
-        if(!isRunning){
-            resumeButton.setText("Pause");
-            isRunning = true;
-        } else if (isRunning) {
-            resumeButton.setText("Resume");
-            isRunning = false;
-        }
     }
 
     private void busyWindow(int windowID){
@@ -300,78 +278,24 @@ public class SimulationView implements Observer{
         this.getRightPanel().getGroupPanel().getSubArea().setText(res);
     }
 
-    public MainModel getMd() {
-        return md;
-    }
-
-    public void setMd(MainModel md) {
-        this.md = md;
-    }
-
-    public void temp(){
-        //destination
-        md.getWindows()[0].getGroupOfPassengers().getDestinationName();
-        md.getWindows()[0].getRemainingNumberOfPassengers();
-        md.getWindows()[0].getTaxi().getTaxiRegistrationNumber();
-
-        md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().size();
-        md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().get(0).getDestinationName();
-        md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().get(0).getNumberOfPassengers();
-
-        md.getTaxiData().getTaxiQueue().getTaxisQueue().size();
-        md.getTaxiData().getTaxiQueue().getTaxisQueue().get(0).getTaxiRegistrationNumber();
-
-    }
-
-    public void addListner(JButton jButton, ActionListener actionListener){
-        jButton.addActionListener(actionListener);
-    }
-
     public JButton getStartButton() {
         return startButton;
-    }
-
-    public void setStartButton(JButton startButton) {
-        this.startButton = startButton;
-    }
-
-    public JButton getResumeButton() {
-        return resumeButton;
-    }
-
-    public void setResumeButton(JButton resumeButton) {
-        this.resumeButton = resumeButton;
     }
 
     public JButton getStopButton() {
         return stopButton;
     }
 
-    public void setStopButton(JButton stopButton) {
-        this.stopButton = stopButton;
-    }
-
     public JButton getExportButton() {
         return exportButton;
-    }
-
-    public void setExportButton(JButton exportButton) {
-        this.exportButton = exportButton;
     }
 
     public RightPanel getRightPanel() {
         return rightPanel;
     }
 
-    public void setRightPanel(RightPanel rightPanel) {
-        this.rightPanel = rightPanel;
-    }
-
     public LeftPanel getLeftPanel() {
         return leftPanel;
     }
 
-    public void setLeftPanel(LeftPanel leftPanel) {
-        this.leftPanel = leftPanel;
-    }
 }
