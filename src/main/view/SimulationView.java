@@ -324,7 +324,9 @@ public class SimulationView implements Observer{
                     + "\n\n--- STATS ---"
                     + "\n\nTotal number of passengers served: " + md.getWindows()[i].getTotalNumberOfPassengersServed()
                     + "\nTotal number of groups completely served: " + md.getWindows()[i].getTotalNumberOfGroupsServed()
-                    + "\nTotal number of allocated taxis: " + md.getWindows()[i].getTotalNumberOfAllocatedTaxis();
+                    + "\nTotal number of allocated taxis: " + md.getWindows()[i].getTotalNumberOfAllocatedTaxis()
+                    + "\nSize of biggest served group: " + md.getWindows()[i].getBiggestGroupSizeServed()
+                    + "\nSize of smallest served group: " + md.getWindows()[i].getSmallestGroupSizeServed();
 
             updateContent(i, newContent);
             updateWindowColor(i);
