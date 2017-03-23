@@ -3,7 +3,6 @@ package test.model;
 import main.model.GroupOfPassengers;
 import main.model.GroupOfPassengersGenerator;
 import org.junit.Test;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 

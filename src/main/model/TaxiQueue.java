@@ -1,7 +1,6 @@
 package main.model;
 
 import main.log.LoggerSingleton;
-
 import java.util.LinkedList;
 import java.util.Observable;
 

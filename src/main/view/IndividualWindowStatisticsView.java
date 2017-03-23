@@ -1,6 +1,5 @@
 package main.view;
 
-
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -9,7 +8,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import main.model.Stats;
-
 import javax.swing.*;
 
 

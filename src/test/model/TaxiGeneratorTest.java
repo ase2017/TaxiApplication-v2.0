@@ -3,7 +3,6 @@ package test.model;
 import main.model.Taxi;
 import main.model.TaxiGenerator;
 import org.junit.Test;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 

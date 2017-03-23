@@ -2,7 +2,6 @@ package main.model;
 
 import main.log.LoggerSingleton;
 import main.utils.Utils;
-
 import java.util.Observable;
 
 /**
@@ -323,6 +322,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfPassengersServed(int totalNumberOfPassengersServed) {
         this.totalNumberOfPassengersServed = totalNumberOfPassengersServed;
+        setChanged();
+        notifyObservers();
 
     }
 
@@ -332,6 +333,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfGroupsServed(int totalNumberOfGroupsServed) {
         this.totalNumberOfGroupsServed = totalNumberOfGroupsServed;
+        setChanged();
+        notifyObservers();
     }
 
     public int getTotalNumberOfAllocatedTaxis() {
@@ -340,6 +343,8 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfAllocatedTaxis(int totalNumberOfAllocatedTaxis) {
         this.totalNumberOfAllocatedTaxis = totalNumberOfAllocatedTaxis;
+        setChanged();
+        notifyObservers();
     }
 
     public long getWorkingStartTime() {

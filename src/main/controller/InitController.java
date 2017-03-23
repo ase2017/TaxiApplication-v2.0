@@ -3,7 +3,6 @@ package main.controller;
 import main.model.MainModel;
 import main.view.InitializationWindowView;
 import main.view.SimulationView;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

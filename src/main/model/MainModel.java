@@ -55,9 +55,6 @@ public class MainModel extends Observable{
      */
     public void stopAllWindows(){
 
-        taxiData.getPassengerQueue().getGroupOfPassengersQueue().clear();
-        taxiData.getTaxiQueue().getTaxisQueue().clear();
-
         for(int i  = 0; i < windows.length; i++) {
             windows[i].setStopped();
         }

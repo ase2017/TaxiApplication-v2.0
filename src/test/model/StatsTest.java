@@ -4,10 +4,12 @@ import main.model.Stats;
 import main.model.Window;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 
 
+/**
+ * @author George Chiotis
+ */
 public class StatsTest {
 
 

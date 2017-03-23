@@ -62,7 +62,7 @@ public class TaxiData extends Observable{
 
 
     /**
-     * Adds one taxi
+     * Adds one taxi if it does not already exist in the queue
      * @param taxi the Taxi to be added
      * @return true if the taxi was successfully added, else returns false
      */

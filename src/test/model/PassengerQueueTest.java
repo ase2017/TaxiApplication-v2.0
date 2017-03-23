@@ -3,9 +3,7 @@ package test.model;
 import main.model.GroupOfPassengers;
 import main.model.PassengerQueue;
 import org.junit.Test;
-
 import java.util.LinkedList;
-
 import static org.junit.Assert.*;
 
 

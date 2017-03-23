@@ -6,12 +6,11 @@ import main.model.Stats;
 import main.view.IndividualWindowStatisticsView;
 import main.view.SimulationView;
 import main.view.TotalAppStatisticsView;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.TimerTask;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Class Name: SimulationController.java
