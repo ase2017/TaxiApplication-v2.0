@@ -2,7 +2,6 @@ package main.view;
 
 import main.model.MainModel;
 import main.model.WindowStatuses;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -316,11 +315,17 @@ public class SimulationView implements Observer{
     private void updateWindows() {
 
         for(int i =0; i<md.getWindows().length; i++){
-            String newContent = "Destination: "
+            String newContent = "Status: " + md.getWindows()[i].getStatus()
+                    + "\n\nDestination: "
                     + (md.getWindows()[i].getGroupOfPassengers() == null ? "" : md.getWindows()[i].getGroupOfPassengers().getDestinationName())
-                    + "\nTotal number of passengers : " + (md.getWindows()[i].getGroupOfPassengers() == null ? "" : md.getWindows()[i].getGroupOfPassengers().getNumberOfPassengers())
-                    + "\nRemaining number of passengers : " + md.getWindows()[i].getRemainingNumberOfPassengers()
-                    + "\nTaxi : " + (md.getWindows()[i].getTaxi() == null ? "" : md.getWindows()[i].getTaxi().getTaxiRegistrationNumber());
+                    + "\nTotal number of passengers: " + (md.getWindows()[i].getGroupOfPassengers() == null ? "" : md.getWindows()[i].getGroupOfPassengers().getNumberOfPassengers())
+                    + "\nRemaining number of passengers: " + md.getWindows()[i].getRemainingNumberOfPassengers()
+                    + "\nTaxi : " + (md.getWindows()[i].getTaxi() == null ? "" : md.getWindows()[i].getTaxi().getTaxiRegistrationNumber())
+                    + "\n\n--- STATS ---"
+                    + "\n\nTotal number of passengers served: " + md.getWindows()[i].getTotalNumberOfPassengersServed()
+                    + "\nTotal number of groups completely served: " + md.getWindows()[i].getTotalNumberOfGroupsServed()
+                    + "\nTotal number of allocated taxis: " + md.getWindows()[i].getTotalNumberOfAllocatedTaxis();
+
             updateContent(i, newContent);
             updateWindowColor(i);
             this.getLeftPanel().getWindows().get(i ).getWindowContent().revalidate();
@@ -358,7 +363,8 @@ public class SimulationView implements Observer{
 
         if (md.getTaxiData().getTaxiQueue().getTaxisQueue().size() > 0) {
             for (int i = 0; i < md.getTaxiData().getTaxiQueue().getTaxisQueue().size();i++){
-                res += md.getTaxiData().getTaxiQueue().getTaxisQueue().get(i).getTaxiRegistrationNumber() + "\n";
+                res += "Number of seats: " + md.getTaxiData().getTaxiQueue().getTaxisQueue().get(i).getMaximumNumberOfPassengers() + "\t"
+                        + "RN: " + md.getTaxiData().getTaxiQueue().getTaxisQueue().get(i).getTaxiRegistrationNumber()  + "\n";
             }
         } else {
             res = "empty";
@@ -375,7 +381,7 @@ public class SimulationView implements Observer{
         String res = "";
         if (md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().size() > 0) {
             for (int i = 0; i < md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().size();i++) {
-                res += md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().get(i).getNumberOfPassengers() + " people for "
+                res += md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().get(i).getNumberOfPassengers() + " people" + "\t"
                         + md.getTaxiData().getPassengerQueue().getGroupOfPassengersQueue().get(i).getDestinationName() + "\n";
             }
         } else {

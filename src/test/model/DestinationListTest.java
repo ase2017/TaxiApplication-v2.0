@@ -2,7 +2,6 @@ package test.model;
 
 import main.model.DestinationList;
 import org.junit.Test;
-
 import static org.junit.Assert.assertNotNull;
 /**
  * @author Jules

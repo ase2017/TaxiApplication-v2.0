@@ -1,6 +1,5 @@
 package main.model;
 
-
 /**
  * Enum that contains the possible window statuses
  * @author George and Jules

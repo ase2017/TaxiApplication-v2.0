@@ -1,6 +1,6 @@
 package main.model;
-import main.utils.Utils;
 
+import main.utils.Utils;
 import java.util.ArrayList;
 import java.util.Random;
 
