@@ -12,15 +12,18 @@ public class TaxiData extends Observable{
     private TaxiQueue taxiQueue;
     private PassengerQueue passengerQueue;
 
+    GroupOfPassengersGenerator groupOfPassengersGenerator;
+
     public  TaxiData(  ) {
     }
 
 
-    public TaxiData(int numberOfTaxis, int numberOfGroups) {
+    public TaxiData(int numberOfTaxis, int numberOfGroups, int maxNumberOfPassengersPerGroup) {
 
         taxiList = new TaxiList();
         taxiQueue = new TaxiQueue();
         passengerQueue = new PassengerQueue();
+        groupOfPassengersGenerator = new GroupOfPassengersGenerator(maxNumberOfPassengersPerGroup);
         fillTaxiQueue(numberOfTaxis);
         fillGroupsQueue(numberOfGroups);
     }
@@ -53,7 +56,7 @@ public class TaxiData extends Observable{
             passengerQueue = new PassengerQueue();
         }
 
-        passengerQueue.add(GroupOfPassengersGenerator.generateGroupOfPassengers());
+        passengerQueue.add(groupOfPassengersGenerator.generateGroupOfPassengers());
     }
 
     /* ******************************************************************** */
@@ -176,5 +179,13 @@ public class TaxiData extends Observable{
 
     public void setPassengerQueue(PassengerQueue passengerQueue) {
         this.passengerQueue = passengerQueue;
+    }
+
+    public GroupOfPassengersGenerator getGroupOfPassengersGenerator() {
+        return groupOfPassengersGenerator;
+    }
+
+    public void setGroupOfPassengersGenerator(GroupOfPassengersGenerator groupOfPassengersGenerator) {
+        this.groupOfPassengersGenerator = groupOfPassengersGenerator;
     }
 }

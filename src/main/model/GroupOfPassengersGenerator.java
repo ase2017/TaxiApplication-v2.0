@@ -1,6 +1,8 @@
 package main.model;
 
 import main.utils.Utils;
+import main.view.InitializationWindowView;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,8 +13,12 @@ import java.util.Random;
 public class GroupOfPassengersGenerator {
 
     private static Random random = new Random();
-    public final static int MIN_NUMBER_OF_PEOPLE_IN_GROUP = 1;
-    public static int MAX_NUMBER_OF_PEOPLE_IN_GROUP = 10;
+    private final int minNumberOfPeopleInGroup = 1;
+    private int maxNumberOfPeopleInGroup = 10;
+
+    public GroupOfPassengersGenerator(int maxNumberOfPeopleInGroup){
+        this.maxNumberOfPeopleInGroup = maxNumberOfPeopleInGroup;
+    }
 
     /**
      * Generates one group of passengers
@@ -20,8 +26,8 @@ public class GroupOfPassengersGenerator {
      * The destination name is randomly picked inside DestinationList
      * @return a group of passenger
      */
-    public static GroupOfPassengers generateGroupOfPassengers() {
-        return new GroupOfPassengers(Utils.getIntBetween(MIN_NUMBER_OF_PEOPLE_IN_GROUP,MAX_NUMBER_OF_PEOPLE_IN_GROUP),
+    public GroupOfPassengers generateGroupOfPassengers() {
+        return new GroupOfPassengers(Utils.getIntBetween(minNumberOfPeopleInGroup,maxNumberOfPeopleInGroup),
                                     DestinationList.getRandomDestinationName());
     }
 
@@ -32,7 +38,7 @@ public class GroupOfPassengersGenerator {
      * @param n : the number of group of passengers
      * @return an arraylist of groups of passengers of size n if n positive, else it's empty
      */
-    public static ArrayList<GroupOfPassengers> generateGroupOfPassengers(int n) {
+    public ArrayList<GroupOfPassengers> generateGroupOfPassengers(int n) {
 
         ArrayList<GroupOfPassengers> groups = new ArrayList<>();
 
@@ -47,4 +53,19 @@ public class GroupOfPassengersGenerator {
 
 
 
+    public static void setRandom(Random random) {
+        GroupOfPassengersGenerator.random = random;
+    }
+
+    public int getMinNumberOfPeopleInGroup() {
+        return minNumberOfPeopleInGroup;
+    }
+
+    public int getMaxNumberOfPeopleInGroup() {
+        return maxNumberOfPeopleInGroup;
+    }
+
+    public void setMaxNumberOfPeopleInGroup(int maxNumberOfPeopleInGroup) {
+        this.maxNumberOfPeopleInGroup = maxNumberOfPeopleInGroup;
+    }
 }
