@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  * Description: This class represents the controller of the main
  *              application GUI.
  *
- * @author George Goniotakis
+ * @author Jules Detrie and George Goniotakis
  * @since Mar 18, 2017
  */
 public class InitController {

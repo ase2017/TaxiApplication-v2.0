@@ -20,7 +20,7 @@ import java.util.Timer;
  *              mode. This controller is connected with the {@link SimulationView} and the
  *              {@link MainModel}.
  *
- * @author George Goniotakis
+ * @author Jules Detrie and George Goniotakis
  * @since Mar 18, 2017
  */
 public class SimulationController {
