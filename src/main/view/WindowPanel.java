@@ -79,7 +79,7 @@ public class WindowPanel extends JPanel{
 
         this.setBorder(new EmptyBorder(15,10,0,10)); //Margin around the panel
         this.setBackground(SimulationView.backgroundColor); //Change panel's background color
-        windowContent.setPreferredSize(new Dimension(150,100)); //Use fixed dimensions for the textarea
+        windowScroll.setPreferredSize(new Dimension(150,100)); //Use fixed dimensions for the textarea
 
         this.add(windowTextPanel); //Add the textarea to the panel
         buttonPanel.add(endOfDayButton); //Add the buttons to the buttons' panel
