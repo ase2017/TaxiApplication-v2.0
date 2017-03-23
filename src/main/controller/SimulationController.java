@@ -89,6 +89,12 @@ public class SimulationController {
                 sv.disableButtonsOnStop();
                 mm.stopAllWindows(); //Stop the execution for all windows that serve
 
+                if(taxiTimer != null)
+                    taxiTimer.cancel(); //Stop the timer that automatically adds taxis
+
+                if(groupTimer != null)
+                    groupTimer.cancel(); //Stop the timer that automatically add groups
+
             }
 
             /* If the "Add Taxi" button is pressed */

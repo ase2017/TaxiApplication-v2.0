@@ -288,7 +288,6 @@ public class Window extends Observable implements Runnable{
 
     public void setStatus(String status) {
 
-        System.out.println("NEW status of window " + windowNumber + " : " + status);
         this.status = status;
             setChanged();
             notifyObservers();
