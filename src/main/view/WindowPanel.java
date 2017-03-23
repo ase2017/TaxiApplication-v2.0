@@ -7,31 +7,48 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 /**
- * Created by Giorgos on 22-Mar-17.
+ * Class Name: WindowPanel.java
+ *
+ * Description: This class creates the windows that are positioned into
+ *              the left panel that is created by {@link LeftPanel}.
+ *
+ * @author George Goniotakis
+ * @since Mar 18, 2017
  */
 public class WindowPanel extends JPanel{
 
-    private JPanel windowPanel, buttonPanel, windowTextPanel;
-    private JButton endOfDayButton, graphButton;
-    private JTextArea windowContent;
-    private JScrollPane windowScroll;
+    private JPanel windowPanel, buttonPanel, windowTextPanel; //The JPanels for the window, the buttons and the textarea
+    private JButton endOfDayButton, graphButton; //The "End Of Day" and "Show Graph" buttons
+    private JTextArea windowContent; //The textarea
+    private JScrollPane windowScroll; //The scrollbar for each window
 
-    private int windowID;
+    private int windowID; //The ID of the window
 
+    /**
+     * This is the constructor of this class.
+     *
+     * @param windowID The identifier for each window
+     */
     public WindowPanel(int windowID){
         this.windowID = windowID;
         initializeComponents();
     }
 
+    /**
+     * This method creates one new window that consists of the
+     * textarea and the buttons.
+     */
     private void initializeComponents() {
 
-        this.setLayout(new GridLayout(2,1));
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        this.setLayout(new GridLayout(2,1)); //Set layout of the panel as GridLayout
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); //Create a FlowLayout for the buttons
 
-        buttonPanel.setBackground(SimulationView.backgroundColor);
+        buttonPanel.setBackground(SimulationView.backgroundColor); //Set the background color for the button's panel
 
-        endOfDayButton = new JButton("End of day");
+        endOfDayButton = new JButton("End of day"); //Create the buttons and give them labels
         graphButton = new JButton("Show graph");
+
+        /* For each button change background and foreground color and set names. */
 
         endOfDayButton.setBackground(SimulationView.buttonBackgroundColor);
         endOfDayButton.setForeground(SimulationView.buttonForegroundColor);
@@ -44,6 +61,8 @@ public class WindowPanel extends JPanel{
         graphButton.setName("graphButton" + this.windowID);
 
 
+        /* Create the JPanel which is going to hold all the components */
+
         windowTextPanel = new JPanel();
         windowTextPanel.setLayout(new BoxLayout(windowTextPanel,BoxLayout.Y_AXIS));
         windowTextPanel.setBorder(new TitledBorder(new EtchedBorder(), "Window " + this.windowID));
@@ -51,22 +70,26 @@ public class WindowPanel extends JPanel{
         windowContent.setEditable(false);
         windowContent.setBackground(SimulationView.textAreaColor);
 
+        /* Put a scrollbar into the panel */
+
         windowScroll = new JScrollPane(windowContent);
         windowScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         windowTextPanel.add(windowScroll);
 
-        this.setBorder(new EmptyBorder(15,10,0,10));
-        this.setBackground(SimulationView.backgroundColor);
-        windowContent.setPreferredSize(new Dimension(150,100));
+        this.setBorder(new EmptyBorder(15,10,0,10)); //Margin around the panel
+        this.setBackground(SimulationView.backgroundColor); //Change panel's background color
+        windowContent.setPreferredSize(new Dimension(150,100)); //Use fixed dimensions for the textarea
 
-        this.add(windowTextPanel);
-        buttonPanel.add(endOfDayButton);
+        this.add(windowTextPanel); //Add the textarea to the panel
+        buttonPanel.add(endOfDayButton); //Add the buttons to the buttons' panel
         buttonPanel.add(graphButton);
-        this.add(buttonPanel);
+        this.add(buttonPanel); //Add the buttons' panel to the main panel
 
     }
 
+
+    /* Getters and Setters */
 
     public JPanel getWindowPanel() {
         return windowPanel;

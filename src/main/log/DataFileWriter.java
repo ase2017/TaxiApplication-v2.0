@@ -1,5 +1,10 @@
 package main.log;
 
+import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * Class Name: DataFileWriter.java
  *
@@ -9,10 +14,6 @@ package main.log;
  * @author George Goniotakis
  * @since Mar 18, 2017
  */
-import javax.swing.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class DataFileWriter {
 

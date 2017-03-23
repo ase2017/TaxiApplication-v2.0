@@ -9,8 +9,17 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
 
-
+/**
+ * Class Name: InitializationWindowView.java
+ *
+ * Description: This class creates the main window of our application.
+ *
+ * @author George Goniotakis
+ * @since Mar 18, 2017
+ */
 public class InitializationWindowView{
+
+    /* Paths for the images of the app */
 
     private final String ICON_PATH = "resources/taxiIcon.png";
     private final String START_ICON_PATH = "resources/startButton.png";
@@ -18,10 +27,14 @@ public class InitializationWindowView{
     private final String EXIT_ICON_PATH = "resources/exitButton.png";
     private final String EXIT_ICON_HOVER_PATH = "resources/exitButtonHover.png";
 
+    /* Default options for the spinners */
+
     private static final int DEFAULT_NUM_OF_TAXIS = 10;
     private static final int DEFAULT_NUM_OF_WINDOWS = 2;
     private static final int DEFAULT_NUM_OF_GROUPS = 10;
     private static final int DEFAULT_NUM_OF_PASSENGERS = 5;
+
+    /* Range (min,max) for the spinners */
 
     private static final int MINIMUM_NUM_OF_TAXIS = 0;
     private static final int MAXIMUM_NUM_OF_TAXIS = 20;
@@ -32,23 +45,29 @@ public class InitializationWindowView{
     private static final int MINIMUM_NUM_OF_PASSENGERS = 1;
     private static final int MAXIMUM_NUM_OF_PASSENGERS = 30;
 
-    private JFrame initializationFrame;
-    private JPanel initializationPanel, northPanel, southPanel, centerPanel;
+    private JFrame initializationFrame; //The main frame
+    private JPanel initializationPanel, northPanel, southPanel, centerPanel; //The panels which are going to be useds
     private JLabel mainLabel, numOfTaxLabel,numPassGroupsLabel, passPerGroupLabel, numWindowsLabel,
-             startButtonLabel, exitButtonLabel;
+             startButtonLabel, exitButtonLabel; //The labels for the components
 
-    private JButton startButton, exitButton;
-    private JSpinner numTaxisSpinner, groupsSpinner, numGroupsSpinner, numWindowsSpinner;
-    private SimulationController simulationController;
+    private JButton startButton, exitButton; //The start and exit buttons
+    private JSpinner numTaxisSpinner, groupsSpinner, numGroupsSpinner, numWindowsSpinner; //The spinners
+    private SimulationController simulationController; //The controller for the next view
 
+    /* Variables in which the user's preferences are going to be stored */
 
     public static int numberOfTaxis = 0;
     public static int numberOfGroups = 0;
     public static int numberOfWindows = 0;
     public static int maxPassengersPerGroup = 0;
 
-    private MainModel mm;
+    private MainModel mm; //An instance of the main model
 
+    /**
+     * This is the constructor of this class. It creates a new main window.
+     *
+     * @param mm The main model
+     */
     public InitializationWindowView(MainModel mm){
 
         this.mm = mm;
@@ -58,6 +77,9 @@ public class InitializationWindowView{
 
     }
 
+    /**
+     * This method is calling the methods that initializing the main frame and its components.
+     */
     public void initializeView(){
 
         initializeFrame();
@@ -65,6 +87,9 @@ public class InitializationWindowView{
 
     }
 
+    /**
+     * This method creates the main panel and fills it with the components.
+     */
     private void initializeComponents(){
 
         setButtonImages();
@@ -74,6 +99,9 @@ public class InitializationWindowView{
 
     }
 
+    /**
+     * This method initializes the main frame of the GUI
+     */
     private void initializeFrame(){
 
         initializationFrame.setTitle("TaxiApplication v2.0");
@@ -86,6 +114,9 @@ public class InitializationWindowView{
 
     }
 
+    /**
+     * This method initializes the favicon of the application.
+     */
     private void taxiIconInit(){
 
         try{
@@ -97,6 +128,10 @@ public class InitializationWindowView{
 
     }
 
+    /**
+     * This method initializes the button images. It gives them
+     * circle shape and disables the borders.
+     */
     private void setButtonImages(){
 
         startButton.setIcon(new ImageIcon(START_ICON_PATH));
@@ -108,6 +143,10 @@ public class InitializationWindowView{
 
     }
 
+    /**
+     * This method is using {@link SpinnerModel} to create a range for each spinner.
+     * It also prevents the spinners from being edited or modified in any way.
+     */
     private void initializeSpinners(){
 
         SpinnerModel numOfTaxisModel = new SpinnerNumberModel(DEFAULT_NUM_OF_TAXIS, MINIMUM_NUM_OF_TAXIS,
@@ -130,10 +169,13 @@ public class InitializationWindowView{
         ((JSpinner.DefaultEditor) numWindowsSpinner.getEditor()).getTextField().setEditable(false);
     }
 
+    /**
+     * This method initializes some mouse listeners for the image buttons in order to
+     * make them look like real buttons. When users put their mouse on the button we
+     * use a version of the image with weaker color. When he removes the mouse from the
+     * button we use a more vibrant version of the same picture.
+     */
     private void initializeHandlers(){
-
-        //startButton.addActionListener(this);
-        //exitButton.addActionListener(this);
 
         startButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -161,6 +203,10 @@ public class InitializationWindowView{
 
     }
 
+    /**
+     * This method is used to collect the user's preferences from the spinners
+     * and send them to the Model.
+     */
     public void getValues(){
 
         numberOfTaxis = (Integer)numTaxisSpinner.getValue();
@@ -172,17 +218,12 @@ public class InitializationWindowView{
         GroupOfPassengersGenerator.MAX_NUMBER_OF_PEOPLE_IN_GROUP = maxPassengersPerGroup;
 
     }
-    public void addStartButtonListener (ActionListener al){
-        startButton.addActionListener(al);
-    }
 
-    public void addExitButtonListener (ActionListener al){
-        exitButton.addActionListener(al);
-    }
-
-
-
-
+    /**
+     * This method initializes the tooltip descriptions for all the spinners.
+     * In this way, the user can hover their mouse on the spinners to get extra
+     * details about what these parameters actually do.
+     */
     private void initializeTooltipDescriptions(){
 
         numTaxisSpinner.setToolTipText("The number of taxis that are available at any time. It should be a number" +
@@ -194,6 +235,25 @@ public class InitializationWindowView{
         numWindowsSpinner.setToolTipText("The number of available windows. It should be a number" +
                 " in the range [" + MINIMUM_NUM_OF_WINDOWS + "-" + MAXIMUM_NUM_OF_WINDOWS + "].");
     }
+
+    /**
+     * This method adds the actionListener of the start button.
+     * @param al ActionListener
+     */
+    public void addStartButtonListener (ActionListener al){
+        startButton.addActionListener(al);
+    }
+
+    /**
+     * This method adds the actionListener of the exit button.
+     * @param al ActionListener
+     */
+    public void addExitButtonListener (ActionListener al){
+        exitButton.addActionListener(al);
+    }
+
+
+    /* Getters and Setters */
 
     public static int getNumberOfTaxis() {
         return numberOfTaxis;
@@ -235,7 +295,6 @@ public class InitializationWindowView{
         this.initializationFrame = initializationFrame;
     }
 
-
     public static void setMaxPassengersPerGroup(int maxPassengersPerGroup) {
         InitializationWindowView.maxPassengersPerGroup = maxPassengersPerGroup;
     }
@@ -247,4 +306,5 @@ public class InitializationWindowView{
     public void setMm(MainModel mm) {
         this.mm = mm;
     }
+
 }
