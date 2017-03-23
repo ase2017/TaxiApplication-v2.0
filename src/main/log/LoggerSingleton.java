@@ -3,7 +3,7 @@ package main.log;
 /**
  * Class Name: LoggerSingleton.java
  *
- * Description: This class follows the Singleton (Lazy Initialization) Pattern.
+ * Description: This class follows the Singleton (Lazy Instantiation) Pattern.
  *              It is used by the methods to insert records into the string
  *              which is going to be printed in the output file.
  *
