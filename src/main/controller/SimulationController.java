@@ -10,11 +10,14 @@ import main.view.TotalAppStatisticsView;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.TimerTask;
+import java.util.Timer;
 
 public class SimulationController {
 
     private MainModel mm;
     private SimulationView sv;
+
 
     public SimulationController(MainModel mm, SimulationView sv){
 
@@ -23,19 +26,19 @@ public class SimulationController {
 
         sv.addListeners(new SimulationButtonsListener());
 
-
     }
 
 
+    class SimulationButtonsListener implements ActionListener {
 
-    class SimulationButtonsListener implements ActionListener
-    {
+        private final int INTERVAL_SECONDS = 5;
+        private Timer taxiTimer, groupTimer;
+
         @Override
         public void actionPerformed(ActionEvent e) {
 
             JComponent temp = (JComponent) e.getSource();
 
-            System.out.println("Action Performed");
             if(temp == sv.getStartButton()){
 
                 LoggerSingleton.getInstance().add("Starting");
@@ -49,13 +52,6 @@ public class SimulationController {
                 mm.run();
                 sv.enableButtonsOnStart();
 
-
-                // GENERAL PAUSE / RESUME
-            } else if(temp == sv.getResumeButton()){
-                sv.swapButton();
-                //mm.pauseOrResumeAllWindowsOnBreak();
-
-                // GENERAL STOP
             } else if(temp == sv.getStopButton()){
                 sv.disableButtonsOnStop();
                 mm.stopAllWindows();
@@ -90,26 +86,40 @@ public class SimulationController {
                     t.initAndShowGUI();
                 });
 
-            // specific breakbutton
             }else if(temp.getName().contains("endOfDayButton")){
 
-
-                int index =Integer.parseInt(temp.getName().replace("endOfDayButton",""));
-                mm.endOfDay(index);
+                mm.endOfDay(Integer.parseInt(temp.getName().replace("endOfDayButton","")));
 
             // taxi tick box
             } else if(temp == sv.getRightPanel().getTaxiPanel().getSubCheck()){
+
                 if(sv.getRightPanel().getTaxiPanel().getSubCheck().isSelected()) {
-                    //md.AUTOMATIC_ADDING_OF_TAXIS = true;
+
+                    taxiTimer = new Timer();
+                    taxiTimer.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            mm.getTaxiData().generateAndAddTaxi();
+                        }
+                    }, 0,INTERVAL_SECONDS*1000);
+
                 } else {
-                    //md.AUTOMATIC_ADDING_OF_TAXIS = false;
+                    taxiTimer.cancel();
                 }
                 // group tick box
             } else if(temp == sv.getRightPanel().getGroupPanel().getSubCheck()) {
                 if (sv.getRightPanel().getGroupPanel().getSubCheck().isSelected()) {
-                    //md.AUTOMATIC_ADDING_OF_GROUPS = true;
+
+                    groupTimer = new Timer();
+                    groupTimer.scheduleAtFixedRate(new TimerTask() {
+                        @Override
+                        public void run() {
+                            mm.getTaxiData().generateAndAddGroup();
+                        }
+                    }, 0,INTERVAL_SECONDS*1000);
+
                 } else {
-                    //md.AUTOMATIC_ADDING_OF_GROUPS = false;
+                    groupTimer.cancel();
                 }
 
             }
