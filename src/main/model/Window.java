@@ -2,6 +2,7 @@ package main.model;
 
 import main.log.LoggerSingleton;
 import main.utils.Utils;
+
 import java.util.Observable;
 
 /**
