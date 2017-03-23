@@ -1,10 +1,10 @@
 package main.model;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 /**
- * Holds all the taxis already created
+ * Holds all the taxis created in the program.
+ * Allows to avoid duplicate information in the queue (two taxis with the same registration number)
  * @author George C. and Jules
  */
 public class TaxiList{

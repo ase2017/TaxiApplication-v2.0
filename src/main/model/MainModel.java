@@ -1,8 +1,6 @@
 package main.model;
 
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.Observable;
 
 /**
  * Model class that contains all other model info
@@ -18,6 +16,7 @@ public class MainModel extends Observable{
     public MainModel(){
 
     }
+
 
     public MainModel(int numberOfTaxis, int numberOfGroups, int numberOfWindows) {
         this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
@@ -36,23 +35,29 @@ public class MainModel extends Observable{
     }
 
 
-    /* ************* GUI methods ********************* */
+    /* ******************************************************************** */
+    /* ************************ GUI METHODS ******************************* */
+    /* ******************************************************************** */
 
 
-
+    /**
+     * For individual windows' "End of day"  button
+     * Simulates the end of day of the window of the given index
+     * @param index the index / number of the window
+     */
     public void endOfDay(int index){
-
         windows[index].setStopped();
-
-
     }
 
     /**
      * For STOP button (general button)
+     * empties the queues and simulates the end of the day (all windows leave)
      */
     public void stopAllWindows(){
+
         taxiData.getPassengerQueue().getGroupOfPassengersQueue().clear();
         taxiData.getTaxiQueue().getTaxisQueue().clear();
+
         for(int i  = 0; i < windows.length; i++) {
             windows[i].setStopped();
         }
@@ -61,42 +66,20 @@ public class MainModel extends Observable{
 
     /**
      * For START button (general button)
+     * starts the threads
      */
     public void run(){
 
-
-
         for(int i  = 0; i < windows.length; i++) {
             windowsThreads[i].start();
-            try{
-                TimeUnit.SECONDS.sleep(1);
-                //1-2 seconds “sleep” (of waiting)
-            } catch (InterruptedException e){
-
-            }
-
         }
-
-
-
-
     }
 
-    /**
-     * For PAUSE button (general button)
-     */
-    /*public void pauseAllWindows(){
-        for (Window window : windows){
-            window.setOnBreak();
-        }
-    }*/
+    /* ******************************************************************** */
+    /* ******************************************************************** */
+    /* ******************************************************************** */
 
-
-
-    /* *************************************************** */
-
-
-
+    /* ****************** GETTERS / SETTERS ********************************* */
 
 
     public Window[] getWindows() {

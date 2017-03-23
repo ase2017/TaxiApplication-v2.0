@@ -3,6 +3,7 @@ package main.utils;
 import java.util.Random;
 
 /**
+ * Class that holds common functions
  * @author Jules
  */
 public class Utils {

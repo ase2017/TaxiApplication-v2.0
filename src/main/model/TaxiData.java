@@ -13,8 +13,6 @@ public class TaxiData extends Observable{
     private PassengerQueue passengerQueue;
 
     public  TaxiData(  ) {
-
-
     }
 
 
@@ -139,8 +137,6 @@ public class TaxiData extends Observable{
      */
     public void fillGroupsQueue(int numberOfGroups) {
 
-
-
         if (numberOfGroups > 0) {
 
             for(int i = 0; i < numberOfGroups; i++) {
@@ -156,6 +152,7 @@ public class TaxiData extends Observable{
     }
 
 
+    /* ************ GETTERS / SETTERS ************** */
 
     public TaxiList getTaxiList() {
         return taxiList;

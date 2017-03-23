@@ -2,7 +2,6 @@ package main.model;
 
 import main.log.LoggerSingleton;
 import main.utils.Utils;
-
 import java.util.Observable;
 
 /**
@@ -16,6 +15,7 @@ public class Window extends Observable implements Runnable{
     private TaxiData taxiData;
     private int windowNumber;
 
+
     private boolean stopped = false;
 
     //stats
@@ -28,29 +28,40 @@ public class Window extends Observable implements Runnable{
     private long workingStartTime = 0;
     private long workingEndTime = 0;
 
+    private int SIMULATION_SPEED = 1;
+
 
     @Override
     public void run() {
 
-
+        // keeps going while there are still taxis and passengers in the queues, and if the windows are not stopped ('end of day')
         while(taxiData.getTaxiQueue().getTaxisQueue().size() > 0
                 && taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() > 0
                 && !stopped) {
 
+                // pick a group of passengers
                 pickGroup();
 
+                // could be null because of multi threading so checking
                 if (groupOfPassengers != null) {
+
+                    // while the entire group has not been served (ie the taxi allocated did not have enough places)
+                    // and while there are taxis in the queue, we pick a taxi to serve the remaining passengers of the group
                     while (taxiData.getTaxiQueue().getTaxisQueue().size() > 0 && remainingNumberOfPassengers != 0) {
-                        pickTaxi();
-                        partOfGroupLeaves();
+
+                        pickTaxi(); // picks the taxi
+                        partOfGroupLeaves(); // updates the remaining number of passengers and removes the taxi
                     }
 
                     if (remainingNumberOfPassengers == 0)
-                        allGroupLeft();
+                        allGroupLeft(); // removes the group from the window if everybody in the current group left
+                                        // also sets the status to available if the window has not been sent to "end of day"
                 }
 
         }
 
+        // when at least one queue is empty, the window stops and becomes "unavailable"
+        setWorkingEndTime(System.currentTimeMillis()); // the time at which the window stopped working
         setStatus(WindowStatuses.UNAVAILABLE.toString());
 
         LoggerSingleton.getInstance().add("Closing window " + windowNumber);
@@ -64,13 +75,13 @@ public class Window extends Observable implements Runnable{
         //System.out.println("Remaining number of groups from window " + windowNumber + " : " + taxiData.getPassengerQueue().getGroupOfPassengersQueue().size());
         //System.out.println("Remaining number of taxis from window " + windowNumber + " : " + taxiData.getTaxiQueue().getTaxisQueue().size() + "\n");
 
-
-        setWorkingEndTime(System.currentTimeMillis());
-
-
     }
 
 
+    /**
+     * checks if the window is unavailable or should be
+     * @return
+     */
     public boolean isUnavailable(){
         return (stopped || taxiData.getTaxiQueue().getTaxisQueue().size() == 0
                 || taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() == 0);
@@ -78,28 +89,30 @@ public class Window extends Observable implements Runnable{
 
 
     /**
-     * function to pick a group : gets a group, simulates the group coming, and sets the group
+     * function to pick a group : gets a group, removes it from the queue,
+     * simulates the group coming, and sets the group to the window
      */
     public void pickGroup() {
 
+        // first thing, sets the window status to busy
         setStatus(WindowStatuses.BUSY.toString());
 
+        // gets and removes the first group of passengers of the queue (if any)
         GroupOfPassengers temporaryGroupOfPassengers = taxiData.getPassengerQueue().popGroup();
-
-        // simulates the time for the groups of passengers to arrive
-        try{
-            Thread.sleep(Utils.getIntBetween(2000,2000));
-        } catch (InterruptedException e) {
-
-        }
-
-
-
-
-        setGroupOfPassengers(temporaryGroupOfPassengers);
 
         if (temporaryGroupOfPassengers != null) {
 
+            // simulates the time for the groups of passengers to arrive (between 2 and 4 seconds)
+            try{
+                Thread.sleep(SIMULATION_SPEED * Utils.getIntBetween(2000,4000));
+            } catch (InterruptedException e) {
+
+            }
+
+            // the group arrived at the window
+            setGroupOfPassengers(temporaryGroupOfPassengers);
+
+            // the remaining number of passengers to serve is the initial group size
             setRemainingNumberOfPassengers(temporaryGroupOfPassengers.getNumberOfPassengers());
         }
 
@@ -110,23 +123,29 @@ public class Window extends Observable implements Runnable{
      */
     public void pickTaxi(){
 
-
-        // simulates the time for the taxi to arrive at the window
+        // gets and removes the first taxi of the queue (if any)
         Taxi temporaryTaxi = taxiData.getTaxiQueue().popTaxi();
 
-        try{
-            Thread.sleep(Utils.getIntBetween(2000,2000));
-        } catch (InterruptedException e) {
+        if (temporaryTaxi != null){
 
+            // simulates the time for the taxi to arrive at the window (between 2 and 4 seconds)
+            try{
+                Thread.sleep(SIMULATION_SPEED * Utils.getIntBetween(2000,4000));
+            } catch (InterruptedException e) {
+
+            }
+
+            // the taxi arrived at the window
+            setTaxi(temporaryTaxi);
+
+            //logging
+            LoggerSingleton.getInstance().addRecord(this.getWindowNumber(),
+                    this.getGroupOfPassengers().getDestinationName(),
+                    this.getGroupOfPassengers().getNumberOfPassengers(),
+                    this.getRemainingNumberOfPassengers(),
+                    this.getTaxi().getTaxiRegistrationNumber());
         }
 
-        setTaxi(temporaryTaxi);
-        
-        LoggerSingleton.getInstance().addRecord(this.getWindowNumber(),
-                this.getGroupOfPassengers().getDestinationName(),
-                this.getGroupOfPassengers().getNumberOfPassengers(),
-                this.getRemainingNumberOfPassengers(),
-                this.getTaxi().getTaxiRegistrationNumber());
 
     }
 
@@ -136,9 +155,9 @@ public class Window extends Observable implements Runnable{
     public void partOfGroupLeaves(){
 
 
-        // simulates the people leaving
+        // simulates the people leaving (between 2 and 4 seconds)
         try{
-            Thread.sleep(Utils.getIntBetween(4000,4000));
+            Thread.sleep(SIMULATION_SPEED * Utils.getIntBetween(2000,4000));
         } catch (InterruptedException e) {
 
         }
@@ -147,21 +166,25 @@ public class Window extends Observable implements Runnable{
         if(taxi != null) {
             int servedNumberOfPassengersThisTime = remainingNumberOfPassengers - taxi.getMaximumNumberOfPassengers();
 
+            // if there are more seats than passengers
             if (  servedNumberOfPassengersThisTime < 0) {
                 setTotalNumberOfPassengersServed(totalNumberOfPassengersServed + taxi.getMaximumNumberOfPassengers());
                 setRemainingNumberOfPassengers(0);
+            // is there are less seats than passengers (or the same number)
             } else {
                 setTotalNumberOfPassengersServed(totalNumberOfPassengersServed + servedNumberOfPassengersThisTime);
                 setRemainingNumberOfPassengers(remainingNumberOfPassengers - taxi.getMaximumNumberOfPassengers());
             }
+            // incrementing the number of taxis
+            setTotalNumberOfAllocatedTaxis(totalNumberOfAllocatedTaxis + 1);
+
+            setTaxi(null);
+
         }
 
-        setTotalNumberOfAllocatedTaxis(totalNumberOfAllocatedTaxis + 1);
-        setTaxi(null);
-
-        // simulates the time between each  group allocation
+        // simulates the time between each  group allocation (between 2 and 4 seconds)
         try{
-            Thread.sleep(Utils.getIntBetween(2000,2000));
+            Thread.sleep(SIMULATION_SPEED * Utils.getIntBetween(2000,4000));
         } catch (InterruptedException e) {
 
         }
@@ -174,40 +197,46 @@ public class Window extends Observable implements Runnable{
      */
     public void allGroupLeft(){
 
-        groupOfPassengers.setFinalDepartureTime(System.currentTimeMillis());
+        if(groupOfPassengers != null){
 
-        // updating biggest group size served
-        if (groupOfPassengers.getNumberOfPassengers() > biggestGroupSizeServed){
+            // departure time of the last person in the group
+            groupOfPassengers.setFinalDepartureTime(System.currentTimeMillis());
 
-            setBiggestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
-        }
+            // updating biggest group size served
+            if (groupOfPassengers.getNumberOfPassengers() > biggestGroupSizeServed){
 
-        // updating smallest group size served
-        if(smallestGroupSizeServed == 0){
-            setSmallestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
-
-        } else {
-            if (groupOfPassengers.getNumberOfPassengers() < smallestGroupSizeServed){
-                setSmallestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
+                setBiggestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
             }
+
+            // updating smallest group size served
+            if(smallestGroupSizeServed == 0){
+                setSmallestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
+            } else {
+                if (groupOfPassengers.getNumberOfPassengers() < smallestGroupSizeServed){
+                    setSmallestGroupSizeServed(groupOfPassengers.getNumberOfPassengers());
+                }
+            }
+
+
+            setGroupOfPassengers(null);
+            setTotalNumberOfGroupsServed(totalNumberOfGroupsServed + 1);
         }
 
-
-        setGroupOfPassengers(null);
+        // updating the status
         if(isUnavailable()) {
             setStatus(WindowStatuses.UNAVAILABLE.toString());
         } else {
             setStatus(WindowStatuses.AVAILABLE.toString());
         }
 
-
+        // simulates the time during each group
         try{
-            Thread.sleep(Utils.getIntBetween(4000,4000));
+            Thread.sleep(SIMULATION_SPEED * Utils.getIntBetween(4000,4000));
         } catch (InterruptedException e) {
 
         }
 
-        setTotalNumberOfGroupsServed(totalNumberOfGroupsServed + 1);
+
 
     }
 
@@ -294,8 +323,7 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfPassengersServed(int totalNumberOfPassengersServed) {
         this.totalNumberOfPassengersServed = totalNumberOfPassengersServed;
-        //setChanged();
-        //notifyObservers();
+
     }
 
     public int getTotalNumberOfGroupsServed() {
@@ -304,8 +332,6 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfGroupsServed(int totalNumberOfGroupsServed) {
         this.totalNumberOfGroupsServed = totalNumberOfGroupsServed;
-        //setChanged();
-        //notifyObservers();
     }
 
     public int getTotalNumberOfAllocatedTaxis() {
@@ -314,8 +340,6 @@ public class Window extends Observable implements Runnable{
 
     public void setTotalNumberOfAllocatedTaxis(int totalNumberOfAllocatedTaxis) {
         this.totalNumberOfAllocatedTaxis = totalNumberOfAllocatedTaxis;
-        //setChanged();
-        //notifyObservers();
     }
 
     public long getWorkingStartTime() {
@@ -324,8 +348,6 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingStartTime(long workingStartTime) {
         this.workingStartTime = workingStartTime;
-        //setChanged();
-        //notifyObservers();
     }
 
     public long getWorkingEndTime() {
@@ -334,8 +356,6 @@ public class Window extends Observable implements Runnable{
 
     public void setWorkingEndTime(long workingEndTime) {
         this.workingEndTime = workingEndTime;
-        //setChanged();
-        //notifyObservers();
     }
 
     public int getSmallestGroupSizeServed() {
@@ -344,8 +364,6 @@ public class Window extends Observable implements Runnable{
 
     public void setSmallestGroupSizeServed(int smallestGroupSizeServed) {
         this.smallestGroupSizeServed = smallestGroupSizeServed;
-        //setChanged();
-        //notifyObservers();
     }
 
     public int getBiggestGroupSizeServed() {
@@ -354,8 +372,6 @@ public class Window extends Observable implements Runnable{
 
     public void setBiggestGroupSizeServed(int biggestGroupSizeServed) {
         this.biggestGroupSizeServed = biggestGroupSizeServed;
-        //setChanged();
-        //notifyObservers();
     }
 
     public boolean isStopped() {
