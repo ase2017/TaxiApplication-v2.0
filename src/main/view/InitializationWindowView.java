@@ -1,8 +1,6 @@
 package main.view;
 
 import main.controller.SimulationController;
-import main.model.GroupOfPassengers;
-import main.model.GroupOfPassengersGenerator;
 import main.model.MainModel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -210,14 +208,9 @@ public class InitializationWindowView{
     public void getValues(){
 
         int numberOfTaxis = (Integer)numTaxisSpinner.getValue();
-        System.out.println("Initial number of taxis: " + numberOfTaxis);
         int maxPassengersPerGroup = (Integer)maxNumberOfPassengerSpinner.getValue();
-        System.out.println("Max number of passengers per group: " + maxPassengersPerGroup);
         int numberOfWindows = (Integer)numWindowsSpinner.getValue();
-        System.out.println("Initial number of groups: " + numberOfWindows);
         int numberOfGroups = (Integer)numGroupsSpinner.getValue();
-        System.out.println("Initial number of groups: " + numberOfGroups);
-
 
         mm = new MainModel(numberOfTaxis, numberOfGroups, numberOfWindows,maxPassengersPerGroup);
 
