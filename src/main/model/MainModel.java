@@ -18,8 +18,8 @@ public class MainModel extends Observable{
     }
 
 
-    public MainModel(int numberOfTaxis, int numberOfGroups, int numberOfWindows) {
-        this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups);
+    public MainModel(int numberOfTaxis, int numberOfGroups, int numberOfWindows, int maxNumberOfPassengersPerGroup) {
+        this.taxiData = new TaxiData(numberOfTaxis,numberOfGroups,maxNumberOfPassengersPerGroup);
         windows = new Window[numberOfWindows];
         windowsThreads = new Thread[numberOfWindows];
 

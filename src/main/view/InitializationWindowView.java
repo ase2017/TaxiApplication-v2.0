@@ -1,6 +1,7 @@
 package main.view;
 
 import main.controller.SimulationController;
+import main.model.GroupOfPassengers;
 import main.model.GroupOfPassengersGenerator;
 import main.model.MainModel;
 import javax.imageio.ImageIO;
@@ -30,10 +31,10 @@ public class InitializationWindowView{
 
     /* Default options for the spinners */
 
-    private static final int DEFAULT_NUM_OF_TAXIS = 10;
-    private static final int DEFAULT_NUM_OF_WINDOWS = 2;
-    private static final int DEFAULT_NUM_OF_GROUPS = 10;
-    private static final int DEFAULT_NUM_OF_PASSENGERS = 5;
+    private static final int DEFAULT_NUM_OF_TAXIS = 15;
+    private static final int DEFAULT_NUM_OF_WINDOWS = 4;
+    private static final int DEFAULT_NUM_OF_PASSENGERS = 9;
+    private static final int DEFAULT_NUM_OF_GROUPS  = 15;
 
     /* Range (min,max) for the spinners */
 
@@ -42,7 +43,7 @@ public class InitializationWindowView{
     private static final int MINIMUM_NUM_OF_WINDOWS = 1;
     private static final int MAXIMUM_NUM_OF_WINDOWS = 12;
     private static final int MINIMUM_NUM_OF_GROUPS = 0;
-    private static final int MAXIMUM_NUM_OF_GROUPS = 1000;
+    private static final int MAXIMUM_NUM_OF_GROUPS = 20;
     private static final int MINIMUM_NUM_OF_PASSENGERS = 1;
     private static final int MAXIMUM_NUM_OF_PASSENGERS = 30;
 
@@ -52,15 +53,12 @@ public class InitializationWindowView{
              startButtonLabel, exitButtonLabel; //The labels for the components
 
     private JButton startButton, exitButton; //The start and exit buttons
-    private JSpinner numTaxisSpinner, groupsSpinner, numGroupsSpinner, numWindowsSpinner; //The spinners
+    private JSpinner numTaxisSpinner, maxNumberOfPassengerSpinner, numGroupsSpinner, numWindowsSpinner; //The spinners
     private SimulationController simulationController; //The controller for the next view
 
     /* Variables in which the user's preferences are going to be stored */
 
-    public static int numberOfTaxis = 0;
-    public static int numberOfGroups = 0;
-    public static int numberOfWindows = 0;
-    public static int maxPassengersPerGroup = 0;
+
 
     private MainModel mm; //An instance of the main model
 
@@ -153,20 +151,21 @@ public class InitializationWindowView{
         SpinnerModel numOfTaxisModel = new SpinnerNumberModel(DEFAULT_NUM_OF_TAXIS, MINIMUM_NUM_OF_TAXIS,
                 MAXIMUM_NUM_OF_TAXIS, 1);
         SpinnerModel numGroupsModel = new SpinnerNumberModel(DEFAULT_NUM_OF_GROUPS, MINIMUM_NUM_OF_GROUPS,
-                MAXIMUM_NUM_OF_GROUPS, 1);
-        SpinnerModel passengerModel = new SpinnerNumberModel(DEFAULT_NUM_OF_PASSENGERS, MINIMUM_NUM_OF_PASSENGERS,
+                MAXIMUM_NUM_OF_GROUPS , 1);
+        SpinnerModel maxNumberOfPassengersModel  = new SpinnerNumberModel(DEFAULT_NUM_OF_PASSENGERS, MINIMUM_NUM_OF_PASSENGERS ,
                 MAXIMUM_NUM_OF_PASSENGERS, 1);
         SpinnerModel numWindowsModel = new SpinnerNumberModel(DEFAULT_NUM_OF_WINDOWS, MINIMUM_NUM_OF_WINDOWS,
                 MAXIMUM_NUM_OF_WINDOWS, 1);
 
+
         numTaxisSpinner.setModel(numOfTaxisModel);
-        numGroupsSpinner.setModel(numGroupsModel);
-        groupsSpinner.setModel(passengerModel);
+        numGroupsSpinner.setModel(numGroupsModel );
+        maxNumberOfPassengerSpinner.setModel(maxNumberOfPassengersModel );
         numWindowsSpinner.setModel(numWindowsModel);
 
         ((JSpinner.DefaultEditor) numTaxisSpinner.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) numGroupsSpinner.getEditor()).getTextField().setEditable(false);
-        ((JSpinner.DefaultEditor) groupsSpinner.getEditor()).getTextField().setEditable(false);
+        ((JSpinner.DefaultEditor) maxNumberOfPassengerSpinner.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) numWindowsSpinner.getEditor()).getTextField().setEditable(false);
     }
 
@@ -210,13 +209,17 @@ public class InitializationWindowView{
      */
     public void getValues(){
 
-        numberOfTaxis = (Integer)numTaxisSpinner.getValue();
-        maxPassengersPerGroup = (Integer)numGroupsSpinner.getValue();
-        numberOfWindows = (Integer)numWindowsSpinner.getValue();
-        numberOfGroups = (Integer)groupsSpinner.getValue();
+        int numberOfTaxis = (Integer)numTaxisSpinner.getValue();
+        System.out.println("Initial number of taxis: " + numberOfTaxis);
+        int maxPassengersPerGroup = (Integer)maxNumberOfPassengerSpinner.getValue();
+        System.out.println("Max number of passengers per group: " + maxPassengersPerGroup);
+        int numberOfWindows = (Integer)numWindowsSpinner.getValue();
+        System.out.println("Initial number of groups: " + numberOfWindows);
+        int numberOfGroups = (Integer)numGroupsSpinner.getValue();
+        System.out.println("Initial number of groups: " + numberOfGroups);
 
-        mm = new MainModel(numberOfTaxis, numberOfGroups, numberOfWindows);
-        GroupOfPassengersGenerator.MAX_NUMBER_OF_PEOPLE_IN_GROUP = maxPassengersPerGroup;
+
+        mm = new MainModel(numberOfTaxis, numberOfGroups, numberOfWindows,maxPassengersPerGroup);
 
     }
 
@@ -229,7 +232,7 @@ public class InitializationWindowView{
 
         numTaxisSpinner.setToolTipText("The number of taxis that are available at any time. It should be a number" +
                 " in the range [" + MINIMUM_NUM_OF_TAXIS + "-" + MAXIMUM_NUM_OF_TAXIS + "].");
-        groupsSpinner.setToolTipText("The number of customer groups. It should be a number" +
+        maxNumberOfPassengerSpinner.setToolTipText("The number of customer groups. It should be a number" +
                 " in the range [" + MINIMUM_NUM_OF_GROUPS + "-" + MAXIMUM_NUM_OF_GROUPS + "].");
         numGroupsSpinner.setToolTipText("The maximum number of passengers per group. It should be a number" +
                 " in the range [" + MINIMUM_NUM_OF_PASSENGERS + "-" + MAXIMUM_NUM_OF_PASSENGERS + "].");
@@ -256,21 +259,7 @@ public class InitializationWindowView{
 
     /* Getters and Setters */
 
-    public static int getNumberOfTaxis() {
-        return numberOfTaxis;
-    }
 
-    public static int getNumberOfGroups() {
-        return numberOfGroups;
-    }
-
-    public static int getNumberOfWindows() {
-        return numberOfWindows;
-    }
-
-    public static int getMaxPassengersPerGroup() {
-        return maxPassengersPerGroup;
-    }
 
     public JButton getStartButton() {
         return startButton;
@@ -296,9 +285,6 @@ public class InitializationWindowView{
         this.initializationFrame = initializationFrame;
     }
 
-    public static void setMaxPassengersPerGroup(int maxPassengersPerGroup) {
-        InitializationWindowView.maxPassengersPerGroup = maxPassengersPerGroup;
-    }
 
     public MainModel getMm() {
         return mm;

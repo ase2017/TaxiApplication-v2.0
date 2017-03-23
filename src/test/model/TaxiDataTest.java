@@ -15,7 +15,7 @@ public class TaxiDataTest {
 
     public void createTaxiData(){
 
-        TaxiData taxiData = new TaxiData(5,10);
+        TaxiData taxiData = new TaxiData(5,10,10);
         assertTrue(taxiData.getTaxiList().getTaxis().size() == 5);
         assertTrue(taxiData.getTaxiQueue().getTaxisQueue().size() == 5);
 
@@ -33,7 +33,7 @@ public class TaxiDataTest {
         assertTrue(taxiData.getTaxiQueue().getTaxisQueue().size() == 1);
 
         // test when adding on a non null taxiQueue object
-        taxiData = new TaxiData(5,10);
+        taxiData = new TaxiData(5,10,10);
         taxiData.generateAndAddTaxi();
         assertTrue(taxiData.getTaxiList().getTaxis().size() == 6);
         assertTrue(taxiData.getTaxiQueue().getTaxisQueue().size() == 6);
@@ -52,7 +52,7 @@ public class TaxiDataTest {
         assertTrue(taxiData.getPassengerQueue().getGroupOfPassengersQueue().size() == 1);
 
         // test when adding on a non null taxiQueue object
-        taxiData = new TaxiData(5,10);
+        taxiData = new TaxiData(5,10,10);
         taxiData.generateAndAddGroup();
         assertNotNull(taxiData.getPassengerQueue());
         assertNotNull(taxiData.getPassengerQueue().getGroupOfPassengersQueue());

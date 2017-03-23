@@ -2,6 +2,7 @@ package test.model;
 
 import main.model.GroupOfPassengers;
 import main.model.GroupOfPassengersGenerator;
+import main.model.TaxiData;
 import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -17,11 +18,13 @@ public class GroupsOfPassengersGeneratorTest {
 
         GroupOfPassengers groupOfPassengers;
 
+        GroupOfPassengersGenerator groupOfPassengersGenerator = new GroupOfPassengersGenerator(10);
+
         for (int i = 0; i < 20; i++){
-            groupOfPassengers = GroupOfPassengersGenerator.generateGroupOfPassengers();
+            groupOfPassengers = groupOfPassengersGenerator.generateGroupOfPassengers();
             assertNotNull(groupOfPassengers);
-            assertTrue(groupOfPassengers.getNumberOfPassengers() >= GroupOfPassengersGenerator.MIN_NUMBER_OF_PEOPLE_IN_GROUP
-                    && groupOfPassengers.getNumberOfPassengers() <= GroupOfPassengersGenerator.MAX_NUMBER_OF_PEOPLE_IN_GROUP);
+            assertTrue(groupOfPassengers.getNumberOfPassengers() >= groupOfPassengersGenerator.getMinNumberOfPeopleInGroup()
+                    && groupOfPassengers.getNumberOfPassengers() <= groupOfPassengersGenerator.getMaxNumberOfPeopleInGroup());
 
         }
     }
@@ -29,17 +32,19 @@ public class GroupsOfPassengersGeneratorTest {
     @Test
     public void generateGroupOfPassengersList(){
 
-        assertNotNull(GroupOfPassengersGenerator.generateGroupOfPassengers(-1));
-        assertTrue(GroupOfPassengersGenerator.generateGroupOfPassengers(-1).size() == 0);
+        GroupOfPassengersGenerator groupOfPassengersGenerator = new GroupOfPassengersGenerator(10);
 
-        assertNotNull(GroupOfPassengersGenerator.generateGroupOfPassengers(0));
-        assertTrue(GroupOfPassengersGenerator.generateGroupOfPassengers(0).size() == 0);
+        assertNotNull(groupOfPassengersGenerator.generateGroupOfPassengers(-1));
+        assertTrue(groupOfPassengersGenerator.generateGroupOfPassengers(-1).size() == 0);
 
-        assertNotNull(GroupOfPassengersGenerator.generateGroupOfPassengers(1));
-        assertTrue(GroupOfPassengersGenerator.generateGroupOfPassengers(1).size() == 1);
+        assertNotNull(groupOfPassengersGenerator.generateGroupOfPassengers(0));
+        assertTrue(groupOfPassengersGenerator.generateGroupOfPassengers(0).size() == 0);
 
-        assertNotNull(GroupOfPassengersGenerator.generateGroupOfPassengers(5));
-        assertTrue(GroupOfPassengersGenerator.generateGroupOfPassengers(5).size() == 5);
+        assertNotNull(groupOfPassengersGenerator.generateGroupOfPassengers(1));
+        assertTrue(groupOfPassengersGenerator.generateGroupOfPassengers(1).size() == 1);
+
+        assertNotNull(groupOfPassengersGenerator.generateGroupOfPassengers(5));
+        assertTrue(groupOfPassengersGenerator.generateGroupOfPassengers(5).size() == 5);
 
     }
 
