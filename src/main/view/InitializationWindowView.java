@@ -1,8 +1,6 @@
 package main.view;
 
 import main.controller.SimulationController;
-import main.model.GroupOfPassengers;
-import main.model.GroupOfPassengersGenerator;
 import main.model.MainModel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
